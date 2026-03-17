@@ -10,17 +10,21 @@ text-align:center;
 font-family:Arial;
 background:#0f172a;
 color:white;
-margin-top:100px;
+margin-top:50px;
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 
 h1{
-font-size:42px;
-margin-bottom:40px;
+font-size:28px;
+margin-bottom:20px;
+text-align:center;
 }
 
 button{
 padding:15px 30px;
-font-size:20px;
+font-size:18px;
 border:none;
 border-radius:10px;
 cursor:pointer;
@@ -29,19 +33,28 @@ margin:10px;
 
 input{
 padding:10px;
-font-size:18px;
+font-size:16px;
 border-radius:8px;
 border:none;
 margin:10px;
+text-align:center;
 }
 
 .blue{background:#2196F3;color:white;}
 .green{background:#22c55e;color:white;}
 .option{background:#334155;color:white;}
-</style>
 
+img{
+max-width:200px;
+margin:10px;
+}
+</style>
 </head>
 <body>
+
+<!-- صور خرائط وفلوس -->
+<img src="https://i.imgur.com/YwJrXlG.png" alt="خريطة">
+<img src="https://i.imgur.com/1y0x5KD.png" alt="فلوس">
 
 <h1>شحن فلوس خريطة الميمز مجانا</h1>
 
@@ -49,71 +62,80 @@ margin:10px;
 <button class="blue" onclick="start()">شحن الآن!</button>
 </div>
 
+<!-- أصوات -->
+<audio id="clickSound">
+  <source src="https://www.soundjay.com/button/beep-07.mp3" type="audio/mpeg">
+</audio>
+<audio id="successSound">
+  <source src="https://www.soundjay.com/button/button-3.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-
-function start(){
-document.getElementById("content").innerHTML =
-"<p id='wait'>انتظر 10 ثواني...</p>";
-
-let time = 10;
-
-let timer = setInterval(function(){
-time--;
-document.getElementById("wait").innerText = "انتظر " + time + " ثواني...";
-
-if(time <= 0){
-clearInterval(timer);
-
-document.getElementById("content").innerHTML =
-"<button class='green' onclick='options()'>الشحن</button>";
+function playClick(){
+  document.getElementById('clickSound').play();
 }
 
-},1000);
+function playSuccess(){
+  document.getElementById('successSound').play();
+}
+
+function start(){
+  playClick();
+  document.getElementById("content").innerHTML =
+  "<p id='wait'>انتظر 10 ثواني...</p>";
+
+  let time = 10;
+  let timer = setInterval(function(){
+    time--;
+    document.getElementById("wait").innerText = "انتظر " + time + " ثواني...";
+    if(time <= 0){
+      clearInterval(timer);
+      playSuccess();
+      document.getElementById("content").innerHTML =
+      "<button class='green' onclick='options()'>الشحن</button>";
+    }
+  },1000);
 }
 
 function options(){
-document.getElementById("content").innerHTML = `
-<p>اختر الكمية</p>
-
-<button class="option" onclick="askName()">500$</button>
-<button class="option" onclick="askName()">1000$</button>
-<button class="option" onclick="askName()">5000$</button>
-<button class="option" onclick="askName()">10000$</button>
-`;
+  playClick();
+  document.getElementById("content").innerHTML = `
+  <p>اختر الكمية</p>
+  <button class="option" onclick="askName()">500$</button>
+  <button class="option" onclick="askName()">1000$</button>
+  <button class="option" onclick="askName()">5000$</button>
+  <button class="option" onclick="askName()">10000$</button>
+  `;
 }
 
 function askName(){
-document.getElementById("content").innerHTML = `
-<p>اكتب اسمك</p>
-
-<input id="name" placeholder="اسمك">
-
-<br>
-
-<button class="green" onclick="openVideo()">تأكيد</button>
-`;
+  playClick();
+  document.getElementById("content").innerHTML = `
+  <p>اكتب اسمك</p>
+  <input id="name" placeholder="اسمك">
+  <br>
+  <button class="green" onclick="openVideo()">تأكيد</button>
+  `;
 }
 
 function openVideo(){
-let name = document.getElementById("name").value;
-
-if(name == ""){
-alert("اكتب اسمك اولاً");
-return;
-}
-
-window.open("https://youtube.com/@mn98ty?si=uZyvytkJI9K9T9Yj");
-
-document.getElementById("content").innerHTML = `
-<p>ارجع بعد مشاهدة الفيديو</p>
-<button class="green" onclick="done('${name}')">رجعت</button>
-`;
+  playClick();
+  let name = document.getElementById("name").value;
+  if(name == ""){
+    alert("اكتب اسمك أولاً");
+    return;
+  }
+  window.open("https://youtube.com/@mn98ty?si=uZyvytkJI9K9T9Yj");
+  document.getElementById("content").innerHTML = `
+  <p>ارجع بعد مشاهدة الفيديو</p>
+  <button class="green" onclick="done('${name}')">رجعت</button>
+  `;
 }
 
 function done(name){
-alert("تم تسجيل الطلب باسم " + name + " ✅\nسوف تصلك الفلوس بعد 24 ساعة");
+  playSuccess();
+  alert("تم تسجيل الطلب باسم " + name + " ✅\nسوف تصلك الفلوس بعد 24 ساعة");
 }
-
 </script>
 
 </body>
