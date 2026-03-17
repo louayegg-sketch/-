@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>شحن فلوس خريطة الميمز</title>
 
+<style>
+body{
+text-align:center;
+font-family:Arial;
+background:#0f172a;
+color:white;
+margin-top:100px;
+}
+
+h1{
+font-size:42px;
+margin-bottom:40px;
+}
+
+button{
+padding:15px 30px;
+font-size:20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin:10px;
+}
+
+input{
+padding:10px;
+font-size:18px;
+border-radius:8px;
+border:none;
+margin:10px;
+}
+
+.blue{background:#2196F3;color:white;}
+.green{background:#22c55e;color:white;}
+.option{background:#334155;color:white;}
+</style>
+
+</head>
+<body>
+
+<h1>شحن فلوس خريطة الميمز مجانا</h1>
+
+<div id="content">
+<button class="blue" onclick="start()">شحن الآن!</button>
+</div>
+
+<script>
+
+function start(){
+document.getElementById("content").innerHTML =
+"<p id='wait'>انتظر 10 ثواني...</p>";
+
+let time = 10;
+
+let timer = setInterval(function(){
+time--;
+document.getElementById("wait").innerText = "انتظر " + time + " ثواني...";
+
+if(time <= 0){
+clearInterval(timer);
+
+document.getElementById("content").innerHTML =
+"<button class='green' onclick='options()'>الشحن</button>";
+}
+
+},1000);
+}
+
+function options(){
+document.getElementById("content").innerHTML = `
+<p>اختر الكمية</p>
+
+<button class="option" onclick="askName()">500$</button>
+<button class="option" onclick="askName()">1000$</button>
+<button class="option" onclick="askName()">5000$</button>
+<button class="option" onclick="askName()">10000$</button>
+`;
+}
+
+function askName(){
+document.getElementById("content").innerHTML = `
+<p>اكتب اسمك</p>
+
+<input id="name" placeholder="اسمك">
+
+<br>
+
+<button class="green" onclick="openVideo()">تأكيد</button>
+`;
+}
+
+function openVideo(){
+let name = document.getElementById("name").value;
+
+if(name == ""){
+alert("اكتب اسمك اولاً");
+return;
+}
+
+window.open("https://youtube.com/@mn98ty?si=uZyvytkJI9K9T9Yj");
+
+document.getElementById("content").innerHTML = `
+<p>ارجع بعد مشاهدة الفيديو</p>
+<button class="green" onclick="done('${name}')">رجعت</button>
+`;
+}
+
+function done(name){
+alert("تم تسجيل الطلب باسم " + name + " ✅\nسوف تصلك الفلوس بعد 24 ساعة");
+}
+
+</script>
+
+</body>
+</html>
