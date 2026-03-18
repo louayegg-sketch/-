@@ -21,50 +21,56 @@ body {
   background-size: 50px 50px;
   background-position: 0 0, 0 25px, 25px -25px, -25px 0px;
 }
-button {
-  padding:15px 25px;
+button.main-btn {
+  padding:20px 40px;
   margin:10px;
   border:none;
-  border-radius:15px;
+  border-radius:30px;
+  background:#00c3ff;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+  min-width:150px;
+}
+button.login-btn {
+  padding:15px 30px;
+  border:none;
+  border-radius:25px;
   background:#00c3ff;
   color:white;
   font-size:18px;
   cursor:pointer;
-}
-img.map {
-  width:100%;
-  max-width:600px;
-  height:auto;
-  border-radius:15px;
-  margin:15px 0;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  margin-top:15px;
 }
 #content {
   margin-top:20px;
-  text-align:right;
-  background: rgba(0,0,0,0.4);
-  padding:20px;
-  border-radius:15px;
+  text-align:center;
 }
-input { padding:10px; margin:5px; border-radius:10px; border:none; width:80%; font-size:16px; }
+input {
+  padding:15px;
+  margin:10px;
+  border-radius:25px;
+  border:none;
+  width:80%;
+  font-size:18px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
 </style>
 </head>
 <body>
 
-<!-- أزرار تسجيل الدخول والتسجيل -->
-<div>
-  <button onclick="showLogin()">🔐 تسجيل الدخول</button>
-  <button onclick="showSignIn()">📝 تسجيل جديد</button>
+<div id="home">
+  <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
+  <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
+  <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز" style="width:100%; max-width:600px; height:auto; border-radius:15px; margin-top:20px;">
 </div>
 
-<!-- صورة الخريطة -->
-<img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
-
-<!-- محتوى ديناميكي -->
 <div id="content"></div>
 
 <script>
-// بيانات المستخدمين بالعربي + كلمة سر
+// بيانات المستخدمين
 const users = {
   "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4 },
   "سانتش": { password:"00001", الجنود:37700, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
@@ -75,22 +81,24 @@ const users = {
 
 // عرض تسجيل الدخول
 function showLogin(){
+  document.getElementById("home").style.display="none"; // يحذف كل العناصر القديمة
   document.getElementById("content").innerHTML = `
     <h2>تسجيل الدخول</h2>
-    <input id="username" placeholder="اسمك"><br>
-    <input id="password" type="password" placeholder="كلمة السر"><br><br>
-    <button onclick="login()">دخول</button>
+    <input id="username" placeholder="اسمك">
+    <input id="password" type="password" placeholder="كلمة السر">
+    <button class="login-btn" onclick="login()">دخول</button>
     <p id="result"></p>
   `;
 }
 
 // عرض التسجيل
 function showSignIn(){
+  document.getElementById("home").style.display="none"; // يحذف كل العناصر القديمة
   document.getElementById("content").innerHTML = `
     <h2>التسجيل</h2>
     <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
     <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
-      <button>📷 تواصل على انستغرام</button>
+      <button class="login-btn">📷 تواصل على انستغرام</button>
     </a>
   `;
 }
