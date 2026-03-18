@@ -5,84 +5,65 @@
 <title>خريطة الميمز</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { 
-  font-family: Arial; 
-  text-align:center; 
-  background: linear-gradient(135deg, #1f1c2c, #928dab); 
-  color:white; 
-  margin:0; 
+body {
+  font-family: Arial;
+  text-align:center;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  color:white;
+  margin:0;
+  padding:20px;
 }
-.screen { display:none; padding:20px; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; }
-.active { display:flex; }
-button { 
-  padding:15px 25px; 
-  margin:10px; 
-  border:none; 
-  border-radius:15px; 
-  background:#00c3ff; 
-  color:white; 
-  font-size:20px; 
-  cursor:pointer; 
+button {
+  padding:15px 25px;
+  margin:10px;
+  border:none;
+  border-radius:15px;
+  background:#00c3ff;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
 }
-img.map { 
-  width:100%;         /* يغطي الشاشة تقريبًا */
-  max-width:600px;    /* مناسب للجوال */
-  height:auto;        /* يحافظ على نسبة الطول للعرض */
-  border-radius:20px; 
-  margin-bottom:15px; 
+img.map {
+  width:100%;
+  max-width:600px;
+  height:auto;
+  border-radius:15px;
+  margin:15px 0;
 }
-input { padding:15px; margin:10px; border-radius:10px; border:none; font-size:18px; width:80%; }
-.box { background:rgba(0,0,0,0.4); padding:25px; border-radius:20px; text-align:right; max-width:90%; }
-pre { text-align:right; font-size:18px; }
-h1,h2 { margin:10px; }
 </style>
 </head>
 <body>
 
-<!-- الشاشة الرئيسية -->
-<div id="home" class="screen active">
-  <h1>🔥 مرحبا بك في خريطة الميمز 🔥</h1>
-  <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
-  <button onclick="downloadMap()">⬇️ تحميل الخريطة</button>
-  <button onclick="show('menu')">➡️ متابعة</button>
-</div>
-
-<!-- القائمة -->
-<div id="menu" class="screen">
-  <h2>اختر</h2>
+<!-- أزرار تسجيل الدخول والتسجيل -->
+<div>
   <button onclick="show('login')">🔐 تسجيل الدخول</button>
   <button onclick="show('signin')">📝 تسجيل جديد</button>
 </div>
 
+<!-- صورة الخريطة -->
+<img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
+
+<!-- زر تحميل الصورة -->
+<div>
+  <button onclick="downloadMap()">⬇️ تحميل الخريطة</button>
+</div>
+
 <!-- تسجيل الدخول -->
-<div id="login" class="screen">
-  <div class="box">
-    <h2>تسجيل الدخول</h2>
-    <input id="username" placeholder="اسمك"><br>
-    <input id="password" type="password" placeholder="كلمة السر"><br>
-    <button onclick="login()">دخول</button>
-    <p id="result"></p>
-  </div>
+<div id="login" style="display:none; margin-top:20px;">
+  <h2>تسجيل الدخول</h2>
+  <input id="username" placeholder="اسمك"><br><br>
+  <input id="password" type="password" placeholder="كلمة السر"><br><br>
+  <button onclick="login()">دخول</button>
+  <p id="result"></p>
 </div>
 
 <!-- التسجيل -->
-<div id="signin" class="screen">
-  <div class="box">
-    <h2>التسجيل</h2>
-    <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
-    <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
-      <button>📷 تواصل على انستغرام</button>
-    </a>
-  </div>
-</div>
-
-<!-- عرض البيانات -->
-<div id="profile" class="screen">
-  <div class="box">
-    <h2>معلوماتك</h2>
-    <pre id="data"></pre>
-    <button onclick="show('home')">رجوع</button>
-  </div>
+<div id="signin" style="display:none; margin-top:20px;">
+  <h2>التسجيل</h2>
+  <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
+  <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
+    <button>📷 تواصل على انستغرام</button>
+  </a>
 </div>
 
 <script>
@@ -95,51 +76,37 @@ const users = {
   "ريد تيب": { password:"00003", الجنود:8000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
   "ماهر": { password:"19384", الجنود:5625, العسكري:1, الاقتصاد:"120$", المنتخب:1 },
   "قيس": { password:"00004", الجنود:5500, العسكري:1, الاقتصاد:"3700$", الديون:3, النفط:5, الحديد:4, الماس:5, الجواز:"18", المنتخب:5, النووي:7 },
-  "رحيم": { password:"00005", الجنود:5000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "عمر": { password:"59183", الجنود:3500, العسكري:1, الاقتصاد:"125$", المنتخب:1, النووي:1 },
-  "سنوبر": { password:"58245", الجنود:650, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "سوني": { password:"00006", الجنود:2300, الثوريين:2800, الاقتصاد:"100$", النفط:2, الصواريخ:4 },
-  "تيم": { password:"00007", الجنود:2220, العسكري:1, الاقتصاد:"200$", المنتخب:1 },
-  "ورد": { password:"00008", الجنود:1270, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "احمد": { password:"10394", الجنود:1740, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "ادم": { password:"00009", الجنود:300, العسكري:1, الاقتصاد:"130$", المنتخب:1 },
-  "علي جواد": { password:"28475", الجنود:820, العسكري:1, الاقتصاد:"131$", المنتخب:1, الجواز:"لؤي" },
-  "حمود": { password:"48392", الجنود:270, العسكري:1, الاقتصاد:"31$", النفط:1, المنتخب:1 },
-  "بدر": { password:"82746", الجنود:1070, العسكري:1, الاقتصاد:"126$", الصاروخ:1, الجواز:"لؤي", المنتخب:1 },
 };
 
-// تغيير الصفحات
+// عرض وإخفاء login/signin
 function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+  document.getElementById("login").style.display = (id==="login")?"block":"none";
+  document.getElementById("signin").style.display = (id==="signin")?"block":"none";
 }
 
-// تسجيل الدخول ذكي مع تحذير الآلات وترتيب القوة الكلية
+// تسجيل الدخول
 function login(){
   let user = document.getElementById("username").value.trim();
   let pass = document.getElementById("password").value.trim();
+  let result = document.getElementById("result");
 
-  if(!user){ document.getElementById("result").innerText = "⚠️ ادخل الاسم"; return; }
-  if(!pass){ document.getElementById("result").innerText = "⚠️ ادخل كلمة السر"; return; }
-  if(!users[user]){ document.getElementById("result").innerText = "❌ الاسم غير موجود"; return; }
-  if(users[user].password !== pass){ document.getElementById("result").innerText = "❌ كلمة السر غير صحيحة"; return; }
+  if(!user){ result.innerText="⚠️ ادخل الاسم"; return; }
+  if(!pass){ result.innerText="⚠️ ادخل كلمة السر"; return; }
+  if(!users[user]){ result.innerText="❌ الاسم غير موجود"; return; }
+  if(users[user].password !== pass){ result.innerText="❌ كلمة السر غير صحيحة"; return; }
 
   let u = users[user];
   let strength = (u.العسكري||0) * (u.الجنود||0);
-
-  let display = "⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪! اسأل لؤي للحصول على المعلومات الصحيحة.\n\n";
+  let display = `⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!\n\n`;
   display += `👤 الاسم: ${user}\n`;
   display += `• القوة الكلية: ${strength}\n`;
-
   for(const key in u){
     if(key!=="password") display += `• ${key}: ${u[key]}\n`;
   }
-
-  document.getElementById("data").innerText = display;
-  show("profile");
+  alert(display); // يظهر المعلومات في نافذة منبثقة بسيطة
 }
 
-// زر تحميل الخريطة
+// تحميل الخريطة
 function downloadMap() {
   const link = document.createElement('a');
   link.href = 'https://i.ibb.co/RpPJkLDX/map.jpg';
