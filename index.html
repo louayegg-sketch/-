@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   text-align:center;
   margin:0;
   padding:20px;
   color:white;
+  /* خلفية متدرجة مع مربعات شفافة */
   background: linear-gradient(135deg, #1f1c2c, #928dab);
-  /* مربعات شفافة على الخلفية */
   background-image:
     linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
@@ -30,10 +30,14 @@ button.main-btn {
   color:white;
   font-size:20px;
   cursor:pointer;
-  min-width:150px;
+  min-width:160px;
+}
+button.main-btn:hover {
+  transform: scale(1.05);
+  transition: 0.2s;
 }
 button.login-btn {
-  padding:15px 30px;
+  padding:18px 35px;
   border:none;
   border-radius:25px;
   background:#00c3ff;
@@ -42,13 +46,9 @@ button.login-btn {
   cursor:pointer;
   margin-top:15px;
 }
-#content {
-  margin-top:20px;
-  text-align:center;
-}
 input {
   padding:15px;
-  margin:10px;
+  margin:15px 0;
   border-radius:25px;
   border:none;
   width:80%;
@@ -56,17 +56,34 @@ input {
   display:block;
   margin-left:auto;
   margin-right:auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+img.map {
+  width:100%;
+  max-width:600px;
+  height:auto;
+  border-radius:15px;
+  margin:20px 0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+#content {
+  margin-top:20px;
+  text-align:center;
 }
 </style>
 </head>
 <body>
 
 <div id="home">
+  <!-- أزرار تسجيل الدخول والتسجيل -->
   <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
   <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
-  <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز" style="width:100%; max-width:600px; height:auto; border-radius:15px; margin-top:20px;">
+
+  <!-- صورة الخريطة -->
+  <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
 </div>
 
+<!-- المحتوى الديناميكي -->
 <div id="content"></div>
 
 <script>
@@ -81,7 +98,7 @@ const users = {
 
 // عرض تسجيل الدخول
 function showLogin(){
-  document.getElementById("home").style.display="none"; // يحذف كل العناصر القديمة
+  document.getElementById("home").style.display = "none"; // حذف كل العناصر القديمة
   document.getElementById("content").innerHTML = `
     <h2>تسجيل الدخول</h2>
     <input id="username" placeholder="اسمك">
@@ -93,7 +110,7 @@ function showLogin(){
 
 // عرض التسجيل
 function showSignIn(){
-  document.getElementById("home").style.display="none"; // يحذف كل العناصر القديمة
+  document.getElementById("home").style.display = "none"; // حذف كل العناصر القديمة
   document.getElementById("content").innerHTML = `
     <h2>التسجيل</h2>
     <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
