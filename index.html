@@ -66,6 +66,16 @@ input {
   color:red;
   font-weight:bold;
 }
+.user-box {
+  background:white;
+  color:black;
+  border-radius:15px;
+  padding:20px;
+  margin:20px auto;
+  max-width:90%;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  text-align:right;
+}
 </style>
 </head>
 <body>
@@ -124,6 +134,11 @@ const users = {
   "لونا (برمودا)": { password:"47913", الجنود:205, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
 };
 
+// تحويل النص لإزالة المسافات وحساسية الحروف
+function normalize(str){
+  return str.trim().toLowerCase();
+}
+
 // عرض تسجيل الدخول
 function showLogin(){
   document.getElementById("home").style.display = "none";
@@ -154,23 +169,31 @@ function showSignIn(){
 
 // تسجيل الدخول
 function login(){
-  let user = document.getElementById("username").value.trim();
-  let pass = document.getElementById("password").value.trim();
+  let inputUser = normalize(document.getElementById("username").value);
+  let inputPass = document.getElementById("password").value.trim();
   let error = document.getElementById("error");
 
-  if(!user){ error.innerText="⚠️ ادخل الاسم"; return; }
-  if(!pass){ error.innerText="⚠️ ادخل كلمة السر"; return; }
-  if(!users[user]){ error.innerText="❌ الاسم غير موجود"; return; }
-  if(users[user].password !== pass){ error.innerText="❌ كلمة السر غير صحيحة"; return; }
+  // البحث عن المستخدم بشكل مرن
+  let foundUser = null;
+  for(const key in users){
+    if(normalize(key) === inputUser){
+      foundUser = key;
+      break;
+    }
+  }
 
-  let u = users[user];
+  if(!foundUser){ error.innerText="❌ الاسم غير موجود"; return; }
+  if(users[foundUser].password !== inputPass){ error.innerText="❌ كلمة السر غير صحيحة"; return; }
+
+  let u = users[foundUser];
   let strength = (u.العسكري||0) * (u.الجنود||0);
-  let display = `<strong>⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!</strong><br><br>`;
-  display += `👤 الاسم: ${user}<br>`;
+  let display = `<div class="user-box"><strong>⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!</strong><br><br>`;
+  display += `👤 الاسم: ${foundUser}<br>`;
   display += `• القوة الكلية: ${strength}<br>`;
   for(const key in u){
     if(key!=="password") display += `• ${key}: ${u[key]}<br>`;
   }
+  display += `</div>`;
   document.getElementById("content").innerHTML = display;
 }
 </script>
