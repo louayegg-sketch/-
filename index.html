@@ -3,28 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>خريطة الميمز</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial; text-align:center; background:#111; color:white; margin:0; }
-.screen { display:none; padding:40px; }
-.active { display:block; }
-button { padding:10px 20px; margin:10px; border:none; border-radius:10px; background:#00c3ff; color:white; font-size:16px; cursor:pointer; }
-input { padding:10px; margin:10px; border-radius:10px; border:none; }
-.box { background:rgba(255,255,255,0.1); padding:20px; border-radius:15px; display:inline-block; text-align:right; }
+body { 
+  font-family: Arial; 
+  text-align:center; 
+  background: linear-gradient(135deg, #1f1c2c, #928dab); 
+  color:white; 
+  margin:0; 
+}
+.screen { display:none; padding:20px; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+.active { display:flex; }
+button { 
+  padding:15px 25px; 
+  margin:10px; 
+  border:none; 
+  border-radius:15px; 
+  background:#00c3ff; 
+  color:white; 
+  font-size:20px; 
+  cursor:pointer; 
+}
+img.map { 
+  width:100%;         /* يغطي الشاشة تقريبًا */
+  max-width:600px;    /* مناسب للجوال */
+  height:auto;        /* يحافظ على نسبة الطول للعرض */
+  border-radius:20px; 
+  margin-bottom:15px; 
+}
+input { padding:15px; margin:10px; border-radius:10px; border:none; font-size:18px; width:80%; }
+.box { background:rgba(0,0,0,0.4); padding:25px; border-radius:20px; text-align:right; max-width:90%; }
+pre { text-align:right; font-size:18px; }
+h1,h2 { margin:10px; }
 </style>
 </head>
 <body>
 
-<!-- الصفحة الرئيسية -->
+<!-- الشاشة الرئيسية -->
 <div id="home" class="screen active">
   <h1>🔥 مرحبا بك في خريطة الميمز 🔥</h1>
-  <button onclick="show('menu')">🚀 بدء</button>
+  <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
+  <button onclick="downloadMap()">⬇️ تحميل الخريطة</button>
+  <button onclick="show('menu')">➡️ متابعة</button>
 </div>
 
 <!-- القائمة -->
 <div id="menu" class="screen">
   <h2>اختر</h2>
-  <button onclick="show('login')">🔐 Log In</button>
-  <button onclick="show('signin')">📝 Sign In</button>
+  <button onclick="show('login')">🔐 تسجيل الدخول</button>
+  <button onclick="show('signin')">📝 تسجيل جديد</button>
 </div>
 
 <!-- تسجيل الدخول -->
@@ -59,62 +86,67 @@ input { padding:10px; margin:10px; border-radius:10px; border:none; }
 </div>
 
 <script>
-// 🟢 بيانات المستخدمين بالعربي + كلمة سر عشوائية
+// بيانات المستخدمين بالعربي + كلمة سر
 const users = {
-"لؤي": { password:"49520", soldiers:13200, economy:"9908$", debts:0, military:2, oil:1, iron:1, uranium:1, nuclear:78, team:4, stealth:true, extra:""},
-"وليان": { password:"49370", soldiers:300, economy:"525$", debts:500, military:1, team:1, stealth:true, rockets5:5, nuclear5:true, extra:""},
-"الوليد": { password:"58241", soldiers:11500, economy:"100$", military:1, team:1, extra:""},
-"حمود": { password:"48392", soldiers:270, economy:"31$", military:1, oil:1, team:1, extra:""},
-"عمر": { password:"59183", soldiers:3500, economy:"125$", military:1, team:1, nuclear:1, extra:""},
-"علي جواد": { password:"28475", soldiers:820, economy:"131$", military:1, passport:"لؤي", team:1, extra:""},
-"ماهر": { password:"19384", soldiers:5625, economy:"120$", military:1, team:1, extra:""},
-"بدر": { password:"82746", soldiers:1070, economy:"126$", military:1, rocket:1, passport:"لؤي", team:1, extra:""},
-"احمد": { password:"10394", soldiers:1740, economy:"100$", military:1, team:1, extra:""},
-// ✅ يمكنك إضافة باقي الجنود هنا بنفس الصيغة
+  "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4 },
+  "سانتش": { password:"00001", الجنود:37700, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "عبدو": { password:"00002", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "الوليد": { password:"58241", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "ريد تيب": { password:"00003", الجنود:8000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "ماهر": { password:"19384", الجنود:5625, العسكري:1, الاقتصاد:"120$", المنتخب:1 },
+  "قيس": { password:"00004", الجنود:5500, العسكري:1, الاقتصاد:"3700$", الديون:3, النفط:5, الحديد:4, الماس:5, الجواز:"18", المنتخب:5, النووي:7 },
+  "رحيم": { password:"00005", الجنود:5000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "عمر": { password:"59183", الجنود:3500, العسكري:1, الاقتصاد:"125$", المنتخب:1, النووي:1 },
+  "سنوبر": { password:"58245", الجنود:650, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "سوني": { password:"00006", الجنود:2300, الثوريين:2800, الاقتصاد:"100$", النفط:2, الصواريخ:4 },
+  "تيم": { password:"00007", الجنود:2220, العسكري:1, الاقتصاد:"200$", المنتخب:1 },
+  "ورد": { password:"00008", الجنود:1270, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "احمد": { password:"10394", الجنود:1740, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "ادم": { password:"00009", الجنود:300, العسكري:1, الاقتصاد:"130$", المنتخب:1 },
+  "علي جواد": { password:"28475", الجنود:820, العسكري:1, الاقتصاد:"131$", المنتخب:1, الجواز:"لؤي" },
+  "حمود": { password:"48392", الجنود:270, العسكري:1, الاقتصاد:"31$", النفط:1, المنتخب:1 },
+  "بدر": { password:"82746", الجنود:1070, العسكري:1, الاقتصاد:"126$", الصاروخ:1, الجواز:"لؤي", المنتخب:1 },
 };
 
-// 🔹 تغيير الصفحات
+// تغيير الصفحات
 function show(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// 🔹 تسجيل الدخول ذكي مع تحذير الآلات
+// تسجيل الدخول ذكي مع تحذير الآلات وترتيب القوة الكلية
 function login(){
-  let user = document.getElementById("username").value;
-  let pass = document.getElementById("password").value;
+  let user = document.getElementById("username").value.trim();
+  let pass = document.getElementById("password").value.trim();
 
-  let cleanUser = user.trim();
-  let cleanPass = pass.trim();
+  if(!user){ document.getElementById("result").innerText = "⚠️ ادخل الاسم"; return; }
+  if(!pass){ document.getElementById("result").innerText = "⚠️ ادخل كلمة السر"; return; }
+  if(!users[user]){ document.getElementById("result").innerText = "❌ الاسم غير موجود"; return; }
+  if(users[user].password !== pass){ document.getElementById("result").innerText = "❌ كلمة السر غير صحيحة"; return; }
 
-  if(user !== cleanUser){
-    document.getElementById("result").innerText = "⚠️ انتبه: احذف المسافات الزائدة من الاسم";
-    return;
-  }
-  if(pass !== cleanPass){
-    document.getElementById("result").innerText = "⚠️ انتبه: احذف المسافات الزائدة من كلمة السر";
-    return;
-  }
-  if(!users[cleanUser]){
-    document.getElementById("result").innerText = "❌ الاسم غير موجود\nتأكد من الكتابة أو احذف المسافات";
-    return;
-  }
-  if(users[cleanUser].password !== cleanPass){
-    document.getElementById("result").innerText = "❌ كلمة السر غير صحيحة\nحاول مرة أخرى";
-    return;
-  }
+  let u = users[user];
+  let strength = (u.العسكري||0) * (u.الجنود||0);
 
-  // عرض البيانات مع التحذير
-  let data = users[cleanUser];
   let display = "⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪! اسأل لؤي للحصول على المعلومات الصحيحة.\n\n";
-  display += `👤 الاسم: ${cleanUser}\n`;
-  for(const key in data){
-    if(key !== "password"){
-      display += `• ${key}: ${data[key]}\n`;
-    }
+  display += `👤 الاسم: ${user}\n`;
+  display += `• القوة الكلية: ${strength}\n`;
+
+  for(const key in u){
+    if(key!=="password") display += `• ${key}: ${u[key]}\n`;
   }
+
   document.getElementById("data").innerText = display;
   show("profile");
+}
+
+// زر تحميل الخريطة
+function downloadMap() {
+  const link = document.createElement('a');
+  link.href = 'https://i.ibb.co/RpPJkLDX/map.jpg';
+  link.download = 'خريطة الميمز.jpg';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 </script>
 
