@@ -123,11 +123,28 @@ function login(){
   let pass = document.getElementById("password").value.trim();
   let result = document.getElementById("result");
 
-  if(!user){ result.innerText="⚠️ ادخل الاسم"; return; }
-  if(!pass){ result.innerText="⚠️ ادخل كلمة السر"; return; }
-  if(!users[user]){ result.innerText="❌ الاسم غير موجود"; return; }
-  if(users[user].password !== pass){ result.innerText="❌ كلمة السر غير صحيحة"; return; }
+  if(!user){ 
+    result.innerText="⚠️ ادخل الاسم"; 
+    result.style.color="red"; 
+    return; 
+  }
+  if(!pass){ 
+    result.innerText="⚠️ ادخل كلمة السر"; 
+    result.style.color="red"; 
+    return; 
+  }
+  if(!users[user]){ 
+    result.innerText="❌ الاسم غير موجود"; 
+    result.style.color="red"; 
+    return; 
+  }
+  if(users[user].password !== pass){ 
+    result.innerText="❌ كلمة السر غير صحيحة"; 
+    result.style.color="red"; 
+    return; 
+  }
 
+  // عند الدخول الصحيح، نعرض المعلومات
   let u = users[user];
   let strength = (u.العسكري||0) * (u.الجنود||0);
   let display = `<strong>⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!</strong><br><br>`;
