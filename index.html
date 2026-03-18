@@ -11,8 +11,8 @@ body {
   margin:0;
   padding:20px;
   color:white;
-  /* خلفية متدرجة مع مربعات شفافة */
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  /* خلفية ديناميكية creative */
+  background: linear-gradient(135deg, #0a0f4d 0%, #000000 100%);
   background-image:
     linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
@@ -45,6 +45,7 @@ button.login-btn {
   font-size:18px;
   cursor:pointer;
   margin-top:15px;
+  box-shadow: 0 5px 15px rgba(0,195,255,0.5);
 }
 input {
   padding:15px;
@@ -56,7 +57,7 @@ input {
   display:block;
   margin-left:auto;
   margin-right:auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0,195,255,0.3);
 }
 img.map {
   width:100%;
@@ -64,7 +65,7 @@ img.map {
   height:auto;
   border-radius:15px;
   margin:20px 0;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 25px rgba(0,0,0,0.5);
 }
 #content {
   margin-top:20px;
@@ -75,15 +76,11 @@ img.map {
 <body>
 
 <div id="home">
-  <!-- أزرار تسجيل الدخول والتسجيل -->
   <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
   <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
-
-  <!-- صورة الخريطة -->
   <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
 </div>
 
-<!-- المحتوى الديناميكي -->
 <div id="content"></div>
 
 <script>
