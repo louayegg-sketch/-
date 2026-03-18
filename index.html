@@ -8,10 +8,18 @@
 body {
   font-family: Arial;
   text-align:center;
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
-  color:white;
   margin:0;
   padding:20px;
+  color:white;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  /* مربعات شفافة على الخلفية */
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
+  background-size: 50px 50px;
+  background-position: 0 0, 0 25px, 25px -25px, -25px 0px;
 }
 button {
   padding:15px 25px;
@@ -29,42 +37,31 @@ img.map {
   height:auto;
   border-radius:15px;
   margin:15px 0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
+#content {
+  margin-top:20px;
+  text-align:right;
+  background: rgba(0,0,0,0.4);
+  padding:20px;
+  border-radius:15px;
+}
+input { padding:10px; margin:5px; border-radius:10px; border:none; width:80%; font-size:16px; }
 </style>
 </head>
 <body>
 
 <!-- أزرار تسجيل الدخول والتسجيل -->
 <div>
-  <button onclick="show('login')">🔐 تسجيل الدخول</button>
-  <button onclick="show('signin')">📝 تسجيل جديد</button>
+  <button onclick="showLogin()">🔐 تسجيل الدخول</button>
+  <button onclick="showSignIn()">📝 تسجيل جديد</button>
 </div>
 
 <!-- صورة الخريطة -->
 <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
 
-<!-- زر تحميل الصورة -->
-<div>
-  <button onclick="downloadMap()">⬇️ تحميل الخريطة</button>
-</div>
-
-<!-- تسجيل الدخول -->
-<div id="login" style="display:none; margin-top:20px;">
-  <h2>تسجيل الدخول</h2>
-  <input id="username" placeholder="اسمك"><br><br>
-  <input id="password" type="password" placeholder="كلمة السر"><br><br>
-  <button onclick="login()">دخول</button>
-  <p id="result"></p>
-</div>
-
-<!-- التسجيل -->
-<div id="signin" style="display:none; margin-top:20px;">
-  <h2>التسجيل</h2>
-  <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
-  <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
-    <button>📷 تواصل على انستغرام</button>
-  </a>
-</div>
+<!-- محتوى ديناميكي -->
+<div id="content"></div>
 
 <script>
 // بيانات المستخدمين بالعربي + كلمة سر
@@ -73,15 +70,29 @@ const users = {
   "سانتش": { password:"00001", الجنود:37700, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
   "عبدو": { password:"00002", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
   "الوليد": { password:"58241", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "ريد تيب": { password:"00003", الجنود:8000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
   "ماهر": { password:"19384", الجنود:5625, العسكري:1, الاقتصاد:"120$", المنتخب:1 },
-  "قيس": { password:"00004", الجنود:5500, العسكري:1, الاقتصاد:"3700$", الديون:3, النفط:5, الحديد:4, الماس:5, الجواز:"18", المنتخب:5, النووي:7 },
 };
 
-// عرض وإخفاء login/signin
-function show(id){
-  document.getElementById("login").style.display = (id==="login")?"block":"none";
-  document.getElementById("signin").style.display = (id==="signin")?"block":"none";
+// عرض تسجيل الدخول
+function showLogin(){
+  document.getElementById("content").innerHTML = `
+    <h2>تسجيل الدخول</h2>
+    <input id="username" placeholder="اسمك"><br>
+    <input id="password" type="password" placeholder="كلمة السر"><br><br>
+    <button onclick="login()">دخول</button>
+    <p id="result"></p>
+  `;
+}
+
+// عرض التسجيل
+function showSignIn(){
+  document.getElementById("content").innerHTML = `
+    <h2>التسجيل</h2>
+    <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
+    <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
+      <button>📷 تواصل على انستغرام</button>
+    </a>
+  `;
 }
 
 // تسجيل الدخول
@@ -97,23 +108,13 @@ function login(){
 
   let u = users[user];
   let strength = (u.العسكري||0) * (u.الجنود||0);
-  let display = `⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!\n\n`;
-  display += `👤 الاسم: ${user}\n`;
-  display += `• القوة الكلية: ${strength}\n`;
+  let display = `<strong>⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!</strong><br><br>`;
+  display += `👤 الاسم: ${user}<br>`;
+  display += `• القوة الكلية: ${strength}<br>`;
   for(const key in u){
-    if(key!=="password") display += `• ${key}: ${u[key]}\n`;
+    if(key!=="password") display += `• ${key}: ${u[key]}<br>`;
   }
-  alert(display); // يظهر المعلومات في نافذة منبثقة بسيطة
-}
-
-// تحميل الخريطة
-function downloadMap() {
-  const link = document.createElement('a');
-  link.href = 'https://i.ibb.co/RpPJkLDX/map.jpg';
-  link.download = 'خريطة الميمز.jpg';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  document.getElementById("content").innerHTML = display;
 }
 </script>
 
