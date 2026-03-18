@@ -110,11 +110,26 @@ input {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+/* زر المنزل */
+#home-btn {
+  position:fixed;
+  top:15px;
+  right:15px;
+  padding:10px 15px;
+  border-radius:15px;
+  background:#00c3ff;
+  color:white;
+  border:none;
+  cursor:pointer;
+  z-index:1000;
+}
 </style>
 </head>
 <body>
 
 <div id="loading"></div>
+
+<button id="home-btn" onclick="goHome()">🏠</button>
 
 <div id="home">
   <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
@@ -144,7 +159,6 @@ const users = {
   "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
 };
 
-// إزالة المسافات وحساسية الحروف
 function normalize(str){ return str.trim().toLowerCase(); }
 
 const translations = {
@@ -162,16 +176,14 @@ function toggleLangList(){
   list.style.display = list.style.display==='none'?'block':'none'; 
 }
 
-// دالة لتوليد مدة تحميل عشوائية بين 0.5 و 3 ثواني
 function getRandomLoadingTime(){
   return Math.random()*2.5 + 0.5; // 0.5 إلى 3 ثواني
 }
 
-// عرض دائرة التحميل مع مدة عشوائية
 function showLoading(callback){
   const loading = document.getElementById("loading");
   loading.style.display="block";
-  const duration = getRandomLoadingTime()*1000; // بالمللي ثانية
+  const duration = getRandomLoadingTime()*1000;
   setTimeout(()=>{
     loading.style.display="none";
     if(callback) callback();
@@ -183,6 +195,7 @@ function changeLang(lang){
     currentLang = lang;
     document.querySelectorAll(".main-btn")[0].innerText = translations[lang].login;
     document.querySelectorAll(".main-btn")[1].innerText = translations[lang].signIn;
+    updateHomeBtnPosition();
   });
 }
 
@@ -237,6 +250,32 @@ function login(){
     document.getElementById("content").innerHTML = display;
   });
 }
+
+// زر العودة للقائمة الرئيسية
+function goHome(){
+  const loading = document.getElementById("loading");
+  loading.style.display = "block";
+  setTimeout(()=>{
+    loading.style.display = "none";
+    document.getElementById("home").style.display = "block";
+    document.getElementById("content").innerHTML = "";
+    updateHomeBtnPosition();
+  }, 500);
+}
+
+// ضبط مكان زر المنزل حسب اللغة
+function updateHomeBtnPosition(){
+  const btn = document.getElementById("home-btn");
+  if(currentLang==="ar"){
+    btn.style.right="15px";
+    btn.style.left="unset";
+  } else {
+    btn.style.left="15px";
+    btn.style.right="unset";
+  }
+}
+
+updateHomeBtnPosition();
 </script>
 </body>
 </html>
