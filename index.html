@@ -11,8 +11,8 @@ body {
   margin:0;
   padding:20px;
   color:white;
-  /* خلفية ديناميكية creative */
-  background: linear-gradient(135deg, #0a0f4d 0%, #000000 100%);
+  /* الخلفية الأصلية من أول نسخة */
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
   background-image:
     linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
@@ -95,7 +95,7 @@ const users = {
 
 // عرض تسجيل الدخول
 function showLogin(){
-  document.getElementById("home").style.display = "none"; // حذف كل العناصر القديمة
+  document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
     <h2>تسجيل الدخول</h2>
     <input id="username" placeholder="اسمك">
@@ -107,7 +107,7 @@ function showLogin(){
 
 // عرض التسجيل
 function showSignIn(){
-  document.getElementById("home").style.display = "none"; // حذف كل العناصر القديمة
+  document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
     <h2>التسجيل</h2>
     <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
