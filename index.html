@@ -10,7 +10,7 @@ body {
   text-align:center;
   margin:0;
   padding:20px;
-  color:white;
+  color:white; /* النص أبيض */
   background: linear-gradient(135deg, #1f1c2c, #928dab);
   background-image:
     linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
@@ -31,7 +31,10 @@ button.main-btn {
   cursor:pointer;
   min-width:160px;
 }
-button.main-btn:hover { transform: scale(1.05); transition: 0.2s; }
+button.main-btn:hover {
+  transform: scale(1.05);
+  transition: 0.2s;
+}
 button.login-btn {
   padding:18px 35px;
   border:none;
@@ -51,19 +54,18 @@ input {
   width:80%;
   font-size:18px;
   display:block;
-  margin:auto;
+  margin-left:auto;
+  margin-right:auto;
   box-shadow: 0 0 15px rgba(0,195,255,0.3);
 }
-img.map {
-  width:100%;
-  max-width:600px;
-  height:auto;
-  border-radius:15px;
-  margin:20px 0;
-  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+#content {
+  margin-top:20px;
+  text-align:center;
 }
-#content { margin-top:20px; text-align:center; }
-#error { color:red; font-weight:bold; }
+#error {
+  color:red;
+  font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -71,7 +73,6 @@ img.map {
 <div id="home">
   <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
   <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
-  <img class="map" src="https://i.ibb.co/RpPJkLDX/map.jpg" alt="خريطة الميمز">
 </div>
 
 <div id="content"></div>
@@ -86,6 +87,7 @@ const users = {
   "ماهر": { password:"19384", الجنود:5625, العسكري:1, الاقتصاد:"120$", المنتخب:1 },
 };
 
+// عرض تسجيل الدخول
 function showLogin(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
@@ -97,6 +99,7 @@ function showLogin(){
   `;
 }
 
+// عرض التسجيل
 function showSignIn(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
@@ -108,6 +111,7 @@ function showSignIn(){
   `;
 }
 
+// تسجيل الدخول
 function login(){
   let user = document.getElementById("username").value.trim();
   let pass = document.getElementById("password").value.trim();
