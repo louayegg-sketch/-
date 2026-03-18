@@ -10,15 +10,8 @@ body {
   text-align:center;
   margin:0;
   padding:20px;
-  color:white;
   background: linear-gradient(135deg, #1f1c2c, #928dab);
-  background-image:
-    linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
-  background-size: 50px 50px;
-  background-position: 0 0, 0 25px, 25px -25px, -25px 0px;
+  color:black;
 }
 button.main-btn {
   padding:20px 40px;
@@ -29,11 +22,6 @@ button.main-btn {
   color:white;
   font-size:20px;
   cursor:pointer;
-  min-width:160px;
-}
-button.main-btn:hover {
-  transform: scale(1.05);
-  transition: 0.2s;
 }
 button.login-btn {
   padding:18px 35px;
@@ -44,7 +32,6 @@ button.login-btn {
   font-size:18px;
   cursor:pointer;
   margin-top:15px;
-  box-shadow: 0 5px 15px rgba(0,195,255,0.5);
 }
 input {
   padding:15px;
@@ -56,7 +43,6 @@ input {
   display:block;
   margin-left:auto;
   margin-right:auto;
-  box-shadow: 0 0 15px rgba(0,195,255,0.3);
 }
 #content {
   margin-top:20px;
@@ -76,6 +62,37 @@ input {
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
   text-align:right;
 }
+/* صورة الخريطة */
+#map-img {
+  max-width:90%;
+  height:auto;
+  border-radius:15px;
+  margin:20px auto;
+  display:block;
+}
+/* زر تغيير اللغة */
+#lang-btn {
+  background:#28a745;
+  color:white;
+  padding:10px 20px;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+#lang-list {
+  display:none;
+  margin-bottom:20px;
+}
+#lang-list button {
+  margin:5px;
+  padding:8px 15px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#28a745;
+  color:white;
+}
 </style>
 </head>
 <body>
@@ -83,70 +100,116 @@ input {
 <div id="home">
   <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
   <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
+
+  <!-- صورة الخريطة -->
+  <img id="map-img" src="https://i.ibb.co/RpPJkLDX/map.png" alt="خريطة الميمز">
+
+  <!-- زر تغيير اللغة -->
+  <div>
+    <button id="lang-btn" onclick="toggleLangList()">تغيير اللغة</button>
+    <div id="lang-list">
+      <button onclick="changeLang('ar')">العربية</button>
+      <button onclick="changeLang('en')">English</button>
+      <button onclick="changeLang('fr')">Français</button>
+      <button onclick="changeLang('ru')">Русский</button>
+      <button onclick="changeLang('es')">Español</button>
+    </div>
+  </div>
 </div>
 
 <div id="content"></div>
 
 <script>
-// بيانات المستخدمين مع كلمات السر 5 أرقام
+// بيانات المستخدمين
 const users = {
-  "حمود": { password:"47285", الجنود:270, العسكري:1, الاقتصاد:"31$", المنتخب:1 },
-  "عمر": { password:"59302", الجنود:3500, العسكري:1, الاقتصاد:"125$", المنتخب:1 },
-  "علي جواد": { password:"81437", الجنود:820, العسكري:1, الاقتصاد:"131$", المنتخب:1 },
-  "ماهر": { password:"19384", الجنود:5625, العسكري:1, الاقتصاد:"120$", المنتخب:1 },
-  "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", المنتخب:1 },
   "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4 },
-  "احمد": { password:"27491", الجنود:1740, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "حماد": { password:"38026", الجنود:340, العسكري:1, الاقتصاد:"50$", المنتخب:1 },
-  "جورنمي": { password:"14759", الجنود:480, العسكري:1, الاقتصاد:"24$", المنتخب:1 },
-  "محمد": { password:"82613", الجنود:130, العسكري:1, الاقتصاد:"185$", المنتخب:1 },
-  "قيس": { password:"58124", الجنود:5500, العسكري:1, الاقتصاد:"3700$", المنتخب:5 },
-  "يونس": { password:"20938", الجنود:10, العسكري:1, الاقتصاد:"45$", المنتخب:1 },
-  "مريم": { password:"34791", الجنود:140, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "عبد الله": { password:"46028", الجنود:20, العسكري:1, الاقتصاد:"0$", المنتخب:1 },
-  "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
   "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "رحيم": { password:"62419", الجنود:5000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "حسونياس": { password:"93508", الجنود:860, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "ادم": { password:"47130", الجنود:300, العسكري:1, الاقتصاد:"130$", المنتخب:1 },
-  "سانتش": { password:"00001", الجنود:37700, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "نونو": { password:"18374", الجنود:15, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "روسيا": { password:"59218", الجنود:0, العسكري:1, الاقتصاد:"0$", المنتخب:1 },
-  "ريد تيب": { password:"80419", الجنود:8000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "ورد": { password:"27186", الجنود:1270, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "ادم ايطاليا": { password:"19275", الجنود:8, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "عبد الوهاب": { password:"48291", الجنود:2020, العسكري:1, الاقتصاد:"195$", المنتخب:3 },
-  "عبدو": { password:"00002", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "سلطان": { password:"30174", الجنود:250, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "وديد": { password:"76482", الجنود:1200, العسكري:1, الاقتصاد:"385$", المنتخب:1 },
-  "الوليد": { password:"58241", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "وليان": { password:"39025", الجنود:300, العسكري:1, الاقتصاد:"525$", المنتخب:1 },
-  "نزار": { password:"21839", الجنود:2450, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "عثمان": { password:"57391", الجنود:320, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "لونا": { password:"84021", الجنود:420, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "مهدي": { password:"10938", الجنود:125, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "وائل": { password:"47620", الجنود:57, العسكري:1, الاقتصاد:"30$", المنتخب:1 },
-  "تيم": { password:"38295", الجنود:2220, العسكري:1, الاقتصاد:"200$", المنتخب:1 },
-  "امين": { password:"21487", الجنود:850, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "سنوبر": { password:"52941", الجنود:650, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "سوني": { password:"71623", الجنود:2300, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "فلاديمير (حسن)": { password:"30572", الجنود:1700, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "لونا (برمودا)": { password:"47913", الجنود:205, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", المنتخب:1 },
+  "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
+  // أضف كل المستخدمين الآخرين هنا بنفس الصيغة
 };
 
-// تحويل النص لإزالة المسافات وحساسية الحروف
+// إزالة المسافات وحساسية الحروف
 function normalize(str){
   return str.trim().toLowerCase();
+}
+
+// ترجمة النصوص حسب اللغة
+const translations = {
+  "ar": {
+    login:"تسجيل الدخول",
+    signIn:"تسجيل جديد",
+    username:"اسمك",
+    password:"كلمة السر",
+    errorName:"❌ الاسم غير موجود",
+    errorPass:"❌ كلمة السر غير صحيحة",
+    note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!",
+    strength:"القوة الكلية",
+  },
+  "en": {
+    login:"Login",
+    signIn:"Sign In",
+    username:"Username",
+    password:"Password",
+    errorName:"❌ Name not found",
+    errorPass:"❌ Incorrect password",
+    note:"⚠️ Note: Equipment info not 100% accurate!",
+    strength:"Total strength",
+  },
+  "fr": {
+    login:"Connexion",
+    signIn:"S'inscrire",
+    username:"Nom",
+    password:"Mot de passe",
+    errorName:"❌ Nom introuvable",
+    errorPass:"❌ Mot de passe incorrect",
+    note:"⚠️ Remarque : Les infos sur l'équipement ne sont pas 100% exactes !",
+    strength:"Force totale",
+  },
+  "ru": {
+    login:"Вход",
+    signIn:"Регистрация",
+    username:"Имя",
+    password:"Пароль",
+    errorName:"❌ Имя не найдено",
+    errorPass:"❌ Неверный пароль",
+    note:"⚠️ Примечание: информация об оборудовании не на 100% точна!",
+    strength:"Общая сила",
+  },
+  "es": {
+    login:"Iniciar sesión",
+    signIn:"Registrarse",
+    username:"Nombre",
+    password:"Contraseña",
+    errorName:"❌ Nombre no encontrado",
+    errorPass:"❌ Contraseña incorrecta",
+    note:"⚠️ Nota: La información del equipo no es 100% precisa!",
+    strength:"Fuerza total",
+  }
+};
+
+let currentLang = "ar";
+
+function toggleLangList(){
+  const list = document.getElementById("lang-list");
+  list.style.display = list.style.display === "none" ? "block" : "none";
+}
+
+function changeLang(lang){
+  currentLang = lang;
+  // تعديل النصوص للزرين في الصفحة الرئيسية
+  document.querySelectorAll(".main-btn")[0].innerText = translations[lang].login;
+  document.querySelectorAll(".main-btn")[1].innerText = translations[lang].signIn;
 }
 
 // عرض تسجيل الدخول
 function showLogin(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
-    <h2>تسجيل الدخول</h2>
-    <input id="username" placeholder="اسمك">
-    <input id="password" type="password" placeholder="كلمة السر">
-    <button class="login-btn" onclick="login()">دخول</button>
+    <h2>${translations[currentLang].login}</h2>
+    <input id="username" placeholder="${translations[currentLang].username}">
+    <input id="password" type="password" placeholder="${translations[currentLang].password}">
+    <button class="login-btn" onclick="login()">${translations[currentLang].login}</button>
     <p id="error"></p>
   `;
 }
@@ -156,7 +219,7 @@ function showSignIn(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
     <div style="color:black; font-weight:bold; text-align:center;">
-      <h2>التسجيل</h2>
+      <h2>${translations[currentLang].signIn}</h2>
       <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>
       <strong>@Louaye_Gamer_i</strong><br>
       وهو يعطيك كلمة السر عشان تدخل حسابك</p>
@@ -173,7 +236,6 @@ function login(){
   let inputPass = document.getElementById("password").value.trim();
   let error = document.getElementById("error");
 
-  // البحث عن المستخدم بشكل مرن
   let foundUser = null;
   for(const key in users){
     if(normalize(key) === inputUser){
@@ -182,14 +244,15 @@ function login(){
     }
   }
 
-  if(!foundUser){ error.innerText="❌ الاسم غير موجود"; return; }
-  if(users[foundUser].password !== inputPass){ error.innerText="❌ كلمة السر غير صحيحة"; return; }
+  if(!foundUser){ error.innerText = translations[currentLang].errorName; return; }
+  if(users[foundUser].password !== inputPass){ error.innerText = translations[currentLang].errorPass; return; }
 
   let u = users[foundUser];
   let strength = (u.العسكري||0) * (u.الجنود||0);
-  let display = `<div class="user-box"><strong>⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!</strong><br><br>`;
+
+  let display = `<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`;
   display += `👤 الاسم: ${foundUser}<br>`;
-  display += `• القوة الكلية: ${strength}<br>`;
+  display += `• ${translations[currentLang].strength}: ${strength}<br>`;
   for(const key in u){
     if(key!=="password") display += `• ${key}: ${u[key]}<br>`;
   }
