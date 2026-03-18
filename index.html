@@ -99,13 +99,15 @@ function showLogin(){
   `;
 }
 
-// عرض التسجيل (Sign In)
+// عرض التسجيل (Sign In) مع نص باللون الأسود وحسابك
 function showSignIn(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
-    <div style="color:black; font-weight:bold;">
+    <div style="color:black; font-weight:bold; text-align:center;">
       <h2>التسجيل</h2>
-      <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>وهو يعطيك كلمة السر عشان تدخل حسابك</p>
+      <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>
+      <strong>@Louaye_Gamer_i</strong><br>
+      وهو يعطيك كلمة السر عشان تدخل حسابك</p>
       <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
         <button class="login-btn">📷 تواصل على انستغرام</button>
       </a>
