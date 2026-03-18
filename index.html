@@ -46,33 +46,93 @@ input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%;
 <div id="content"></div>
 
 <script>
-// بيانات كل المستخدمين (أضفت أسماء قليلة كمثال، تضيف بقية الأسماء بالطريقة نفسها)
-const users = {
-  "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4, "الة نفط":"1", "الة استخراج الحديد":"1", "نووي":"78", "التخفي":"نعم" },
-  "حماد": { password:"46238", الجنود:340, العسكري:1, الاقتصاد:"50$", المنتخب:1, "الة نفط":"1" },
-  "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
-  "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", المنتخب:1, "صاروخ طراز 5":"1" },
-  "سبونر": { password:"12345", الجنود:650, العسكري:1, الاقتصاد:"100$", المنتخب:1 } 
-  // تضيف باقي الأشخاص بنفس التنسيق مع كلمة السر لكل شخص
-};
-
-// دوال
+// تطهير الاسم
 function normalize(str){ return str.trim().toLowerCase(); }
 
+// بيانات المستخدمين (كل الأسماء اللي أعطيتني)
+const users = {
+  "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4, "الة نفط":"1", "الة استخراج الحديد":"1", "نووي":"78", "التخفي":"نعم" },
+  "حمود": { password:"46238", الجنود:270, العسكري:1, الاقتصاد:"31$", المنتخب:1 },
+  "عمر": { password:"18293", الجنود:3500, العسكري:1, الاقتصاد:"125$", المنتخب:1, "نووي":"1" },
+  "علي جواد": { password:"39127", الجنود:820, العسكري:1, الاقتصاد:"131$", الجواز:"لؤي", المنتخب:1 },
+  "ماهر": { password:"21789", الجنود:5625, العسكري:1, الاقتصاد:"120$", المنتخب:1 },
+  "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", "صاروخ طراز 5":"1", الجواز:"لؤي", المنتخب:1 },
+  "احمد": { password:"52741", الجنود:1740, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "حماد": { password:"46238", الجنود:340, العسكري:1, الاقتصاد:"50$", المنتخب:1, "الة نفط":"1" },
+  "جورنمي": { password:"61723", الجنود:480, العسكري:1, الاقتصاد:"24$", المنتخب:1 },
+  "محمد": { password:"84729", الجنود:130, العسكري:1, الاقتصاد:"185$", "5صواريخ طراز 5":"1", "1طراز 20":"1", المنتخب:1 },
+  "قيس": { password:"19384", الجنود:5500, العسكري:1, الاقتصاد:"3700$", الديون:"3$", "التين نفط":"5", "4الات نفذ":"1", "الة الماس":"5", الجواز:"18", المنتخب:5, "7 نووي":"1", "توزيع الجيش":"نعم" },
+  "يونس": { password:"62817", الجنود:10, العسكري:1, الاقتصاد:"45$", الجواز:"لؤي", المنتخب:1 },
+  "مريم": { password:"38291", الجنود:140, العسكري:1, الاقتصاد:"100$", الجواز:"لؤي", المنتخب:1 },
+  "عبد الله": { password:"49128", الجنود:20, العسكري:1, الاقتصاد:"0$", المنتخب:1, "الة استخراج الماس":"1" },
+  "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
+  "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "رحيم": { password:"52781", الجنود:5000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "حسونياس": { password:"61938", الجنود:860, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "ادم": { password:"19375", الجنود:300, العسكري:1, الاقتصاد:"130$", المنتخب:1 },
+  "سانتش": { password:"41728", الجنود:37700, العسكري:1, الاقتصاد:"100$", الجواز:"لؤي", المنتخب:1 },
+  "نونو": { password:"28173", الجنود:15, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "روسيا": { password:"71928", الجنود:0, العسكري:1, الاقتصاد:"0$", المنتخب:1 },
+  "ريد تيب": { password:"38192", الجنود:8000, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "ورد": { password:"47281", الجنود:1270, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "ادم ايطاليا": { password:"19382", الجنود:8, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "عبد الوهاب": { password:"91827", الجنود:2020, العسكري:1, الاقتصاد:"195$", المنتخب:3 },
+  "عبدو": { password:"11500", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "سلطان": { password:"52716", الجنود:250, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "وديد": { password:"38472", الجنود:1200, العسكري:1.060, الاقتصاد:"385$", المنتخب:1, "التين استخراج النفط":"5", "صاروخ طراز 5":"1", الدفاع:"نعم" },
+  "الوليد": { password:"91723", الجنود:11500, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "وليان": { password:"52738", الجنود:300, العسكري:1, الاقتصاد:"525$", الديون:"500$", المنتخب:1, "التخفي":"نعم", "5 صاروخ طراز 5":"1", "نووي طراز 5":"1" },
+  "نزار": { password:"38127", الجنود:2450, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "عثمان": { password:"91728", الجنود:320, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "لونا": { password:"52791", الجنود:420, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "مهدي": { password:"38147", الجنود:125, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "وائل": { password:"91731", الجنود:57, العسكري:1, الاقتصاد:"30$", المنتخب:1, "الة خشب":"1", "الة حديد":"1" },
+  "تيم": { password:"52764", الجنود:2220, العسكري:1, الاقتصاد:"200$", المنتخب:1 },
+  "امين": { password:"38196", الجنود:850, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "سنوبر": { password:"52782", الجنود:650, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "سوني": { password:"39182", الجنود:2300, العسكري:1, الاقتصاد:"100$", "الة نفط":"2", "4سواريخ":"1", النسخ:"نعم" },
+  "فلاديمير (حسن)": { password:"38291", الجنود:1700, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "لونا (برمودا)": { password:"38172", الجنود:205, العسكري:1, الاقتصاد:"100$", المنتخب:1 }
+};
+
+// ترجمة
 const translations = {
-  "ar": { login:"تسجيل الدخول", signIn:"تسجيل جديد", username:"اسمك", password:"كلمة السر", errorName:"❌ الاسم غير موجود", errorPass:"❌ كلمة السر غير صحيحة", note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!", strength:"القوة الكلية", contact:"لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩 @Louaye_Gamer_i وهو يعطيك كلمة السر عشان تدخل حسابك", militaryRank:"المركز العالمي العسكري" },
-  "en": { login:"Login", signIn:"Sign In", username:"Username", password:"Password", errorName:"❌ Name not found", errorPass:"❌ Incorrect password", note:"⚠️ Note: Equipment info not 100% accurate!", strength:"Total strength", contact:"You must contact the map owner via Instagram 📩 @Louaye_Gamer_i to get your password", militaryRank:"Global Military Rank" }
+  "ar": { login:"تسجيل الدخول", signIn:"تسجيل جديد", username:"اسمك", password:"كلمة السر", errorName:"❌ الاسم غير موجود", errorPass:"❌ كلمة السر غير صحيحة", note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!", strength:"القوة الكلية", contact:"لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩 @Louaye_Gamer_i", militaryRank:"المركز العالمي العسكري" },
+  "en": { login:"Login", signIn:"Sign In", username:"Username", password:"Password", errorName:"❌ Name not found", errorPass:"❌ Incorrect password", note:"⚠️ Note: Equipment info not 100% accurate!", strength:"Total strength", contact:"You must contact the map owner via Instagram 📩 @Louaye_Gamer_i", militaryRank:"Global Military Rank" }
 };
 
 let currentLang = "ar";
+
 function toggleLangList(){ const list=document.getElementById("lang-list"); list.style.display=list.style.display==='none'?'block':'none'; }
 function getRandomLoadingTime(){ return Math.random()*2.5+0.5; }
 function showLoading(callback){ const loading=document.getElementById("loading"); loading.style.display="block"; const duration=getRandomLoadingTime()*1000; setTimeout(()=>{ loading.style.display="none"; if(callback) callback(); },duration); }
 function changeLang(lang){ showLoading(()=>{ currentLang=lang; document.querySelectorAll(".main-btn")[0].innerText=translations[lang].login; document.querySelectorAll(".main-btn")[1].innerText=translations[lang].signIn; updateHomeBtnPosition(); }); }
 function showLogin(){ showLoading(()=>{ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<h2>${translations[currentLang].login}</h2><input id="username" placeholder="${translations[currentLang].username}"><input id="password" type="password" placeholder="${translations[currentLang].password}"><button class="login-btn" onclick="login()">${translations[currentLang].login}</button><p id="error"></p>`; }); }
 function showSignIn(){ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<div style="color:black; font-weight:bold; text-align:center;"><h2>${translations[currentLang].signIn}</h2><p>${translations[currentLang].contact}</p><a href="https://instagram.com/Louaye_Gamer_i" target="_blank"><button class="login-btn">📷 تواصل على انستغرام</button></a></div>`; }
-function login(){ showLoading(()=>{ let inputUser=normalize(document.getElementById("username").value); let inputPass=document.getElementById("password").value.trim(); let error=document.getElementById("error"); let foundUser=null; for(const key in users){ if(normalize(key)===inputUser){ foundUser=key; break; } } if(!foundUser){ error.innerText=translations[currentLang].errorName; return; } if(users[foundUser].password!==inputPass){ error.innerText=translations[currentLang].errorPass; return; } let u=users[foundUser]; let strength=(u.العسكري||0)*(u.الجنود||0); const allUsers=Object.values(users).map(user=>(user.العسكري||0)*(user.الجنود||0)).sort((a,b)=>b-a); let rank=allUsers.indexOf(strength)+1; let display=`<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`; display+=`👤 الاسم: ${foundUser}<br>`; display+=`• ${translations[currentLang].strength}: ${strength}<br>`; display+=`• ${translations[currentLang].militaryRank}: ${rank}<br>`; for(const key in u){ if(key!=="password") display+=`• ${key}: ${u[key]}<br>`; } display+=`</div>`; document.getElementById("content").innerHTML=display; }); }
+
+function login(){ showLoading(()=>{
+  let inputUser = normalize(document.getElementById("username").value);
+  let inputPass = document.getElementById("password").value.trim();
+  let error = document.getElementById("error");
+  let foundUser = null;
+  for(const key in users){ if(normalize(key)===inputUser){ foundUser=key; break; } }
+  if(!foundUser){ error.innerText=translations[currentLang].errorName; return; }
+  if(users[foundUser].password!==inputPass){ error.innerText=translations[currentLang].errorPass; return; }
+
+  let u=users[foundUser];
+  let strength=(u.العسكري||0)*(u.الجنود||0);
+  const allUsers=Object.values(users).map(user=>(user.العسكري||0)*(user.الجنود||0)).sort((a,b)=>b-a);
+  let rank=allUsers.indexOf(strength)+1;
+
+  let display=`<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`;
+  display+=`👤 الاسم: ${foundUser}<br>`;
+  display+=`• ${translations[currentLang].strength}: ${strength}<br>`;
+  display+=`• ${translations[currentLang].militaryRank}: ${rank}<br>`;
+  for(const key in u){ if(key!=="password") display+=`• ${key}: ${u[key]}<br>`; }
+  display+=`</div>`;
+  document.getElementById("content").innerHTML=display;
+}); }
+
 function goHome(){ const loading=document.getElementById("loading"); loading.style.display="block"; setTimeout(()=>{ loading.style.display="none"; document.getElementById("home").style.display="block"; document.getElementById("content").innerHTML=""; updateHomeBtnPosition(); },500); }
 function updateHomeBtnPosition(){ const btn=document.getElementById("home-btn"); if(currentLang==="ar"){ btn.style.right="15px"; btn.style.left="unset"; } else { btn.style.left="15px"; btn.style.right="unset"; } }
 updateHomeBtnPosition();
