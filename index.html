@@ -6,13 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body { font-family: Arial, sans-serif; text-align:center; margin:0; padding:20px; background: linear-gradient(135deg, #1f1c2c, #928dab); color:black; }
-button.main-btn, button.login-btn { cursor:pointer; }
+button.main-btn, button.login-btn { cursor:pointer; transition: transform 0.2s ease; }
+button.main-btn:active, button.login-btn:active { transform: scale(0.95); }
 button.main-btn { padding:20px 40px; margin:10px; border:none; border-radius:30px; background:#00c3ff; color:white; font-size:20px; }
 button.login-btn { padding:18px 35px; border:none; border-radius:25px; background:#00c3ff; color:white; font-size:18px; margin-top:15px; }
 input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%; font-size:18px; display:block; margin-left:auto; margin-right:auto; }
 #content { margin-top:20px; text-align:center; }
 #error { color:red; font-weight:bold; }
-.user-box { background:white; color:black; border-radius:15px; padding:20px; margin:20px auto; max-width:90%; box-shadow: 0 0 20px rgba(0,0,0,0.3); text-align:right; }
+.user-box { background:white; color:black; border-radius:15px; padding:20px; margin:20px auto; max-width:90%; box-shadow: 0 0 20px rgba(0,0,0,0.3); text-align:right; opacity:0; transform:translateY(20px); transition:all 0.5s ease-in-out; }
 #map-img { max-width:90%; height:auto; border-radius:15px; margin:20px auto; display:block; }
 #lang-btn { background:#28a745; color:white; padding:10px 20px; border:none; border-radius:15px; cursor:pointer; margin-bottom:10px; }
 #lang-list { display:none; margin-bottom:20px; }
@@ -24,12 +25,14 @@ input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%;
 </head>
 <body>
 
+<audio id="click-sound" src="click.mp3"></audio>
+
 <div id="loading"></div>
 <button id="home-btn" onclick="goHome()">🏠</button>
 
 <div id="home">
-  <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
-  <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
+  <button class="main-btn" onclick="playSound(); showLogin()">🔐 تسجيل الدخول</button>
+  <button class="main-btn" onclick="playSound(); showSignIn()">📝 تسجيل جديد</button>
   <img id="map-img" src="https://i.ibb.co/RpPJkLDX/map.png" alt="خريطة الميمز">
   <!-- نص الاشتراك تحت الصورة -->
   <p style="color:white; font-size:14px; margin-top:10px;">
@@ -52,6 +55,12 @@ input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%;
 <div id="content"></div>
 
 <script>
+function playSound() {
+  const sound = document.getElementById("click-sound");
+  sound.currentTime = 0;
+  sound.play();
+}
+
 function normalize(str){ return str.trim().toLowerCase(); }
 
 const users = {
@@ -73,35 +82,52 @@ let currentLang="ar";
 function toggleLangList(){ const list=document.getElementById("lang-list"); list.style.display=list.style.display==='none'?'block':'none'; }
 function getRandomLoadingTime(){ return Math.random()*2.5+0.5; }
 function showLoading(callback){ const loading=document.getElementById("loading"); loading.style.display="block"; const duration=getRandomLoadingTime()*1000; setTimeout(()=>{ loading.style.display="none"; if(callback) callback(); },duration); }
+
 function changeLang(lang){ showLoading(()=>{ currentLang=lang; document.querySelectorAll(".main-btn")[0].innerText=translations[lang].login; document.querySelectorAll(".main-btn")[1].innerText=translations[lang].signIn; updateHomeBtnPosition(); }); }
-function showLogin(){ showLoading(()=>{ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<h2>${translations[currentLang].login}</h2><input id="username" placeholder="${translations[currentLang].username}"><input id="password" type="password" placeholder="${translations[currentLang].password}"><button class="login-btn" onclick="login()">${translations[currentLang].login}</button><p id="error"></p>`; }); }
+
+function showLogin(){ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<h2>${translations[currentLang].login}</h2><input id="username" placeholder="${translations[currentLang].username}"><input id="password" type="password" placeholder="${translations[currentLang].password}"><button class="login-btn" onclick="playSound(); login()">${translations[currentLang].login}</button><p id="error"></p>`; }
+
 function showSignIn(){ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<div style="color:black; font-weight:bold; text-align:center;"><h2>${translations[currentLang].signIn}</h2><p>${translations[currentLang].contact}</p><a href="https://instagram.com/Louaye_Gamer_i" target="_blank"><button class="login-btn">📷 تواصل على انستغرام</button></a></div>`; }
 
-function login(){ showLoading(()=>{
+function login(){
   let inputUser = normalize(document.getElementById("username").value);
   let inputPass = document.getElementById("password").value.trim();
   let error = document.getElementById("error");
   let foundUser = null;
   for(const key in users){ if(normalize(key)===inputUser){ foundUser=key; break; } }
-  if(!foundUser){ error.innerText=translations[currentLang].errorName; return; }
-  if(users[foundUser].password!==inputPass){ error.innerText=translations[currentLang].errorPass; return; }
+  if(!foundUser){ error.innerText = translations[currentLang].errorName; return; }
+  if(users[foundUser].password !== inputPass){ error.innerText = translations[currentLang].errorPass; return; }
 
-  let u=users[foundUser];
-  let strength=(u.العسكري||0)*(u.الجنود||0);
-  const allUsers=Object.values(users).map(user=>(user.العسكري||0)*(user.الجنود||0)).sort((a,b)=>b-a);
-  let rank=allUsers.indexOf(strength)+1;
+  // معلومات صحيحة
+  showLoading(()=>{
+      let u=users[foundUser];
+      let strength=(u.العسكري||0)*(u.الجنود||0);
+      const allUsers=Object.values(users).map(user=>(user.العسكري||0)*(user.الجنود||0)).sort((a,b)=>b-a);
+      let rank=allUsers.indexOf(strength)+1;
 
-  let display=`<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`;
-  display+=`👤 الاسم: ${foundUser}<br>`;
-  display+=`• ${translations[currentLang].strength}: ${strength}<br>`;
-  display+=`• ${translations[currentLang].militaryRank}: ${rank}<br>`;
-  for(const key in u){ if(key!=="password") display+=`• ${key}: ${u[key]}<br>`; }
-  display+=`</div>`;
-  document.getElementById("content").innerHTML=display;
-}); }
+      let display=`<div class="user-box">`;
+      display+=`<strong>${translations[currentLang].note}</strong><br><br>`;
+      display+=`👤 الاسم: ${foundUser}<br>`;
+      display+=`• ${translations[currentLang].strength}: ${strength}<br>`;
+      display+=`• ${translations[currentLang].militaryRank}: ${rank}<br>`;
+      for(const key in u){ if(key!=="password") display+=`• ${key}: ${u[key]}<br>`; }
+      display+=`</div>`;
+
+      document.getElementById("content").innerHTML = display;
+
+      // أنيميشن ظهور المحتوى
+      setTimeout(()=>{
+          const box = document.querySelector(".user-box");
+          box.style.opacity = 1;
+          box.style.transform = "translateY(0)";
+      },50);
+  });
+}
 
 function goHome(){ const loading=document.getElementById("loading"); loading.style.display="block"; setTimeout(()=>{ loading.style.display="none"; document.getElementById("home").style.display="block"; document.getElementById("content").innerHTML=""; updateHomeBtnPosition(); },500); }
+
 function updateHomeBtnPosition(){ const btn=document.getElementById("home-btn"); if(currentLang==="ar"){ btn.style.right="15px"; btn.style.left="unset"; } else { btn.style.left="15px"; btn.style.right="unset"; } }
+
 updateHomeBtnPosition();
 </script>
 </body>
