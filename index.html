@@ -61,7 +61,7 @@ function playSound() {
   sound.play();
 }
 
-function normalize(str){ return str.trim().toLowerCase(); }
+function normalize(str){ return str.trim().replace(/\s+/g,' ').toLowerCase(); }
 
 const users = {
   "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4, "الة نفط":"1", "الة استخراج الحديد":"1", "نووي":"78", "التخفي":"نعم" },
@@ -69,6 +69,7 @@ const users = {
   "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", "صاروخ طراز 5":"1", الجواز:"لؤي", المنتخب:1 },
   "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
   "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
+  "لونا": { password:"420", الجنود:50, العسكري:1, الاقتصاد:"60$", المنتخب:1 },
   // أضف باقي الأسماء هنا بنفس الشكل
 };
 
@@ -98,7 +99,6 @@ function login(){
   if(!foundUser){ error.innerText = translations[currentLang].errorName; return; }
   if(users[foundUser].password !== inputPass){ error.innerText = translations[currentLang].errorPass; return; }
 
-  // معلومات صحيحة
   showLoading(()=>{
       let u=users[foundUser];
       let strength=(u.العسكري||0)*(u.الجنود||0);
@@ -114,13 +114,7 @@ function login(){
       display+=`</div>`;
 
       document.getElementById("content").innerHTML = display;
-
-      // أنيميشن ظهور المحتوى
-      setTimeout(()=>{
-          const box = document.querySelector(".user-box");
-          box.style.opacity = 1;
-          box.style.transform = "translateY(0)";
-      },50);
+      setTimeout(()=>{ const box = document.querySelector(".user-box"); box.style.opacity=1; box.style.transform="translateY(0)"; },50);
   });
 }
 
