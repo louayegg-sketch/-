@@ -13,6 +13,9 @@ body {
   background: linear-gradient(135deg, #1f1c2c, #928dab);
   color:black;
 }
+button.main-btn, button.login-btn {
+  cursor:pointer;
+}
 button.main-btn {
   padding:20px 40px;
   margin:10px;
@@ -21,7 +24,6 @@ button.main-btn {
   background:#00c3ff;
   color:white;
   font-size:20px;
-  cursor:pointer;
 }
 button.login-btn {
   padding:18px 35px;
@@ -30,7 +32,6 @@ button.login-btn {
   background:#00c3ff;
   color:white;
   font-size:18px;
-  cursor:pointer;
   margin-top:15px;
 }
 input {
@@ -62,7 +63,6 @@ input {
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
   text-align:right;
 }
-/* صورة الخريطة */
 #map-img {
   max-width:90%;
   height:auto;
@@ -70,7 +70,6 @@ input {
   margin:20px auto;
   display:block;
 }
-/* زر تغيير اللغة */
 #lang-btn {
   background:#28a745;
   color:white;
@@ -93,18 +92,38 @@ input {
   background:#28a745;
   color:white;
 }
+
+/* دائرة التحميل */
+#loading {
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  border:8px solid #f3f3f3;
+  border-top:8px solid #00c3ff;
+  border-radius:50%;
+  width:60px;
+  height:60px;
+  animation: spin 1s linear infinite;
+  z-index:1000;
+}
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
 </style>
 </head>
 <body>
+
+<div id="loading"></div>
 
 <div id="home">
   <button class="main-btn" onclick="showLogin()">🔐 تسجيل الدخول</button>
   <button class="main-btn" onclick="showSignIn()">📝 تسجيل جديد</button>
 
-  <!-- صورة الخريطة -->
   <img id="map-img" src="https://i.ibb.co/RpPJkLDX/map.png" alt="خريطة الميمز">
 
-  <!-- زر تغيير اللغة -->
   <div>
     <button id="lang-btn" onclick="toggleLangList()">تغيير اللغة</button>
     <div id="lang-list">
@@ -120,101 +139,57 @@ input {
 <div id="content"></div>
 
 <script>
-// بيانات المستخدمين
 const users = {
   "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4 },
   "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
   "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", المنتخب:1 },
   "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
-  // أضف كل المستخدمين الآخرين هنا بنفس الصيغة
 };
 
 // إزالة المسافات وحساسية الحروف
-function normalize(str){
-  return str.trim().toLowerCase();
-}
+function normalize(str){ return str.trim().toLowerCase(); }
 
-// ترجمة النصوص حسب اللغة
 const translations = {
-  "ar": {
-    login:"تسجيل الدخول",
-    signIn:"تسجيل جديد",
-    username:"اسمك",
-    password:"كلمة السر",
-    errorName:"❌ الاسم غير موجود",
-    errorPass:"❌ كلمة السر غير صحيحة",
-    note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!",
-    strength:"القوة الكلية",
-  },
-  "en": {
-    login:"Login",
-    signIn:"Sign In",
-    username:"Username",
-    password:"Password",
-    errorName:"❌ Name not found",
-    errorPass:"❌ Incorrect password",
-    note:"⚠️ Note: Equipment info not 100% accurate!",
-    strength:"Total strength",
-  },
-  "fr": {
-    login:"Connexion",
-    signIn:"S'inscrire",
-    username:"Nom",
-    password:"Mot de passe",
-    errorName:"❌ Nom introuvable",
-    errorPass:"❌ Mot de passe incorrect",
-    note:"⚠️ Remarque : Les infos sur l'équipement ne sont pas 100% exactes !",
-    strength:"Force totale",
-  },
-  "ru": {
-    login:"Вход",
-    signIn:"Регистрация",
-    username:"Имя",
-    password:"Пароль",
-    errorName:"❌ Имя не найдено",
-    errorPass:"❌ Неверный пароль",
-    note:"⚠️ Примечание: информация об оборудовании не на 100% точна!",
-    strength:"Общая сила",
-  },
-  "es": {
-    login:"Iniciar sesión",
-    signIn:"Registrarse",
-    username:"Nombre",
-    password:"Contraseña",
-    errorName:"❌ Nombre no encontrado",
-    errorPass:"❌ Contraseña incorrecta",
-    note:"⚠️ Nota: La información del equipo no es 100% precisa!",
-    strength:"Fuerza total",
-  }
+  "ar": { login:"تسجيل الدخول", signIn:"تسجيل جديد", username:"اسمك", password:"كلمة السر", errorName:"❌ الاسم غير موجود", errorPass:"❌ كلمة السر غير صحيحة", note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!", strength:"القوة الكلية"},
+  "en": { login:"Login", signIn:"Sign In", username:"Username", password:"Password", errorName:"❌ Name not found", errorPass:"❌ Incorrect password", note:"⚠️ Note: Equipment info not 100% accurate!", strength:"Total strength"},
+  "fr": { login:"Connexion", signIn:"S'inscrire", username:"Nom", password:"Mot de passe", errorName:"❌ Nom introuvable", errorPass:"❌ Mot de passe incorrect", note:"⚠️ Remarque : Les infos sur l'équipement ne sont pas 100% exactes !", strength:"Force totale"},
+  "ru": { login:"Вход", signIn:"Регистрация", username:"Имя", password:"Пароль", errorName:"❌ Имя не найдено", errorPass:"❌ Неверный пароль", note:"⚠️ Примечание: информация об оборудовании не на 100% точна!", strength:"Общая сила"},
+  "es": { login:"Iniciar sesión", signIn:"Registrarse", username:"Nombre", password:"Contraseña", errorName:"❌ Nombre no encontrado", errorPass:"❌ Contraseña incorrecta", note:"⚠️ Nota: La información del equipo no es 100% precisa!", strength:"Fuerza total"},
 };
 
 let currentLang = "ar";
 
-function toggleLangList(){
-  const list = document.getElementById("lang-list");
-  list.style.display = list.style.display === "none" ? "block" : "none";
+function toggleLangList(){ document.getElementById("lang-list").style.display = document.getElementById("lang-list").style.display==='none'?'block':'none'; }
+
+function showLoading(callback){
+  document.getElementById("loading").style.display="block";
+  setTimeout(()=>{
+    document.getElementById("loading").style.display="none";
+    if(callback) callback();
+  },2000);
 }
 
 function changeLang(lang){
-  currentLang = lang;
-  // تعديل النصوص للزرين في الصفحة الرئيسية
-  document.querySelectorAll(".main-btn")[0].innerText = translations[lang].login;
-  document.querySelectorAll(".main-btn")[1].innerText = translations[lang].signIn;
+  showLoading(()=>{
+    currentLang=lang;
+    document.querySelectorAll(".main-btn")[0].innerText = translations[lang].login;
+    document.querySelectorAll(".main-btn")[1].innerText = translations[lang].signIn;
+  });
 }
 
-// عرض تسجيل الدخول
 function showLogin(){
-  document.getElementById("home").style.display = "none";
-  document.getElementById("content").innerHTML = `
-    <h2>${translations[currentLang].login}</h2>
-    <input id="username" placeholder="${translations[currentLang].username}">
-    <input id="password" type="password" placeholder="${translations[currentLang].password}">
-    <button class="login-btn" onclick="login()">${translations[currentLang].login}</button>
-    <p id="error"></p>
-  `;
+  showLoading(()=>{
+    document.getElementById("home").style.display="none";
+    document.getElementById("content").innerHTML = `
+      <h2>${translations[currentLang].login}</h2>
+      <input id="username" placeholder="${translations[currentLang].username}">
+      <input id="password" type="password" placeholder="${translations[currentLang].password}">
+      <button class="login-btn" onclick="login()">${translations[currentLang].login}</button>
+      <p id="error"></p>
+    `;
+  });
 }
 
-// عرض التسجيل (Sign In)
 function showSignIn(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
@@ -230,36 +205,29 @@ function showSignIn(){
   `;
 }
 
-// تسجيل الدخول
 function login(){
-  let inputUser = normalize(document.getElementById("username").value);
-  let inputPass = document.getElementById("password").value.trim();
-  let error = document.getElementById("error");
+  showLoading(()=>{
+    let inputUser = normalize(document.getElementById("username").value);
+    let inputPass = document.getElementById("password").value.trim();
+    let error = document.getElementById("error");
 
-  let foundUser = null;
-  for(const key in users){
-    if(normalize(key) === inputUser){
-      foundUser = key;
-      break;
-    }
-  }
+    let foundUser = null;
+    for(const key in users){ if(normalize(key) === inputUser){ foundUser = key; break; } }
 
-  if(!foundUser){ error.innerText = translations[currentLang].errorName; return; }
-  if(users[foundUser].password !== inputPass){ error.innerText = translations[currentLang].errorPass; return; }
+    if(!foundUser){ error.innerText = translations[currentLang].errorName; return; }
+    if(users[foundUser].password !== inputPass){ error.innerText = translations[currentLang].errorPass; return; }
 
-  let u = users[foundUser];
-  let strength = (u.العسكري||0) * (u.الجنود||0);
+    let u = users[foundUser];
+    let strength = (u.العسكري||0)*(u.الجنود||0);
 
-  let display = `<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`;
-  display += `👤 الاسم: ${foundUser}<br>`;
-  display += `• ${translations[currentLang].strength}: ${strength}<br>`;
-  for(const key in u){
-    if(key!=="password") display += `• ${key}: ${u[key]}<br>`;
-  }
-  display += `</div>`;
-  document.getElementById("content").innerHTML = display;
+    let display = `<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`;
+    display += `👤 الاسم: ${foundUser}<br>`;
+    display += `• ${translations[currentLang].strength}: ${strength}<br>`;
+    for(const key in u){ if(key!=="password") display += `• ${key}: ${u[key]}<br>`; }
+    display += `</div>`;
+    document.getElementById("content").innerHTML = display;
+  });
 }
 </script>
-
 </body>
 </html>
