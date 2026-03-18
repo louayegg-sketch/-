@@ -92,8 +92,6 @@ input {
   background:#28a745;
   color:white;
 }
-
-/* دائرة التحميل */
 #loading {
   display:none;
   position:fixed;
@@ -159,19 +157,30 @@ const translations = {
 
 let currentLang = "ar";
 
-function toggleLangList(){ document.getElementById("lang-list").style.display = document.getElementById("lang-list").style.display==='none'?'block':'none'; }
+function toggleLangList(){ 
+  const list = document.getElementById("lang-list");
+  list.style.display = list.style.display==='none'?'block':'none'; 
+}
 
+// دالة لتوليد مدة تحميل عشوائية بين 0.5 و 3 ثواني
+function getRandomLoadingTime(){
+  return Math.random()*2.5 + 0.5; // 0.5 إلى 3 ثواني
+}
+
+// عرض دائرة التحميل مع مدة عشوائية
 function showLoading(callback){
-  document.getElementById("loading").style.display="block";
+  const loading = document.getElementById("loading");
+  loading.style.display="block";
+  const duration = getRandomLoadingTime()*1000; // بالمللي ثانية
   setTimeout(()=>{
-    document.getElementById("loading").style.display="none";
+    loading.style.display="none";
     if(callback) callback();
-  },2000);
+  }, duration);
 }
 
 function changeLang(lang){
   showLoading(()=>{
-    currentLang=lang;
+    currentLang = lang;
     document.querySelectorAll(".main-btn")[0].innerText = translations[lang].login;
     document.querySelectorAll(".main-btn")[1].innerText = translations[lang].signIn;
   });
