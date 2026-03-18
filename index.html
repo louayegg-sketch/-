@@ -10,16 +10,8 @@ body {
   text-align:center;
   margin:0;
   padding:20px;
-  color:white;
-  /* الخلفية الأصلية من أول نسخة */
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
-  background-image:
-    linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
-  background-size: 50px 50px;
-  background-position: 0 0, 0 25px, 25px -25px, -25px 0px;
+  color:black; /* لون النص الأسود */
+  background: #ffffff; /* الخلفية بيضاء */
 }
 button.main-btn {
   padding:20px 40px;
@@ -51,13 +43,12 @@ input {
   padding:15px;
   margin:15px 0;
   border-radius:25px;
-  border:none;
+  border:1px solid #000;
   width:80%;
   font-size:18px;
   display:block;
   margin-left:auto;
   margin-right:auto;
-  box-shadow: 0 0 15px rgba(0,195,255,0.3);
 }
 img.map {
   width:100%;
@@ -65,11 +56,15 @@ img.map {
   height:auto;
   border-radius:15px;
   margin:20px 0;
-  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  box-shadow: 0 0 25px rgba(0,0,0,0.2);
 }
 #content {
   margin-top:20px;
   text-align:center;
+}
+#error {
+  color:red; /* لون الخطأ حمرا */
+  font-weight:bold;
 }
 </style>
 </head>
@@ -101,7 +96,7 @@ function showLogin(){
     <input id="username" placeholder="اسمك">
     <input id="password" type="password" placeholder="كلمة السر">
     <button class="login-btn" onclick="login()">دخول</button>
-    <p id="result"></p>
+    <p id="error"></p>
   `;
 }
 
@@ -121,30 +116,26 @@ function showSignIn(){
 function login(){
   let user = document.getElementById("username").value.trim();
   let pass = document.getElementById("password").value.trim();
-  let result = document.getElementById("result");
+  let error = document.getElementById("error");
 
   if(!user){ 
-    result.innerText="⚠️ ادخل الاسم"; 
-    result.style.color="red"; 
+    error.innerText="⚠️ ادخل الاسم"; 
     return; 
   }
   if(!pass){ 
-    result.innerText="⚠️ ادخل كلمة السر"; 
-    result.style.color="red"; 
+    error.innerText="⚠️ ادخل كلمة السر"; 
     return; 
   }
   if(!users[user]){ 
-    result.innerText="❌ الاسم غير موجود"; 
-    result.style.color="red"; 
+    error.innerText="❌ الاسم غير موجود"; 
     return; 
   }
   if(users[user].password !== pass){ 
-    result.innerText="❌ كلمة السر غير صحيحة"; 
-    result.style.color="red"; 
+    error.innerText="❌ كلمة السر غير صحيحة"; 
     return; 
   }
 
-  // عند الدخول الصحيح، نعرض المعلومات
+  // عند الدخول الصحيح
   let u = users[user];
   let strength = (u.العسكري||0) * (u.الجنود||0);
   let display = `<strong>⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!</strong><br><br>`;
