@@ -110,7 +110,6 @@ input {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
-/* زر المنزل */
 #home-btn {
   position:fixed;
   top:15px;
@@ -152,6 +151,7 @@ input {
 <div id="content"></div>
 
 <script>
+// بيانات المستخدمين
 const users = {
   "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4 },
   "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
@@ -159,27 +159,70 @@ const users = {
   "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
 };
 
+// دالة لتوحيد الاسماء
 function normalize(str){ return str.trim().toLowerCase(); }
 
+// الترجمات
 const translations = {
-  "ar": { login:"تسجيل الدخول", signIn:"تسجيل جديد", username:"اسمك", password:"كلمة السر", errorName:"❌ الاسم غير موجود", errorPass:"❌ كلمة السر غير صحيحة", note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!", strength:"القوة الكلية"},
-  "en": { login:"Login", signIn:"Sign In", username:"Username", password:"Password", errorName:"❌ Name not found", errorPass:"❌ Incorrect password", note:"⚠️ Note: Equipment info not 100% accurate!", strength:"Total strength"},
-  "fr": { login:"Connexion", signIn:"S'inscrire", username:"Nom", password:"Mot de passe", errorName:"❌ Nom introuvable", errorPass:"❌ Mot de passe incorrect", note:"⚠️ Remarque : Les infos sur l'équipement ne sont pas 100% exactes !", strength:"Force totale"},
-  "ru": { login:"Вход", signIn:"Регистрация", username:"Имя", password:"Пароль", errorName:"❌ Имя не найдено", errorPass:"❌ Неверный пароль", note:"⚠️ Примечание: информация об оборудовании не на 100% точна!", strength:"Общая сила"},
-  "es": { login:"Iniciar sesión", signIn:"Registrarse", username:"Nombre", password:"Contraseña", errorName:"❌ Nombre no encontrado", errorPass:"❌ Contraseña incorrecta", note:"⚠️ Nota: La información del equipo no es 100% precisa!", strength:"Fuerza total"},
+  "ar": { 
+    login:"تسجيل الدخول", signIn:"تسجيل جديد", 
+    username:"اسمك", password:"كلمة السر", 
+    errorName:"❌ الاسم غير موجود", errorPass:"❌ كلمة السر غير صحيحة", 
+    note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!", 
+    strength:"القوة الكلية",
+    contact:"لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩 @Louaye_Gamer_i وهو يعطيك كلمة السر عشان تدخل حسابك",
+    militaryRank:"المركز العالمي العسكري"
+  },
+  "en": { 
+    login:"Login", signIn:"Sign In", 
+    username:"Username", password:"Password", 
+    errorName:"❌ Name not found", errorPass:"❌ Incorrect password", 
+    note:"⚠️ Note: Equipment info not 100% accurate!", 
+    strength:"Total strength",
+    contact:"You must contact the map owner via Instagram 📩 @Louaye_Gamer_i to get your password",
+    militaryRank:"Global Military Rank"
+  },
+  "fr": { 
+    login:"Connexion", signIn:"S'inscrire", 
+    username:"Nom", password:"Mot de passe", 
+    errorName:"❌ Nom introuvable", errorPass:"❌ Mot de passe incorrect", 
+    note:"⚠️ Remarque : Les infos sur l'équipement ne sont pas 100% exactes !", 
+    strength:"Force totale",
+    contact:"Vous devez contacter le propriétaire de la carte sur Instagram 📩 @Louaye_Gamer_i pour obtenir votre mot de passe",
+    militaryRank:"Rang militaire mondial"
+  },
+  "ru": { 
+    login:"Вход", signIn:"Регистрация", 
+    username:"Имя", password:"Пароль", 
+    errorName:"❌ Имя не найдено", errorPass:"❌ Неверный пароль", 
+    note:"⚠️ Примечание: информация об оборудовании не на 100% точна!", 
+    strength:"Общая сила",
+    contact:"Вы должны связаться с владельцем карты через Instagram 📩 @Louaye_Gamer_i, чтобы получить пароль",
+    militaryRank:"Глобальный военный ранг"
+  },
+  "es": { 
+    login:"Iniciar sesión", signIn:"Registrarse", 
+    username:"Nombre", password:"Contraseña", 
+    errorName:"❌ Nombre no encontrado", errorPass:"❌ Contraseña incorrecta", 
+    note:"⚠️ Nota: La información del equipo no es 100% precisa!", 
+    strength:"Fuerza total",
+    contact:"Debes contactar al dueño del mapa vía Instagram 📩 @Louaye_Gamer_i para obtener tu contraseña",
+    militaryRank:"Rango militar global"
+  }
 };
 
 let currentLang = "ar";
 
+// لغات
 function toggleLangList(){ 
   const list = document.getElementById("lang-list");
   list.style.display = list.style.display==='none'?'block':'none'; 
 }
 
+// تحميل عشوائي
 function getRandomLoadingTime(){
   return Math.random()*2.5 + 0.5; // 0.5 إلى 3 ثواني
 }
-
 function showLoading(callback){
   const loading = document.getElementById("loading");
   loading.style.display="block";
@@ -190,6 +233,7 @@ function showLoading(callback){
   }, duration);
 }
 
+// تغيير اللغة
 function changeLang(lang){
   showLoading(()=>{
     currentLang = lang;
@@ -199,6 +243,7 @@ function changeLang(lang){
   });
 }
 
+// تسجيل الدخول
 function showLogin(){
   showLoading(()=>{
     document.getElementById("home").style.display="none";
@@ -212,14 +257,13 @@ function showLogin(){
   });
 }
 
+// تسجيل جديد
 function showSignIn(){
   document.getElementById("home").style.display = "none";
   document.getElementById("content").innerHTML = `
     <div style="color:black; font-weight:bold; text-align:center;">
       <h2>${translations[currentLang].signIn}</h2>
-      <p>لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩<br>
-      <strong>@Louaye_Gamer_i</strong><br>
-      وهو يعطيك كلمة السر عشان تدخل حسابك</p>
+      <p>${translations[currentLang].contact}</p>
       <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
         <button class="login-btn">📷 تواصل على انستغرام</button>
       </a>
@@ -227,6 +271,7 @@ function showSignIn(){
   `;
 }
 
+// عملية تسجيل الدخول
 function login(){
   showLoading(()=>{
     let inputUser = normalize(document.getElementById("username").value);
@@ -242,9 +287,14 @@ function login(){
     let u = users[foundUser];
     let strength = (u.العسكري||0)*(u.الجنود||0);
 
+    // حساب المركز العالمي العسكري
+    const allUsers = Object.values(users).map(user => (user.العسكري||0)*(user.الجنود||0)).sort((a,b)=>b-a);
+    let rank = allUsers.indexOf(strength) + 1;
+
     let display = `<div class="user-box"><strong>${translations[currentLang].note}</strong><br><br>`;
     display += `👤 الاسم: ${foundUser}<br>`;
     display += `• ${translations[currentLang].strength}: ${strength}<br>`;
+    display += `• ${translations[currentLang].militaryRank}: ${rank}<br>`;
     for(const key in u){ if(key!=="password") display += `• ${key}: ${u[key]}<br>`; }
     display += `</div>`;
     document.getElementById("content").innerHTML = display;
