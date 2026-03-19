@@ -8,79 +8,43 @@
 <style>
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   background: linear-gradient(135deg,#1f1c2c,#928dab);
   color:white;
   text-align:center;
 }
 
-/* CARD */
 .card{
-  width:320px;
-  margin:60px auto;
+  width:300px;
+  margin:80px auto;
   padding:20px;
   border-radius:15px;
   background:rgba(0,0,0,0.6);
-  box-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
-/* INPUT */
+button{
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.green{background:#28a745;color:white;}
+.blue{background:#007bff;color:white;}
+
 input{
   width:85%;
   padding:10px;
-  margin:8px;
-  border-radius:8px;
+  margin:6px;
+  border-radius:6px;
   border:2px solid black;
 }
-
-/* BUTTONS */
-button{
-  padding:10px 15px;
-  margin:6px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.08);
-}
-
-.blue{background:#007bff;color:white;}
-.green{background:#28a745;color:white;}
-.gray{background:#555;color:white;}
 
 .error{
   color:red;
   font-size:14px;
 }
-
-.link{
-  color:#00c3ff;
-  cursor:pointer;
-  display:block;
-  margin-top:10px;
-}
-
-/* LANG MENU */
-.lang-box button{
-  display:block;
-  width:100%;
-}
-
-/* IMAGE */
-img{
-  width:85%;
-  border-radius:15px;
-  margin-top:15px;
-}
-
-/* HEADER */
-h2{
-  margin-bottom:10px;
-}
-
 </style>
 </head>
 
@@ -89,108 +53,28 @@ h2{
 <div id="app"></div>
 
 <script>
+let users = [{name:"admin", password:"1234"}];
+let lang = "ar";
 
-/* ================= USERS ================= */
-let users = [
-  {name:"admin", password:"1234"}
-];
-
-/* ================= LANGUAGE ================= */
-let currentLang = localStorage.getItem("lang") || "ar";
-
+/* ================= TEXT ================= */
 const T = {
  ar:{
-  welcome:"مرحبا بك في خريطة الميمز",
-  start:"البدء",
+  welcome:"مرحبا بك",
   login:"تسجيل الدخول",
   signup:"إنشاء حساب",
   username:"الاسم",
   password:"كلمة السر",
-  loginBtn:"دخول",
-  signupBtn:"تسجيل",
-  back:"رجوع",
-  lang:"اللغة",
+  start:"البدء",
   wrongUser:"❌ الاسم غير موجود",
-  wrongPass:"❌ كلمة السر غير صحيحة",
-  hint:"💡 حاول حذف المسافات",
-  forgot:"هل نسيت كلمة السر؟",
-  channel:"اشترك في قناتي"
- },
- en:{
-  welcome:"Welcome to Meme Map",
-  start:"Start",
-  login:"Login",
-  signup:"Sign Up",
-  username:"Username",
-  password:"Password",
-  loginBtn:"Login",
-  signupBtn:"Register",
-  back:"Back",
-  lang:"Language",
-  wrongUser:"❌ User not found",
-  wrongPass:"❌ Wrong password",
-  hint:"💡 Remove spaces",
-  forgot:"Forgot password?",
-  channel:"Subscribe to my channel"
- },
- fr:{
-  welcome:"Bienvenue sur Meme Map",
-  start:"Démarrer",
-  login:"Connexion",
-  signup:"S'inscrire",
-  username:"Nom",
-  password:"Mot de passe",
-  loginBtn:"Entrer",
-  signupBtn:"Créer",
-  back:"Retour",
-  lang:"Langue",
-  wrongUser:"❌ Utilisateur introuvable",
-  wrongPass:"❌ Mot de passe incorrect",
-  hint:"💡 Supprimer les espaces",
-  forgot:"Mot de passe oublié ?",
-  channel:"Abonnez-vous à ma chaîne"
- },
- es:{
-  welcome:"Bienvenido a Meme Map",
-  start:"Empezar",
-  login:"Iniciar sesión",
-  signup:"Registrarse",
-  username:"Nombre",
-  password:"Contraseña",
-  loginBtn:"Entrar",
-  signupBtn:"Crear",
-  back:"Atrás",
-  lang:"Idioma",
-  wrongUser:"❌ Usuario no encontrado",
-  wrongPass:"❌ Contraseña incorrecta",
-  hint:"💡 Elimina espacios",
-  forgot:"¿Olvidaste la contraseña?",
-  channel:"Suscríbete a mi canal"
- },
- ru:{
-  welcome:"Добро пожаловать",
-  start:"Начать",
-  login:"Вход",
-  signup:"Регистрация",
-  username:"Имя",
-  password:"Пароль",
-  loginBtn:"Войти",
-  signupBtn:"Создать",
-  back:"Назад",
-  lang:"Язык",
-  wrongUser:"❌ Пользователь не найден",
-  wrongPass:"❌ Неверный пароль",
-  hint:"💡 Удалите пробелы",
-  forgot:"Забыли пароль?",
-  channel:"Подпишитесь на мой канал"
+  wrongPass:"❌ كلمة السر خاطئة"
  }
 };
 
-function t(k){ return T[currentLang][k]; }
+function t(key){ return T[lang][key]; }
 
 /* ================= RENDER ================= */
 function render(html){
-  document.getElementById("app").innerHTML = html;
+ document.getElementById("app").innerHTML = html;
 }
 
 /* ================= WELCOME ================= */
@@ -214,11 +98,8 @@ function loginPage(){
 
     <div id="err" class="error"></div>
 
-    <button class="blue" onclick="login()">${t("loginBtn")}</button>
+    <button class="blue" onclick="login()">Login</button>
     <button class="green" onclick="signupPage()">${t("signup")}</button>
-
-    <br><br>
-    <button onclick="welcome()">${t("back")}</button>
   </div>
  `);
 }
@@ -232,44 +113,34 @@ function signupPage(){
     <input id="nu" placeholder="${t("username")}">
     <input id="np" type="password" placeholder="${t("password")}">
 
-    <button class="blue" onclick="createUser()">${t("signupBtn")}</button>
-    <button onclick="loginPage()">${t("back")}</button>
+    <button class="blue" onclick="create()">Create</button>
+    <button onclick="loginPage()">Back</button>
   </div>
  `);
 }
 
-function createUser(){
- let u = document.getElementById("nu").value;
- let p = document.getElementById("np").value;
-
+function create(){
+ let u=document.getElementById("nu").value;
+ let p=document.getElementById("np").value;
  users.push({name:u,password:p});
- alert("Created");
  loginPage();
 }
 
 /* ================= LOGIN CHECK ================= */
 function login(){
- let u = document.getElementById("u").value.trim();
- let p = document.getElementById("p").value;
- let err = document.getElementById("err");
+ let u=document.getElementById("u").value.trim();
+ let p=document.getElementById("p").value;
+ let err=document.getElementById("err");
 
- let user = users.find(x=>x.name.toLowerCase()===u.toLowerCase());
+ let user=users.find(x=>x.name===u);
 
  if(!user){
-   let similar = users.find(x=>x.name.toLowerCase().includes(u.toLowerCase()));
-   err.innerHTML = `
-     ${t("wrongUser")}<br>
-     ${t("hint")}<br>
-     ${similar ? "🔎 "+similar.name : ""}
-   `;
+   err.innerText = t("wrongUser");
    return;
  }
 
- if(user.password !== p){
-   err.innerHTML = `
-     ${t("wrongPass")}<br>
-     <span class="link" onclick="signupPage()">${t("forgot")}</span>
-   `;
+ if(user.password!==p){
+   err.innerText = t("wrongPass");
    return;
  }
 
@@ -279,57 +150,20 @@ function login(){
 /* ================= MAIN ================= */
 function mainPage(){
  render(`
-  <div>
+  <div class="card">
     <h2>${t("welcome")}</h2>
 
-    <img src="https://i.ibb.co/RpPJkLDX/map.png">
+    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:100%;border-radius:10px">
 
-    <br>
-
-    <button class="green" onclick="toggleLang()">${t("lang")}</button>
-
-    <div id="langs" class="lang-box"></div>
-
-    <p class="link" onclick="openYT()">${t("channel")}</p>
-
-    <br>
-    <button onclick="loginPage()">Logout</button>
+    <br><br>
+    <button class="blue" onclick="loginPage()">Logout</button>
   </div>
  `);
 }
 
-/* ================= LANG ================= */
-function toggleLang(){
- let box = document.getElementById("langs");
-
- if(box.innerHTML !== ""){
-   box.innerHTML="";
-   return;
- }
-
- box.innerHTML = `
-  <button onclick="setLang('ar')">🇸🇦 عربي</button>
-  <button onclick="setLang('en')">🇺🇸 English</button>
-  <button onclick="setLang('fr')">🇫🇷 Français</button>
-  <button onclick="setLang('es')">🇪🇸 Español</button>
-  <button onclick="setLang('ru')">🇷🇺 Русский</button>
- `;
-}
-
-function setLang(l){
- currentLang = l;
- localStorage.setItem("lang",l);
- welcome();
-}
-
-/* ================= LINK ================= */
-function openYT(){
- window.open("https://www.youtube.com/@MN98Ty","_blank");
-}
-
 /* ================= START ================= */
 welcome();
-
 </script>
+
 </body>
 </html>
