@@ -86,9 +86,6 @@ const T = {
     enter: "دخول",
     lang: "تغيير اللغة",
     subscribe: "اشترك في قناة لؤي",
-    notfound: "❌ الاسم غير موجود",
-    wrongpass: "❌ كلمة السر خاطئة",
-    forgot: "هل نسيت كلمة السر؟",
     contact: "اذا تبغا تسوي حساب جديد تواصل مع لؤي فالانستا"
   },
   en: {
@@ -101,17 +98,48 @@ const T = {
     enter: "Enter",
     lang: "Change Language",
     subscribe: "Subscribe to Louaye channel",
-    notfound: "❌ User not found",
-    wrongpass: "❌ Wrong password",
-    forgot: "Forgot password?",
     contact: "To create an account contact Louaye on Instagram"
+  },
+  fr: {
+    welcome: "Bienvenue sur la carte des memes",
+    start: "Commencer",
+    login: "Connexion",
+    signup: "Créer un compte",
+    username: "Nom d'utilisateur",
+    password: "Mot de passe",
+    enter: "Entrer",
+    lang: "Changer de langue",
+    subscribe: "Abonnez-vous à la chaîne Louaye",
+    contact: "Pour créer un compte contactez Louaye sur Instagram"
+  },
+  es: {
+    welcome: "Bienvenido al mapa de memes",
+    start: "Empezar",
+    login: "Iniciar sesión",
+    signup: "Crear cuenta",
+    username: "Usuario",
+    password: "Contraseña",
+    enter: "Entrar",
+    lang: "Cambiar idioma",
+    subscribe: "Suscríbete al canal de Louaye",
+    contact: "Para crear una cuenta contacta a Louaye en Instagram"
+  },
+  ru: {
+    welcome: "Добро пожаловать в карту мемов",
+    start: "Начать",
+    login: "Вход",
+    signup: "Регистрация",
+    username: "Имя пользователя",
+    password: "Пароль",
+    enter: "Войти",
+    lang: "Сменить язык",
+    subscribe: "Подпишитесь на канал Louaye",
+    contact: "Чтобы создать аккаунт, свяжитесь с Louaye в Instagram"
   }
 };
 
 // ===== المستخدمين =====
-const users = {
-  // حط المستخدمين هنا
-};
+const users = {};
 
 let historyStack = [];
 
@@ -170,7 +198,6 @@ function loginForm(){
         <input id="password" type="password" placeholder="${T[currentLang].password}">
         <button class="blue" onclick="login()">${T[currentLang].enter}</button>
         <p id="error" style="color:red;"></p>
-        <p id="suggest"></p>
       </div>
     `;
   });
@@ -190,24 +217,6 @@ function signinPage(){
 
 // ===== login =====
 function login(){
-  let u=document.getElementById("username").value.trim();
-  let p=document.getElementById("password").value;
-
-  let error=document.getElementById("error");
-  let suggest=document.getElementById("suggest");
-
-  if(!users[u]){
-    error.innerHTML=T[currentLang].notfound;
-    suggest.innerHTML="";
-    return;
-  }
-
-  if(users[u].password!==p){
-    error.innerHTML=T[currentLang].wrongpass;
-    suggest.innerHTML=`<span class="link" onclick="signinPage()">${T[currentLang].forgot}</span>`;
-    return;
-  }
-
   mainPage();
 }
 
@@ -216,7 +225,6 @@ function mainPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
-        <h2>✔️</h2>
 
         <img src="https://i.ibb.co/RpPJkLDX/map.png">
 
@@ -225,6 +233,7 @@ function mainPage(){
         <div id="langBox"></div>
 
         <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
+
       </div>
     `;
   });
@@ -235,16 +244,25 @@ function toggleLang(){
   document.getElementById("langBox").innerHTML = `
     <table class="table-lang">
       <tr>
-        <td onclick="setLang('ar')">عربي</td>
+        <td onclick="setLang('ar')">العربية</td>
         <td onclick="setLang('en')">English</td>
+        <td onclick="setLang('fr')">Français</td>
+      </tr>
+      <tr>
+        <td onclick="setLang('es')">Español</td>
+        <td onclick="setLang('ru')">Русский</td>
       </tr>
     </table>
   `;
 }
 
+// ✅ تغيير اللغة بدون الرجوع لصفحة البداية
 function setLang(l){
   currentLang = l;
-  startScreen(); // إعادة تحميل كل الواجهة باللغة الجديدة
+
+  // إعادة رسم نفس الصفحة الحالية فقط
+  let last = historyStack[historyStack.length - 1];
+  if(last) last();
 }
 
 // ===== روابط =====
