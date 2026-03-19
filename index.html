@@ -15,8 +15,6 @@
         align-items: center;
         text-align: center;
         color: white;
-
-        /* خلفية أغمق */
         background: linear-gradient(135deg, #0f2027, #5f0a87);
     }
 
@@ -27,12 +25,9 @@
     h1 {
         font-size: 24px;
         animation: zoom 2s infinite;
-
-        /* ظل تحت النص */
         text-shadow: 0px 4px 10px rgba(0,0,0,0.8);
     }
 
-    /* انميشن الزوم */
     @keyframes zoom {
         0% { transform: scale(1); }
         50% { transform: scale(1.1); }
@@ -42,7 +37,7 @@
     button {
         margin-top: 20px;
         width: 120px;
-        height: 120px; /* يخليه مربع */
+        height: 120px;
         font-size: 18px;
         border-radius: 30px;
         border: 2px solid yellow;
@@ -52,13 +47,11 @@
         transition: 0.15s;
     }
 
-    /* انميشن الضغط */
     button:active {
         transform: scale(0.85);
         background: #008f39;
     }
 
-    /* تحسين للجوال */
     @media (max-width: 600px) {
         h1 {
             font-size: 20px;
@@ -81,9 +74,9 @@
 </div>
 
 <script>
-    function start() {
-        // بدون رسالة
-    }
+function start() {
+    window.location.href = "page.html";
+}
 </script>
 
 </body>
