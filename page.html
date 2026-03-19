@@ -171,7 +171,49 @@ document.addEventListener("click", function(e){
         menu.style.display = "none";
     }
 });
-</script>
+<script>
+function applyLang(lang){
 
+    document.documentElement.lang = lang;
+
+    // غيّر حسب عناصر الصفحة الموجودة عندك
+    let loginBtn = document.getElementById("loginBtn");
+    let signinBtn = document.getElementById("signinBtn");
+
+    if(loginBtn && signinBtn){
+
+        if(lang === "ar"){
+            loginBtn.innerText = "تسجيل الدخول";
+            signinBtn.innerText = "حساب جديد";
+        }
+
+        if(lang === "en"){
+            loginBtn.innerText = "Login";
+            signinBtn.innerText = "Sign up";
+        }
+
+        if(lang === "fr"){
+            loginBtn.innerText = "Connexion";
+            signinBtn.innerText = "Créer compte";
+        }
+
+        if(lang === "ru"){
+            loginBtn.innerText = "Войти";
+            signinBtn.innerText = "Регистрация";
+        }
+
+        if(lang === "es"){
+            loginBtn.innerText = "Iniciar sesión";
+            signinBtn.innerText = "Registrarse";
+        }
+    }
+}
+
+/* عند فتح أي صفحة */
+window.onload = function(){
+    let lang = localStorage.getItem("lang") || "ar";
+    applyLang(lang);
+}
+</script>
 </body>
 </html>
