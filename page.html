@@ -18,7 +18,12 @@ body {
     color: white;
 }
 
-/* الأزرار */
+.center-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .btn {
     margin: 10px;
     padding: 15px;
@@ -30,7 +35,6 @@ body {
     font-size: 16px;
 }
 
-/* أزرق */
 .blue {
     background: #2196f3;
 }
@@ -39,14 +43,7 @@ body {
     transform: scale(0.9);
 }
 
-/* حاوية الأزرار في الوسط */
-.center-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* الصورة */
+/* صورة الخريطة */
 img {
     width: 220px;
     height: 220px;
@@ -64,10 +61,10 @@ img {
     background: #4caf50;
     color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 18px;
 }
 
-/* القائمة */
+/* قائمة اللغات */
 .lang-menu {
     position: absolute;
     bottom: 80px;
@@ -89,25 +86,22 @@ img {
 .lang-item:hover {
     background: #444;
 }
-
-.flag {
-    width: 20px;
-}
 </style>
 </head>
 
 <body>
 
 <div class="center-buttons">
-    <button class="btn blue" onclick="goLogin()">Login</button>
-    <button class="btn blue">Sign in</button>
+    <button class="btn blue" id="loginBtn" onclick="goLogin()">Login</button>
+    <button class="btn blue" id="signinBtn">Sign in</button>
 </div>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/88/World_map_blank_without_borders.svg" alt="map">
+<!-- صورة الخريطة -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/88/World_map_blank_without_borders.svg">
 
 <!-- زر اللغة -->
 <div style="position:relative;">
-    <button class="lang-btn" onclick="toggleLangMenu()" id="langBtn">🌐</button>
+    <button class="lang-btn" onclick="toggleLangMenu()">🌐</button>
 
     <div class="lang-menu" id="langMenu">
         <div class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</div>
@@ -129,16 +123,54 @@ function toggleLangMenu(){
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 }
 
-/* اختيار اللغة */
+/* تغيير اللغة */
 function setLang(lang){
     localStorage.setItem("lang", lang);
+    applyLang(lang);
     document.getElementById("langMenu").style.display = "none";
+}
+
+/* تطبيق اللغة */
+function applyLang(lang){
+    let loginBtn = document.getElementById("loginBtn");
+    let signinBtn = document.getElementById("signinBtn");
+
+    if(lang === "ar"){
+        loginBtn.innerText = "تسجيل الدخول";
+        signinBtn.innerText = "حساب جديد";
+    }
+
+    if(lang === "en"){
+        loginBtn.innerText = "Login";
+        signinBtn.innerText = "Sign up";
+    }
+
+    if(lang === "fr"){
+        loginBtn.innerText = "Connexion";
+        signinBtn.innerText = "Créer compte";
+    }
+
+    if(lang === "ru"){
+        loginBtn.innerText = "Войти";
+        signinBtn.innerText = "Регистрация";
+    }
+
+    if(lang === "es"){
+        loginBtn.innerText = "Iniciar sesión";
+        signinBtn.innerText = "Registrarse";
+    }
+}
+
+/* تحميل اللغة */
+window.onload = function(){
+    let lang = localStorage.getItem("lang") || "ar";
+    applyLang(lang);
 }
 
 /* إغلاق القائمة عند الضغط خارجها */
 document.addEventListener("click", function(e){
     let menu = document.getElementById("langMenu");
-    let btn = document.getElementById("langBtn");
+    let btn = document.querySelector(".lang-btn");
 
     if(!menu.contains(e.target) && !btn.contains(e.target)){
         menu.style.display = "none";
