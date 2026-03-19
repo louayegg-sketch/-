@@ -21,16 +21,17 @@ body{
     padding:15px;
 }
 
-/* الصورة */
+/* صورة المستخدم */
 .avatar{
     width:50px;
     height:50px;
     border-radius:50%;
+    object-fit:cover;
     background:#555;
     cursor:pointer;
 }
 
-/* القائمة الجانبية */
+/* القائمة */
 .sidebar{
     position:fixed;
     top:0;
@@ -46,10 +47,16 @@ body{
     right:0;
 }
 
-/* المحتوى */
+/* زر رفع الصورة */
+.upload{
+    margin-top:10px;
+    font-size:12px;
+}
+
+/* محتوى */
 .card{
     text-align:center;
-    margin-top:50px;
+    margin-top:40px;
 }
 
 button{
@@ -68,11 +75,15 @@ button{
 
 <div class="header">
     <h3 id="welcome"></h3>
-    <div class="avatar" onclick="toggleMenu()"></div>
+
+    <label>
+        <img id="avatar" class="avatar" src="" onclick="toggleMenu()">
+        <input type="file" accept="image/*" id="fileInput" hidden onchange="changeImage(event)">
+    </label>
 </div>
 
 <div class="card">
-    <p>اضغط على الصورة لرؤية معلوماتك 👆</p>
+    <p>اضغط على الصورة لتفتح القائمة 👆</p>
 </div>
 
 <!-- القائمة -->
@@ -80,55 +91,68 @@ button{
     <h3>معلومات الحساب</h3>
 
     <p id="userName"></p>
-    <p id="userPass"></p>
-    <hr>
     <p id="soldiers"></p>
     <p id="money"></p>
     <p id="military"></p>
     <p id="team"></p>
+
+    <hr>
+
+    <button onclick="logout()">تسجيل خروج</button>
 </div>
 
-<button onclick="logout()">تسجيل خروج</button>
-
-<script src="pass.js"></script>
+<script src="users.js"></script>
 
 <script>
 
 const params = new URLSearchParams(window.location.search);
 const user = params.get("user");
 
-if(!user || !passwords[user]){
+if(!user || !users[user]){
     window.location.href = "login.html";
 }
 
-// بيانات المستخدم الكاملة (عدّلها حسب pass.js إذا عندك)
-let data = {
-    pass: passwords[user],
-    soldiers: "غير محدد",
-    money: "غير محدد",
-    military: "غير محدد",
-    team: "غير محدد"
-};
-
-// 👇 هنا تربطها لو عندك ملف فيه معلومات إضافية
-// حالياً نحط بيانات تجريبية أو تربطها بملف ثاني إذا عندك
-
-// ترحيب
+// عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-// تعبئة القائمة
-document.getElementById("userName").innerText = "👤 الاسم: " + user;
-document.getElementById("userPass").innerText = "🔑 كلمة السر: " + data.pass;
+// جلب بيانات المستخدم
+let data = users[user];
 
+// عرض المعلومات
+document.getElementById("userName").innerText = "👤 الاسم: " + user;
 document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
 document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
 document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
 document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
 
+// تحميل الصورة من التخزين
+let savedImage = localStorage.getItem("avatar_" + user);
+if(savedImage){
+    document.getElementById("avatar").src = savedImage;
+}
+
+// فتح/غلق القائمة
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("active");
 }
 
+// تغيير الصورة
+function changeImage(event){
+    let file = event.target.files[0];
+    if(file){
+        let reader = new FileReader();
+        reader.onload = function(e){
+            let imgData = e.target.result;
+            document.getElementById("avatar").src = imgData;
+
+            // حفظ الصورة
+            localStorage.setItem("avatar_" + user, imgData);
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+// تسجيل خروج
 function logout(){
     window.location.href = "login.html";
 }
