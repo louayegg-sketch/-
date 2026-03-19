@@ -3,77 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>الموقع</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: linear-gradient(135deg, #1a0025, #3a0ca3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: white;
+body{
+    margin:0;
+    font-family:Arial;
+    background:#12001a;
+    color:white;
+    text-align:center;
 }
 
-.box {
-    background: rgba(0,0,0,0.5);
-    padding: 25px;
-    border-radius: 15px;
-    width: 320px;
-    text-align: center;
+/* شاشة الدخول */
+#loginPage{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    flex-direction:column;
 }
 
-input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: none;
+.box{
+    background:#222;
+    padding:20px;
+    border-radius:15px;
+    width:300px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: green;
-    color: white;
-    cursor: pointer;
+input{
+    width:90%;
+    padding:10px;
+    margin:8px;
+    border-radius:8px;
+    border:none;
 }
 
-button:active {
-    transform: scale(0.9);
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:green;
+    color:white;
+    cursor:pointer;
 }
 
-.error {
-    color: red;
-    margin-top: 10px;
-    white-space: pre-line;
+.error{
+    color:red;
+    font-size:14px;
+    white-space:pre-line;
+    margin-top:10px;
 }
 
-.popup {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
+/* الموقع الرئيسي */
+#mainPage{
+    display:none;
+    padding:20px;
 }
 
-.card {
-    background: #222;
-    padding: 20px;
-    border-radius: 12px;
-    width: 340px;
-    text-align: right;
+.topButtons button{
+    width:120px;
+    margin:5px;
 }
 
-.close {
-    margin-top: 10px;
-    background: red;
+img{
+    width:250px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+/* اللغة */
+#langMenu{
+    margin-top:15px;
+}
+
+.langBtn{
+    background:#444;
+    margin:5px;
+}
+
+/* subscribe */
+.subscribe{
+    color:#4da3ff;
+    cursor:pointer;
+    margin-top:20px;
 }
 </style>
 
@@ -81,47 +95,73 @@ button:active {
 
 <body>
 
-<div class="box">
-    <h2>تسجيل الدخول</h2>
-    <input id="user" placeholder="الاسم">
-    <input id="pass" type="password" placeholder="كلمة المرور">
-    <button onclick="login()">دخول</button>
-    <div id="msg" class="error"></div>
+<!-- LOGIN -->
+<div id="loginPage">
+    <div class="box">
+        <h2>تسجيل الدخول</h2>
+        <input id="user" placeholder="الاسم">
+        <input id="pass" type="password" placeholder="كلمة المرور">
+        <button onclick="login()">دخول</button>
+        <div id="msg" class="error"></div>
+    </div>
 </div>
 
-<div class="popup" id="popup">
-    <div class="card">
-        <h3 id="name"></h3>
-        <div id="info"></div>
-        <button class="close" onclick="closePopup()">إغلاق</button>
+<!-- MAIN -->
+<div id="mainPage">
+
+    <h2 id="welcome"></h2>
+
+    <div class="topButtons">
+        <button>Login</button>
+        <button>Sign in</button>
     </div>
+
+    <!-- خريطة -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/640px-World_map_-_low_resolution.svg.png">
+
+    <!-- اللغة -->
+    <div id="langMenu">
+        <h3>Change Language</h3>
+
+        <button class="langBtn" onclick="setLang('ar')">🇸🇦 عربي</button>
+        <button class="langBtn" onclick="setLang('en')">🇺🇸 English</button>
+        <button class="langBtn" onclick="setLang('fr')">🇫🇷 Français</button>
+        <button class="langBtn" onclick="setLang('es')">🇪🇸 Español</button>
+        <button class="langBtn" onclick="setLang('ru')">🇷🇺 Русский</button>
+    </div>
+
+    <!-- اشتراك -->
+    <div class="subscribe" onclick="openYT()">
+        اشترك بقناة لؤي
+    </div>
+
 </div>
 
 <script>
 
+/* USERS */
 const accounts = {
-
 "حمود":{pass:"58321",soldiers:270,money:"31$",military:1,team:1},
-"عمر":{pass:"74219",soldiers:3500,money:"125$",military:1,team:1,extra:"1 نووي"},
-"علي جواد":{pass:"61984",soldiers:820,money:"131$",military:1,team:1,extra:"جواز: لؤي"},
+"عمر":{pass:"74219",soldiers:3500,money:"125$",military:1,team:1},
+"علي جواد":{pass:"61984",soldiers:820,money:"131$",military:1,team:1},
 "ماهر":{pass:"90427",soldiers:5625,money:"120$",military:1,team:1},
-"بدر":{pass:"27165",soldiers:1070,money:"126$",military:1,team:1,extra:"صاروخ طراز 5"},
-"لؤي":{pass:"36819",soldiers:13200,money:"9908$",military:2,team:4,extra:"نووي 78 + تخفي"},
+"بدر":{pass:"27165",soldiers:1070,money:"126$",military:1,team:1},
+"لؤي":{pass:"36819",soldiers:13200,money:"9908$",military:2,team:4},
 "احمد":{pass:"55073",soldiers:1740,money:"100$",military:1,team:1},
 "حماد":{pass:"14692",soldiers:340,money:"50$",military:1,team:1},
 "جورنمي":{pass:"82740",soldiers:480,money:"24$",military:1,team:1},
-"محمد":{pass:"93516",soldiers:130,money:"185$",military:1,team:1,extra:"صواريخ + طراز 20"},
-"قيس":{pass:"11864",soldiers:5500,money:"3700$",military:1,team:5,extra:"7 نووي"},
-"يونس":{pass:"66290",soldiers:10,money:"45$",military:1,team:1,extra:"جواز: لؤي"},
+"محمد":{pass:"93516",soldiers:130,money:"185$",military:1,team:1},
+"قيس":{pass:"11864",soldiers:5500,money:"3700$",military:1,team:5},
+"يونس":{pass:"66290",soldiers:10,money:"45$",military:1,team:1},
 "احمد2":{pass:"40758",soldiers:1200,money:"100$",military:1,team:1},
-"مريم":{pass:"78103",soldiers:140,money:"100$",military:1,team:1,extra:"جواز: لؤي"},
-"عبد الله":{pass:"25917",soldiers:20,money:"0$",military:1,team:1,extra:"منجم ماس"},
+"مريم":{pass:"78103",soldiers:140,money:"100$",military:1,team:1},
+"عبد الله":{pass:"25917",soldiers:20,money:"0$",military:1,team:1},
 "مؤمنة":{pass:"63048",soldiers:200,money:"80$",military:1,team:1},
 "ناصر":{pass:"99421",soldiers:90,money:"100$",military:1,team:1},
 "رحيم":{pass:"31580",soldiers:5000,money:"100$",military:1,team:1},
 "حسونياس":{pass:"47296",soldiers:860,money:"100$",military:1,team:1},
 "ادم":{pass:"86035",soldiers:300,money:"130$",military:1,team:1},
-"سانتش":{pass:"10293",soldiers:37700,money:"100$",military:1,team:1,extra:"جواز: لؤي"},
+"سانتش":{pass:"10293",soldiers:37700,money:"100$",military:1,team:1},
 "نونو":{pass:"55872",soldiers:15,money:"100$",military:1,team:1},
 "روسيا":{pass:"77701",soldiers:0,money:"0$",military:1,team:1},
 "سكايلي الاحمر":{pass:"44109",soldiers:0,money:"0$",military:0,team:0},
@@ -131,59 +171,97 @@ const accounts = {
 "عبد الوهاب":{pass:"12856",soldiers:2020,money:"195$",military:1,team:3},
 "عبدو":{pass:"84560",soldiers:11500,money:"100$",military:1,team:1},
 "سلطان":{pass:"29471",soldiers:250,money:"100$",military:1,team:1},
-"وديد":{pass:"51638",soldiers:1200,money:"385$",military:"1.060",team:1,extra:"نفط لفل5 + صواريخ + دفاع"},
+"وديد":{pass:"51638",soldiers:1200,money:"385$",military:"1.060",team:1},
 "الوليد":{pass:"74288",soldiers:11500,money:"100$",military:1,team:1},
-"وليان":{pass:"60845",soldiers:300,money:"525$",military:1,team:1,extra:"ديون 500 + نووي"},
+"وليان":{pass:"60845",soldiers:300,money:"525$",military:1,team:1},
 "نزار":{pass:"96321",soldiers:2450,money:"100$",military:1,team:1},
 "عثمان":{pass:"13579",soldiers:320,money:"100$",military:1,team:1},
 "لونا":{pass:"82460",soldiers:420,money:"100$",military:1,team:1},
 "مهدي":{pass:"45712",soldiers:125,money:"100$",military:1,team:1},
-"وائل":{pass:"69024",soldiers:57,money:"30$",military:1,team:1,extra:"خشب + حديد"},
+"وائل":{pass:"69024",soldiers:57,money:"30$",military:1,team:1},
 "تيم":{pass:"31876",soldiers:2220,money:"200$",military:1,team:1},
 "امين":{pass:"77125",soldiers:850,money:"100$",military:1,team:1},
 "سبونر":{pass:"50291",soldiers:650,money:"100$",military:1,team:1},
-"سوني":{pass:"88463",soldiers:2300,money:"100$",military:1,team:1,extra:"2800 ثوريين"},
+"سوني":{pass:"88463",soldiers:2300,money:"100$",military:1,team:1},
 "فلاديمير":{pass:"24680",soldiers:1700,money:"100$",military:1,team:1},
 "لونا (برمودا)":{pass:"93740",soldiers:205,money:"100$",military:1,team:1}
-
 };
 
+/* LOGIN */
 function login(){
-    let user = document.getElementById("user").value;
+    let user = document.getElementById("user").value.trim();
     let pass = document.getElementById("pass").value;
     let msg = document.getElementById("msg");
 
-    msg.innerText = "";
+    msg.innerText="";
 
     if(accounts[user]){
         if(accounts[user].pass === pass){
 
-            let u = accounts[user];
+            document.getElementById("loginPage").style.display="none";
+            document.getElementById("mainPage").style.display="block";
 
-            document.getElementById("name").innerText = user;
-
-            let extraText = u.extra ? `<br>📌 ${u.extra}` : "";
-
-            document.getElementById("info").innerHTML = `
-            👥 الجنود: ${u.soldiers}<br>
-            💰 الاقتصاد: ${u.money}<br>
-            🪖 العسكري: ${u.military}<br>
-            🏆 المنتخب: ${u.team}
-            ${extraText}
-            `;
-
-            document.getElementById("popup").style.display = "flex";
+            document.getElementById("welcome").innerText = "مرحباً " + user;
 
         } else {
-            msg.innerText = "كلمة السر غير صحيحة ❌";
+            msg.innerText="كلمة السر غير صحيحة ❌";
         }
     } else {
-        msg.innerText = "الاسم غير موجود ❌";
+
+        let closest = findClosest(user);
+
+        msg.innerText =
+        "الاسم غير موجود ❌\n" +
+        "تأكد من حذف المسافات\n" +
+        "أقرب اسم: " + closest;
     }
 }
 
-function closePopup(){
-    document.getElementById("popup").style.display = "none";
+/* أقرب اسم */
+function findClosest(input){
+    let best="";
+    let min=999;
+
+    for(let name in accounts){
+        let d = levenshtein(input,name);
+        if(d<min){
+            min=d;
+            best=name;
+        }
+    }
+    return best;
+}
+
+/* Levenshtein */
+function levenshtein(a,b){
+    let m=[];
+    for(let i=0;i<=b.length;i++){m[i]=[i];}
+    for(let j=0;j<=a.length;j++){m[0][j]=j;}
+
+    for(let i=1;i<=b.length;i++){
+        for(let j=1;j<=a.length;j++){
+            if(b[i-1]==a[j-1]){
+                m[i][j]=m[i-1][j-1];
+            } else {
+                m[i][j]=Math.min(
+                    m[i-1][j-1]+1,
+                    m[i][j-1]+1,
+                    m[i-1][j]+1
+                );
+            }
+        }
+    }
+    return m[b.length][a.length];
+}
+
+/* اللغة */
+function setLang(lang){
+    alert("تم تغيير اللغة إلى: " + lang);
+}
+
+/* يوتيوب */
+function openYT(){
+    window.open("https://www.youtube.com/@MN98Ty","_blank");
 }
 
 </script>
