@@ -14,6 +14,7 @@ body {
   color:white;
 }
 
+/* أزرار */
 button {
   padding:12px 20px;
   margin:8px;
@@ -21,6 +22,16 @@ button {
   border-radius:15px;
   font-size:15px;
   cursor:pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.08);
+  opacity: 0.9;
+}
+
+button:active {
+  transform: scale(0.95);
 }
 
 .blue { background:#007bff; color:white; }
@@ -35,6 +46,7 @@ input {
   border:none;
 }
 
+/* صورة */
 img {
   width:85%;
   max-width:400px;
@@ -42,14 +54,17 @@ img {
   margin-top:15px;
 }
 
+/* جدول اللغات */
 .table-lang td {
   border:1px solid white;
   padding:10px;
   cursor:pointer;
 }
 
+/* رابط */
 .link { color:#00c3ff; cursor:pointer; }
 
+/* زر الرجوع */
 .top-bar {
   position:fixed;
   top:10px;
@@ -57,6 +72,16 @@ img {
   display:flex;
   justify-content:space-between;
   padding:0 15px;
+}
+
+/* انميشن الصفحة */
+#app {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(10px); }
+  to { opacity:1; transform: translateY(0); }
 }
 </style>
 </head>
@@ -71,10 +96,10 @@ img {
 
 <script>
 
-// ===== اللغة الحالية =====
+// اللغة الحالية
 let currentLang = "ar";
 
-// ===== النصوص =====
+// النصوص
 const T = {
   ar: {
     welcome: "مرحبا بك في خريطة الميمز",
@@ -138,12 +163,11 @@ const T = {
   }
 };
 
-// ===== المستخدمين =====
+// المستخدمين
 const users = {};
-
 let historyStack = [];
 
-// ===== تنقل =====
+// التنقل
 function show(fn){
   historyStack.push(fn);
   fn();
@@ -156,7 +180,7 @@ function goBack(){
   else startScreen();
 }
 
-// ===== البداية =====
+// البداية
 function startScreen(){
   historyStack = [];
   document.getElementById("app").innerHTML = `
@@ -167,7 +191,7 @@ function startScreen(){
   `;
 }
 
-// ===== صفحة الدخول =====
+// صفحة الدخول
 function loginPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
@@ -179,7 +203,6 @@ function loginPage(){
         <img src="https://i.ibb.co/RpPJkLDX/map.png">
 
         <button onclick="toggleLang()">${T[currentLang].lang}</button>
-
         <div id="langBox"></div>
 
         <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
@@ -189,21 +212,20 @@ function loginPage(){
   });
 }
 
-// ===== تسجيل الدخول =====
+// تسجيل الدخول
 function loginForm(){
   show(()=>{
     document.getElementById("app").innerHTML = `
       <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
-        <input id="username" placeholder="${T[currentLang].username}">
-        <input id="password" type="password" placeholder="${T[currentLang].password}">
-        <button class="blue" onclick="login()">${T[currentLang].enter}</button>
-        <p id="error" style="color:red;"></p>
+        <input placeholder="${T[currentLang].username}">
+        <input type="password" placeholder="${T[currentLang].password}">
+        <button class="blue" onclick="mainPage()">${T[currentLang].enter}</button>
       </div>
     `;
   });
 }
 
-// ===== إنشاء حساب =====
+// إنشاء حساب
 function signinPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
@@ -215,12 +237,7 @@ function signinPage(){
   });
 }
 
-// ===== login =====
-function login(){
-  mainPage();
-}
-
-// ===== الصفحة الرئيسية =====
+// الصفحة الرئيسية
 function mainPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
@@ -229,7 +246,6 @@ function mainPage(){
         <img src="https://i.ibb.co/RpPJkLDX/map.png">
 
         <button onclick="toggleLang()">${T[currentLang].lang}</button>
-
         <div id="langBox"></div>
 
         <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
@@ -239,9 +255,18 @@ function mainPage(){
   });
 }
 
-// ===== اللغات =====
+// اللغات
 function toggleLang(){
-  document.getElementById("langBox").innerHTML = `
+  let box = document.getElementById("langBox");
+
+  if(!box) return;
+
+  if(box.innerHTML !== ""){
+    box.innerHTML = "";
+    return;
+  }
+
+  box.innerHTML = `
     <table class="table-lang">
       <tr>
         <td onclick="setLang('ar')">العربية</td>
@@ -256,16 +281,20 @@ function toggleLang(){
   `;
 }
 
-// ✅ تغيير اللغة بدون الرجوع لصفحة البداية
+// تغيير اللغة بدون مشاكل
 function setLang(l){
   currentLang = l;
 
-  // إعادة رسم نفس الصفحة الحالية فقط
   let last = historyStack[historyStack.length - 1];
   if(last) last();
+
+  setTimeout(()=>{
+    let box = document.getElementById("langBox");
+    if(box) box.innerHTML = "";
+  }, 100);
 }
 
-// ===== روابط =====
+// روابط
 function openYT(){
   window.open("https://www.youtube.com/@MN98Ty","_blank");
 }
