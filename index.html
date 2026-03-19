@@ -55,52 +55,8 @@ input {
 
 <script>
 
-// 🔥 المستخدمين (أنت تضيفهم)
-const users = {const users = {
-"حمود": {password:"58321"},
-"عمر": {password:"74219"},
-"علي جواد": {password:"61984"},
-"ماهر": {password:"90427"},
-"بدر": {password:"27165"},
-"لؤي": {password:"36819"},
-"احمد": {password:"55073"},
-"حماد": {password:"14692"},
-"جورنمي": {password:"82740"},
-"محمد": {password:"93516"},
-"قيس": {password:"11864"},
-"يونس": {password:"66290"},
-"احمد2": {password:"40758"},
-"مريم": {password:"78103"},
-"عبد الله": {password:"25917"},
-"مؤمنة": {password:"63048"},
-"ناصر": {password:"99421"},
-"رحيم": {password:"31580"},
-"حسونياس": {password:"47296"},
-"ادم": {password:"86035"},
-"سانتش": {password:"10293"},
-"نونو": {password:"55872"},
-"روسيا": {password:"77701"},
-"سكايلي الاحمر": {password:"44109"},
-"ريد تيب": {password:"20984"},
-"ورد": {password:"67315"},
-"ادم ايطاليا": {password:"39072"},
-"عبد الوهاب": {password:"12856"},
-"عبدو": {password:"84560"},
-"سلطان": {password:"29471"},
-"وديد": {password:"51638"},
-"الوليد": {password:"74288"},
-"وليان": {password:"60845"},
-"نزار": {password:"96321"},
-"عثمان": {password:"13579"},
-"لونا": {password:"82460"},
-"مهدي": {password:"45712"},
-"وائل": {password:"69024"},
-"تيم": {password:"31876"},
-"امين": {password:"77125"},
-"سبونر": {password:"50291"},
-"سوني": {password:"88463"},
-"فلاديمير": {password:"24680"},
-"لونا (برمودا)": {password:"93740"}
+const users = {
+  // المستخدمين عندك
 };
 
 let historyStack = [];
@@ -113,131 +69,16 @@ function goBack(){
   if(last) last();
 }
 
-// ===== الصفحة الرئيسية =====
-function home(){
-  document.getElementById("app").innerHTML = `
-    <h1>مرحبا بك في خريطة الميمز</h1>
-    <button class="green" onclick="start()">ابدأ</button>
-  `;
-}
-
-function start(){
-  savePage(home);
-  loginPage();
-}
-
-// ===== صفحة تسجيل الدخول =====
-function loginPage(){
-  savePage(start);
-
+// ===== عرض الصفحة مباشرة =====
+function init(){
   document.getElementById("app").innerHTML = `
     
-    <!-- Login / Signin -->
     <button class="blue" onclick="loginForm()">Login</button>
     <button class="blue" onclick="signinPage()">Sign In</button>
 
     <br>
 
-    <!-- الخريطة -->
     <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;margin-top:10px;">
-
-    <br>
-
-    <!-- اللغة -->
-    <button onclick="toggleLang()">🌐 تغيير اللغة</button>
-
-    <div id="langMenu">
-      <button>عربي</button>
-      <button>English</button>
-      <button>Español</button>
-      <button>Русский</button>
-      <button>Français</button>
-    </div>
-
-    <br>
-
-    <!-- القناة -->
-    <p class="link" onclick="openYT()">
-      اشترك في قناة لؤي
-    </p>
-  `;
-}
-
-// ===== نموذج تسجيل الدخول =====
-function loginForm(){
-  savePage(loginPage);
-
-  document.getElementById("app").innerHTML = `
-    <input id="username" placeholder="اكتب الاسم">
-    <input id="password" type="password" placeholder="كلمة السر">
-    <button class="blue" onclick="login()">دخول</button>
-    <p id="error" style="color:red;"></p>
-    <p id="suggest"></p>
-  `;
-}
-
-// ===== صفحة الانشاء =====
-function signinPage(){
-  savePage(loginPage);
-
-  document.getElementById("app").innerHTML = `
-    <p>اذا تبغا تسوي حساب جديد تواصل مع صاحب الخريطة لؤي فالانستا</p>
-    <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
-  `;
-}
-
-// ===== تسجيل الدخول =====
-function similarity(a,b){
-  let s=0;
-  for(let i=0;i<Math.min(a.length,b.length);i++){
-    if(a[i]===b[i]) s++;
-  }
-  return s;
-}
-
-function getClosestName(input){
-  let names=Object.keys(users);
-  let best="", score=0;
-
-  names.forEach(n=>{
-    let s=similarity(input,n);
-    if(s>score){ score=s; best=n; }
-  });
-
-  return best;
-}
-
-function login(){
-  let u=document.getElementById("username").value.trim();
-  let p=document.getElementById("password").value;
-
-  let error=document.getElementById("error");
-  let suggest=document.getElementById("suggest");
-
-  if(!users[u]){
-    let close=getClosestName(u);
-    error.innerHTML="❌ الاسم غير موجود";
-    suggest.innerHTML=close?"هل تقصد: "+close:"";
-    return;
-  }
-
-  if(users[u].password!==p){
-    error.innerHTML="❌ كلمة السر خاطئة";
-    suggest.innerHTML=`<span class="link" onclick="signinPage()">هل نسيت كلمة السر؟</span>`;
-    return;
-  }
-
-  mainPage();
-}
-
-// ===== الصفحة بعد الدخول =====
-function mainPage(){
-  savePage(loginPage);
-
-  document.getElementById("app").innerHTML = `
-    <h2>تم تسجيل الدخول ✅</h2>
-
-    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;">
 
     <br>
 
@@ -254,15 +95,35 @@ function mainPage(){
     <br>
 
     <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
+
   `;
 }
 
-// ===== وظائف =====
+// ===== تسجيل الدخول =====
+function loginForm(){
+  document.getElementById("app").innerHTML = `
+    <input id="username" placeholder="اكتب الاسم">
+    <input id="password" type="password" placeholder="كلمة السر">
+    <button class="blue" onclick="login()">دخول</button>
+    <p id="error" style="color:red;"></p>
+    <p id="suggest"></p>
+  `;
+}
+
+function signinPage(){
+  document.getElementById("app").innerHTML = `
+    <p>اذا تبغا تسوي حساب جديد تواصل مع صاحب الخريطة لؤي فالانستا</p>
+    <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
+  `;
+}
+
+// ===== لغة =====
 function toggleLang(){
   let m=document.getElementById("langMenu");
   m.style.display = m.style.display==="block"?"none":"block";
 }
 
+// ===== روابط =====
 function openYT(){
   window.open("https://www.youtube.com/@MN98Ty","_blank");
 }
@@ -271,8 +132,8 @@ function openInsta(){
   window.open("https://instagram.com/Louaye_Gamer_i","_blank");
 }
 
-// ===== بدء =====
-home();
+// ===== تشغيل =====
+init();
 
 </script>
 
