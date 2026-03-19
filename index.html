@@ -20,11 +20,11 @@ body {
 }
 
 button {
-  padding:15px 25px;
-  margin:10px;
+  padding:12px 20px;
+  margin:8px;
   border:none;
-  border-radius:20px;
-  font-size:16px;
+  border-radius:15px;
+  font-size:15px;
   cursor:pointer;
 }
 
@@ -32,11 +32,11 @@ button {
 .blue { background:#007bff; color:white; }
 
 input {
-  padding:12px;
-  margin:10px;
+  padding:10px;
+  margin:8px;
   width:80%;
   max-width:300px;
-  border-radius:15px;
+  border-radius:12px;
   border:none;
 }
 
@@ -45,19 +45,25 @@ input {
   color:black;
   padding:15px;
   border-radius:15px;
-  margin:20px;
+  margin:10px;
+}
+
+.link { color:#00c3ff; cursor:pointer; }
+
+#langMenu {
+  display:none;
+  margin-top:10px;
 }
 
 .top-btn {
   position:fixed;
   top:10px;
-  padding:10px;
+  padding:8px;
 }
 
 #homeBtn { right:10px; }
 #backBtn { left:10px; }
 
-.link { color:#00c3ff; cursor:pointer; }
 .error { color:red; }
 </style>
 </head>
@@ -65,45 +71,58 @@ input {
 <body>
 
 <button id="homeBtn" class="top-btn">🏠</button>
-<button id="backBtn" class="top-btn">🔄</button>
+<button id="backBtn" class="top-btn">↩️</button>
 
 <div id="app"></div>
 
 <script>
 
-// 🔥 حط المستخدمين هنا
-const users = { "لؤي": {الجنود:13200, الاقتصاد:"9908$", الديون:"0$", العسكري:2, لفل_المنتخب:4, نووي:78, التخفي:true, password:"67890", المركز_العسكري:"#1#"},
-"سانتش": {الجنود:37700, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"88990", المركز_العسكري:"#2#"},
-"عبدو": {الجنود:11500, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"60606", المركز_العسكري:"#3#"},
-"قيس": {الجنود:5500, الاقتصاد:"3700$", الديون:"3$", العسكري:1, لفل_المنتخب:5, نووي:7, password:"13579", المركز_العسكري:"#4#"},
-"ريد تيب": {الجنود:8000, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"20202", المركز_العسكري:"#5#"},
-"ماهر": {الجنود:5625, الاقتصاد:"120$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"45678", المركز_العسكري:"#6#"},
-"نزار": {الجنود:2450, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"22222", المركز_العسكري:"#7#"},
-"ورد": {الجنود:1270, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"30303", المركز_العسكري:"#8#"},
-"حسونياس": {الجنود:860, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"66778", المركز_العسكري:"#9#"},
-"احمد": {الجنود:1740, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"78901", المركز_العسكري:"#10#"},
-"بدر": {الجنود:1070, الاقتصاد:"126$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"56789", المركز_العسكري:"#11#"},
-"علي جواد": {الجنود:820, الاقتصاد:"131$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"34567", المركز_العسكري:"#12#"},
-"امين": {الجنود:850, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"88888", المركز_العسكري:"#13#"},
-"جورنمي": {الجنود:480, الاقتصاد:"24$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"90123", المركز_العسكري:"#14#"},
-"حماد": {الجنود:340, الاقتصاد:"50$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"89012", المركز_العسكري:"#15#"},
-"حمود": {الجنود:270, الاقتصاد:"31$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"12345", المركز_العسكري:"#16#"},
-"محمد": {الجنود:130, الاقتصاد:"185$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"01234", المركز_العسكري:"#17#"},
-"مريم": {الجنود:140, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"11223", المركز_العسكري:"#18#"},
-"عبد الله": {الجنود:20, الاقتصاد:"0$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"22334", المركز_العسكري:"#19#"},
-"يونس": {الجنود:10, الاقتصاد:"45$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"24680", المركز_العسكري:"#20#"},
-"ناصر": {الجنود:90, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"44556", المركز_العسكري:"#21#"},
-"نونو": {الجنود:15, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"99001", المركز_العسكري:"#22#"},
-"روسيا": {الجنود:0, الاقتصاد:"0$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"10101", المركز_العسكري:"#23#"},
-"ادم ايطاليا": {الجنود:8, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"40404", المركز_العسكري:"#24#"},
-"وليان": {الجنود:300, الاقتصاد:"525$", الديون:"500$", العسكري:1, لفل_المنتخب:1, التخفي:true, password:"11111", المركز_العسكري:"#25#"},
-"ويديد": {الجنود:1200, الاقتصاد:"385$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"80808", المركز_العسكري:"#26#"},
-"سوني": {الجنود:2300, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"12121", المركز_العسكري:"#27#"},
-"عثمان": {الجنود:320, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"33333", المركز_العسكري:"#28#"},
-"برمودا": {الجنود:205, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"44444", المركز_العسكري:"#29#"},
-"مهدي": {الجنود:125, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"55555", المركز_العسكري:"#30#"},
-"وائل": {الجنود:57, الاقتصاد:"30$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"66666", المركز_العسكري:"#31#"},
-"تيم": {الجنود:2220, الاقتصاد:"200$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"77777", المركز_العسكري:"#32#"}
+// 🔥 المستخدمين
+const users = {
+"حمود": {password:"58321"},
+"عمر": {password:"74219"},
+"علي جواد": {password:"61984"},
+"ماهر": {password:"90427"},
+"بدر": {password:"27165"},
+"لؤي": {password:"36819"},
+"احمد": {password:"55073"},
+"حماد": {password:"14692"},
+"جورنمي": {password:"82740"},
+"محمد": {password:"93516"},
+"قيس": {password:"11864"},
+"يونس": {password:"66290"},
+"احمد2": {password:"40758"},
+"مريم": {password:"78103"},
+"عبد الله": {password:"25917"},
+"مؤمنة": {password:"63048"},
+"ناصر": {password:"99421"},
+"رحيم": {password:"31580"},
+"حسونياس": {password:"47296"},
+"ادم": {password:"86035"},
+"سانتش": {password:"10293"},
+"نونو": {password:"55872"},
+"روسيا": {password:"77701"},
+"سكايلي الاحمر": {password:"44109"},
+"ريد تيب": {password:"20984"},
+"ورد": {password:"67315"},
+"ادم ايطاليا": {password:"39072"},
+"عبد الوهاب": {password:"12856"},
+"عبدو": {password:"84560"},
+"سلطان": {password:"29471"},
+"وديد": {password:"51638"},
+"الوليد": {password:"74288"},
+"وليان": {password:"60845"},
+"نزار": {password:"96321"},
+"عثمان": {password:"13579"},
+"لونا": {password:"82460"},
+"مهدي": {password:"45712"},
+"وائل": {password:"69024"},
+"تيم": {password:"31876"},
+"امين": {password:"77125"},
+"سبونر": {password:"50291"},
+"سوني": {password:"88463"},
+"فلاديمير": {password:"24680"},
+"لونا (برمودا)": {password:"93740"}
 };
 
 let historyStack = [];
@@ -132,6 +151,31 @@ function start(){
   `;
 }
 
+// ===== تسجيل =====
+function loginPage(){
+  savePage(start);
+  document.getElementById("app").innerHTML = `
+    <input id="username" placeholder="اكتب الاسم">
+    <input id="password" type="password" placeholder="كلمة السر">
+    <button class="blue" onclick="login()">دخول</button>
+    <p id="error" class="error"></p>
+    <p id="suggest"></p>
+
+    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;margin-top:10px;"><br>
+
+    <button onclick="toggleLang()">🌐 تغيير اللغة</button>
+    <div id="langMenu">
+      <button>عربي</button>
+      <button>English</button>
+      <button>Español</button>
+      <button>Русский</button>
+      <button>Français</button>
+    </div>
+
+    <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
+  `;
+}
+
 function signinPage(){
   savePage(start);
   document.getElementById("app").innerHTML = `
@@ -142,101 +186,36 @@ function signinPage(){
   `;
 }
 
-function loginPage(){
-  savePage(start);
-  document.getElementById("app").innerHTML = `
-    <input id="username" placeholder="اكتب الاسم">
-    <input id="password" type="password" placeholder="كلمة السر">
-    <button class="blue" onclick="login()">دخول</button>
-    <p id="error" class="error"></p>
-    <p id="suggest"></p>
-  `;
-}
-
 // ===== اقتراح اسم =====
 function similarity(a,b){
-  let same = 0;
+  let same=0;
   for(let i=0;i<Math.min(a.length,b.length);i++){
-    if(a[i] === b[i]) same++;
+    if(a[i]===b[i]) same++;
   }
   return same;
 }
 
 function getClosestName(input){
-  let names = Object.keys(users);
-  let best = "";
-  let bestScore = 0;
+  let names=Object.keys(users);
+  let best=\"\"; let score=0;
 
-  names.forEach(name=>{
-    let score = similarity(input, name);
-    if(score > bestScore){
-      bestScore = score;
-      best = name;
-    }
+  names.forEach(n=>{
+    let s=similarity(input,n);
+    if(s>score){ score=s; best=n; }
   });
 
   return best;
 }
 
-// ===== تسجيل الدخول =====
+// ===== دخول =====
 function login(){
-  let u = document.getElementById("username").value.trim();
-  let p = document.getElementById("password").value;
+  let u=document.getElementById(\"username\").value.trim();
+  let p=document.getElementById(\"password\").value;
 
-  let error = document.getElementById("error");
-  let suggest = document.getElementById("suggest");
+  let error=document.getElementById(\"error\");
+  let suggest=document.getElementById(\"suggest\");
 
   if(!users[u]){
-    let close = getClosestName(u);
-    error.innerHTML = "❌ الاسم مش موجود (تأكد تحذف المسافات)";
-    suggest.innerHTML = close ? "هل تقصد: " + close : "";
-    return;
-  }
-
-  if(users[u].password !== p){
-    error.innerHTML = "❌ كلمة السر ليست صحيحة";
-    suggest.innerHTML = `<span class="link" onclick="signinPage()">هل نسيت كلمة السر؟</span>`;
-    return;
-  }
-
-  mainPage();
-}
-
-// ===== الصفحة الرئيسية =====
-function mainPage(){
-  savePage(loginPage);
-  document.getElementById("app").innerHTML = `
-    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:400px;"><br>
-
-    <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
-
-    <br>
-    <p>🌐 تغيير اللغة</p>
-    <button>عربي</button>
-    <button>English</button>
-    <button>Español</button>
-    <button>Русский</button>
-    <button>Français</button>
-  `;
-}
-
-// ===== روابط =====
-function openInsta(){
-  window.open("https://instagram.com/Louaye_Gamer_i","_blank");
-}
-
-function openYT(){
-  window.open("https://www.youtube.com/@MN98Ty","_blank");
-}
-
-// ===== أزرار =====
-document.getElementById("homeBtn").onclick = home;
-document.getElementById("backBtn").onclick = goBack;
-
-// تشغيل
-home();
-
-</script>
-
-</body>
-</html>
+    let close=getClosestName(u);
+    error.innerHTML=\"❌ الاسم مش موجود\";
+    suggest.innerHTML=close?\"هل تقصد: \"+close:\"\";\n    return;\n  }\n\n  if(users[u].password!==p){\n    error.innerHTML=\"❌ كلمة السر خاطئة\";\n    suggest.innerHTML=`<span class=\"link\" onclick=\"signinPage()\">هل نسيت كلمة السر؟</span>`;\n    return;\n  }\n\n  mainPage();\n}\n\n// ===== الصفحة الرئيسية =====\nfunction mainPage(){\n  savePage(loginPage);\n  document.getElementById(\"app\").innerHTML = `\n    <h2>تم تسجيل الدخول بنجاح ✅</h2>\n    <img src=\"https://i.ibb.co/RpPJkLDX/map.png\" style=\"width:80%;max-width:350px;\"><br>\n\n    <button onclick=\"toggleLang()\">🌐 تغيير اللغة</button>\n    <div id=\"langMenu\">\n      <button>عربي</button>\n      <button>English</button>\n      <button>Español</button>\n      <button>Русский</button>\n      <button>Français</button>\n    </div>\n\n    <p class=\"link\" onclick=\"openYT()\">اشترك في قناة لؤي</p>\n  `;\n}\n\n// ===== وظائف =====\nfunction toggleLang(){\n  let m=document.getElementById(\"langMenu\");\n  m.style.display = m.style.display===\"block\"?\"none\":\"block\";\n}\n\nfunction openYT(){\n  window.open(\"https://www.youtube.com/@MN98Ty\",\"_blank\");\n}\n\nfunction openInsta(){\n  window.open(\"https://instagram.com/Louaye_Gamer_i\",\"_blank\");\n}\n\n// ===== أزرار =====\ndocument.getElementById(\"homeBtn\").onclick=home;\ndocument.getElementById(\"backBtn\").onclick=goBack;\n\nhome();\n\n</script>\n</body>\n</html>\n```
