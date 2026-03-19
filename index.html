@@ -28,8 +28,8 @@ button {
   cursor:pointer;
 }
 
-.green { background:#28a745; color:white; }
 .blue { background:#007bff; color:white; }
+.green { background:#28a745; color:white; }
 
 input {
   padding:10px;
@@ -40,45 +40,23 @@ input {
   border:none;
 }
 
-.box {
-  background:white;
-  color:black;
-  padding:15px;
-  border-radius:15px;
-  margin:10px;
-}
-
 .link { color:#00c3ff; cursor:pointer; }
 
 #langMenu {
   display:none;
   margin-top:10px;
 }
-
-.top-btn {
-  position:fixed;
-  top:10px;
-  padding:8px;
-}
-
-#homeBtn { right:10px; }
-#backBtn { left:10px; }
-
-.error { color:red; }
 </style>
 </head>
 
 <body>
 
-<button id="homeBtn" class="top-btn">🏠</button>
-<button id="backBtn" class="top-btn">↩️</button>
-
 <div id="app"></div>
 
 <script>
 
-// 🔥 المستخدمين
-const users = {
+// 🔥 المستخدمين (أنت تضيفهم)
+const users = {const users = {
 "حمود": {password:"58321"},
 "عمر": {password:"74219"},
 "علي جواد": {password:"61984"},
@@ -127,7 +105,6 @@ const users = {
 
 let historyStack = [];
 
-// ===== صفحات =====
 function savePage(fn){ historyStack.push(fn); }
 
 function goBack(){
@@ -136,6 +113,7 @@ function goBack(){
   if(last) last();
 }
 
+// ===== الصفحة الرئيسية =====
 function home(){
   document.getElementById("app").innerHTML = `
     <h1>مرحبا بك في خريطة الميمز</h1>
@@ -145,25 +123,29 @@ function home(){
 
 function start(){
   savePage(home);
-  document.getElementById("app").innerHTML = `
-    <button class="blue" onclick="loginPage()">Login</button><br>
-    <button class="blue" onclick="signinPage()">Sign In</button>
-  `;
+  loginPage();
 }
 
-// ===== تسجيل =====
+// ===== صفحة تسجيل الدخول =====
 function loginPage(){
   savePage(start);
+
   document.getElementById("app").innerHTML = `
-    <input id="username" placeholder="اكتب الاسم">
-    <input id="password" type="password" placeholder="كلمة السر">
-    <button class="blue" onclick="login()">دخول</button>
-    <p id="error" class="error"></p>
-    <p id="suggest"></p>
+    
+    <!-- Login / Signin -->
+    <button class="blue" onclick="loginForm()">Login</button>
+    <button class="blue" onclick="signinPage()">Sign In</button>
 
-    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;margin-top:10px;"><br>
+    <br>
 
+    <!-- الخريطة -->
+    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;margin-top:10px;">
+
+    <br>
+
+    <!-- اللغة -->
     <button onclick="toggleLang()">🌐 تغيير اللغة</button>
+
     <div id="langMenu">
       <button>عربي</button>
       <button>English</button>
@@ -172,32 +154,50 @@ function loginPage(){
       <button>Français</button>
     </div>
 
-    <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
+    <br>
+
+    <!-- القناة -->
+    <p class="link" onclick="openYT()">
+      اشترك في قناة لؤي
+    </p>
   `;
 }
 
-function signinPage(){
-  savePage(start);
+// ===== نموذج تسجيل الدخول =====
+function loginForm(){
+  savePage(loginPage);
+
   document.getElementById("app").innerHTML = `
-    <div class="box">
-      <p>اذا تبغا تسوي حساب جديد تواصل مع صاحب الخريطة لؤي فالانستا</p>
-      <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
-    </div>
+    <input id="username" placeholder="اكتب الاسم">
+    <input id="password" type="password" placeholder="كلمة السر">
+    <button class="blue" onclick="login()">دخول</button>
+    <p id="error" style="color:red;"></p>
+    <p id="suggest"></p>
   `;
 }
 
-// ===== اقتراح اسم =====
+// ===== صفحة الانشاء =====
+function signinPage(){
+  savePage(loginPage);
+
+  document.getElementById("app").innerHTML = `
+    <p>اذا تبغا تسوي حساب جديد تواصل مع صاحب الخريطة لؤي فالانستا</p>
+    <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
+  `;
+}
+
+// ===== تسجيل الدخول =====
 function similarity(a,b){
-  let same=0;
+  let s=0;
   for(let i=0;i<Math.min(a.length,b.length);i++){
-    if(a[i]===b[i]) same++;
+    if(a[i]===b[i]) s++;
   }
-  return same;
+  return s;
 }
 
 function getClosestName(input){
   let names=Object.keys(users);
-  let best=\"\"; let score=0;
+  let best="", score=0;
 
   names.forEach(n=>{
     let s=similarity(input,n);
@@ -207,15 +207,74 @@ function getClosestName(input){
   return best;
 }
 
-// ===== دخول =====
 function login(){
-  let u=document.getElementById(\"username\").value.trim();
-  let p=document.getElementById(\"password\").value;
+  let u=document.getElementById("username").value.trim();
+  let p=document.getElementById("password").value;
 
-  let error=document.getElementById(\"error\");
-  let suggest=document.getElementById(\"suggest\");
+  let error=document.getElementById("error");
+  let suggest=document.getElementById("suggest");
 
   if(!users[u]){
     let close=getClosestName(u);
-    error.innerHTML=\"❌ الاسم مش موجود\";
-    suggest.innerHTML=close?\"هل تقصد: \"+close:\"\";\n    return;\n  }\n\n  if(users[u].password!==p){\n    error.innerHTML=\"❌ كلمة السر خاطئة\";\n    suggest.innerHTML=`<span class=\"link\" onclick=\"signinPage()\">هل نسيت كلمة السر؟</span>`;\n    return;\n  }\n\n  mainPage();\n}\n\n// ===== الصفحة الرئيسية =====\nfunction mainPage(){\n  savePage(loginPage);\n  document.getElementById(\"app\").innerHTML = `\n    <h2>تم تسجيل الدخول بنجاح ✅</h2>\n    <img src=\"https://i.ibb.co/RpPJkLDX/map.png\" style=\"width:80%;max-width:350px;\"><br>\n\n    <button onclick=\"toggleLang()\">🌐 تغيير اللغة</button>\n    <div id=\"langMenu\">\n      <button>عربي</button>\n      <button>English</button>\n      <button>Español</button>\n      <button>Русский</button>\n      <button>Français</button>\n    </div>\n\n    <p class=\"link\" onclick=\"openYT()\">اشترك في قناة لؤي</p>\n  `;\n}\n\n// ===== وظائف =====\nfunction toggleLang(){\n  let m=document.getElementById(\"langMenu\");\n  m.style.display = m.style.display===\"block\"?\"none\":\"block\";\n}\n\nfunction openYT(){\n  window.open(\"https://www.youtube.com/@MN98Ty\",\"_blank\");\n}\n\nfunction openInsta(){\n  window.open(\"https://instagram.com/Louaye_Gamer_i\",\"_blank\");\n}\n\n// ===== أزرار =====\ndocument.getElementById(\"homeBtn\").onclick=home;\ndocument.getElementById(\"backBtn\").onclick=goBack;\n\nhome();\n\n</script>\n</body>\n</html>\n```
+    error.innerHTML="❌ الاسم غير موجود";
+    suggest.innerHTML=close?"هل تقصد: "+close:"";
+    return;
+  }
+
+  if(users[u].password!==p){
+    error.innerHTML="❌ كلمة السر خاطئة";
+    suggest.innerHTML=`<span class="link" onclick="signinPage()">هل نسيت كلمة السر؟</span>`;
+    return;
+  }
+
+  mainPage();
+}
+
+// ===== الصفحة بعد الدخول =====
+function mainPage(){
+  savePage(loginPage);
+
+  document.getElementById("app").innerHTML = `
+    <h2>تم تسجيل الدخول ✅</h2>
+
+    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;">
+
+    <br>
+
+    <button onclick="toggleLang()">🌐 تغيير اللغة</button>
+
+    <div id="langMenu">
+      <button>عربي</button>
+      <button>English</button>
+      <button>Español</button>
+      <button>Русский</button>
+      <button>Français</button>
+    </div>
+
+    <br>
+
+    <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
+  `;
+}
+
+// ===== وظائف =====
+function toggleLang(){
+  let m=document.getElementById("langMenu");
+  m.style.display = m.style.display==="block"?"none":"block";
+}
+
+function openYT(){
+  window.open("https://www.youtube.com/@MN98Ty","_blank");
+}
+
+function openInsta(){
+  window.open("https://instagram.com/Louaye_Gamer_i","_blank");
+}
+
+// ===== بدء =====
+home();
+
+</script>
+
+</body>
+</html>
