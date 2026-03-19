@@ -2,159 +2,334 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meme Map</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
-  background: linear-gradient(135deg, #2b6cff, #8a2be2);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+  font-family:Arial, sans-serif;
+  background: linear-gradient(135deg,#1f1c2c,#928dab);
+  color:white;
+  text-align:center;
 }
 
-/* الكارد */
+/* CARD */
 .card{
-  background:#fff;
+  width:320px;
+  margin:60px auto;
   padding:20px;
   border-radius:15px;
-  width:300px;
-  text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  background:rgba(0,0,0,0.6);
+  box-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
-/* العنوان */
-.card h2{
-  margin-bottom:15px;
-}
-
-/* الحقول */
+/* INPUT */
 input{
-  width:100%;
+  width:85%;
   padding:10px;
-  margin:8px 0;
+  margin:8px;
   border-radius:8px;
   border:2px solid black;
-  outline:none;
 }
 
-/* الأزرار */
+/* BUTTONS */
 button{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
+  padding:10px 15px;
+  margin:6px;
   border:none;
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
-  font-size:16px;
   transition:0.3s;
 }
 
-/* زر تسجيل الدخول */
-.login-btn{
-  background:#2b6cff;
-  color:white;
-}
-.login-btn:hover{
-  background:#1a4ed8;
+button:hover{
+  transform:scale(1.08);
 }
 
-/* زر إنشاء حساب */
-.signup-btn{
-  background:#00c853;
-  color:white;
-}
-.signup-btn:hover{
-  background:#00a844;
-}
+.blue{background:#007bff;color:white;}
+.green{background:#28a745;color:white;}
+.gray{background:#555;color:white;}
 
-/* رسالة الخطأ */
-.error-box{
-  margin-top:10px;
+.error{
   color:red;
   font-size:14px;
 }
 
-/* رابط نسيت كلمة السر */
-.error-box a{
-  color:blue;
+.link{
+  color:#00c3ff;
   cursor:pointer;
-  text-decoration:underline;
+  display:block;
+  margin-top:10px;
 }
 
-/* أنميشن خفيف */
-button:active{
-  transform:scale(0.97);
+/* LANG MENU */
+.lang-box button{
+  display:block;
+  width:100%;
 }
+
+/* IMAGE */
+img{
+  width:85%;
+  border-radius:15px;
+  margin-top:15px;
+}
+
+/* HEADER */
+h2{
+  margin-bottom:10px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="card">
-
-  <h2>🔐 تسجيل الدخول</h2>
-
-  <input id="username" placeholder="الاسم">
-  <input id="password" type="password" placeholder="كلمة السر">
-
-  <div id="error" class="error-box"></div>
-
-  <button class="login-btn" onclick="login()">تسجيل الدخول</button>
-  <button class="signup-btn" onclick="signupPage()">إنشاء حساب</button>
-
-</div>
+<div id="app"></div>
 
 <script>
-/* 👇 بيانات المستخدمين (انت تضيفهم) */
+
+/* ================= USERS ================= */
 let users = [
-  {name:"louis", password:"1234"},
-  {name:"admin", password:"admin"}
+  {name:"admin", password:"1234"}
 ];
 
-function login(){
-  let nameInput = document.getElementById("username").value.trim();
-  let passInput = document.getElementById("password").value;
-  let errorBox = document.getElementById("error");
+/* ================= LANGUAGE ================= */
+let currentLang = localStorage.getItem("lang") || "ar";
 
-  let userFound = users.find(u => u.name.toLowerCase() === nameInput.toLowerCase());
+const T = {
+ ar:{
+  welcome:"مرحبا بك في خريطة الميمز",
+  start:"البدء",
+  login:"تسجيل الدخول",
+  signup:"إنشاء حساب",
+  username:"الاسم",
+  password:"كلمة السر",
+  loginBtn:"دخول",
+  signupBtn:"تسجيل",
+  back:"رجوع",
+  lang:"اللغة",
+  wrongUser:"❌ الاسم غير موجود",
+  wrongPass:"❌ كلمة السر غير صحيحة",
+  hint:"💡 حاول حذف المسافات",
+  forgot:"هل نسيت كلمة السر؟",
+  channel:"اشترك في قناتي"
+ },
+ en:{
+  welcome:"Welcome to Meme Map",
+  start:"Start",
+  login:"Login",
+  signup:"Sign Up",
+  username:"Username",
+  password:"Password",
+  loginBtn:"Login",
+  signupBtn:"Register",
+  back:"Back",
+  lang:"Language",
+  wrongUser:"❌ User not found",
+  wrongPass:"❌ Wrong password",
+  hint:"💡 Remove spaces",
+  forgot:"Forgot password?",
+  channel:"Subscribe to my channel"
+ },
+ fr:{
+  welcome:"Bienvenue sur Meme Map",
+  start:"Démarrer",
+  login:"Connexion",
+  signup:"S'inscrire",
+  username:"Nom",
+  password:"Mot de passe",
+  loginBtn:"Entrer",
+  signupBtn:"Créer",
+  back:"Retour",
+  lang:"Langue",
+  wrongUser:"❌ Utilisateur introuvable",
+  wrongPass:"❌ Mot de passe incorrect",
+  hint:"💡 Supprimer les espaces",
+  forgot:"Mot de passe oublié ?",
+  channel:"Abonnez-vous à ma chaîne"
+ },
+ es:{
+  welcome:"Bienvenido a Meme Map",
+  start:"Empezar",
+  login:"Iniciar sesión",
+  signup:"Registrarse",
+  username:"Nombre",
+  password:"Contraseña",
+  loginBtn:"Entrar",
+  signupBtn:"Crear",
+  back:"Atrás",
+  lang:"Idioma",
+  wrongUser:"❌ Usuario no encontrado",
+  wrongPass:"❌ Contraseña incorrecta",
+  hint:"💡 Elimina espacios",
+  forgot:"¿Olvidaste la contraseña?",
+  channel:"Suscríbete a mi canal"
+ },
+ ru:{
+  welcome:"Добро пожаловать",
+  start:"Начать",
+  login:"Вход",
+  signup:"Регистрация",
+  username:"Имя",
+  password:"Пароль",
+  loginBtn:"Войти",
+  signupBtn:"Создать",
+  back:"Назад",
+  lang:"Язык",
+  wrongUser:"❌ Пользователь не найден",
+  wrongPass:"❌ Неверный пароль",
+  hint:"💡 Удалите пробелы",
+  forgot:"Забыли пароль?",
+  channel:"Подпишитесь на мой канал"
+ }
+};
 
-  // الاسم غير موجود
-  if(!userFound){
-    let closest = users.find(u => 
-      u.name.toLowerCase().includes(nameInput.toLowerCase()) || 
-      nameInput.toLowerCase().includes(u.name.toLowerCase())
-    );
+function t(k){ return T[currentLang][k]; }
 
-    errorBox.innerHTML = `
-      ❌ الاسم غير موجود<br>
-      💡 احذف المسافات من الاسم<br>
-      ${closest ? `🔎 أقرب اسم: <b>${closest.name}</b>` : ""}
-    `;
-    return;
-  }
-
-  // كلمة السر غلط
-  if(userFound.password !== passInput){
-    errorBox.innerHTML = `
-      ❌ كلمة السر ليست صحيحة<br>
-      <a onclick="signupPage()">هل نسيت كلمة السر؟</a>
-    `;
-    return;
-  }
-
-  // نجاح
-  errorBox.innerHTML = "";
-  alert("تم تسجيل الدخول بنجاح ✅");
+/* ================= RENDER ================= */
+function render(html){
+  document.getElementById("app").innerHTML = html;
 }
 
-/* صفحة إنشاء حساب (مؤقتة) */
+/* ================= WELCOME ================= */
+function welcome(){
+ render(`
+  <div class="card">
+    <h2>${t("welcome")}</h2>
+    <button class="green" onclick="loginPage()">${t("start")}</button>
+  </div>
+ `);
+}
+
+/* ================= LOGIN ================= */
+function loginPage(){
+ render(`
+  <div class="card">
+    <h2>${t("login")}</h2>
+
+    <input id="u" placeholder="${t("username")}">
+    <input id="p" type="password" placeholder="${t("password")}">
+
+    <div id="err" class="error"></div>
+
+    <button class="blue" onclick="login()">${t("loginBtn")}</button>
+    <button class="green" onclick="signupPage()">${t("signup")}</button>
+
+    <br><br>
+    <button onclick="welcome()">${t("back")}</button>
+  </div>
+ `);
+}
+
+/* ================= SIGNUP ================= */
 function signupPage(){
-  alert("اذهب لصفحة إنشاء الحساب");
-}
-</script>
+ render(`
+  <div class="card">
+    <h2>${t("signup")}</h2>
 
+    <input id="nu" placeholder="${t("username")}">
+    <input id="np" type="password" placeholder="${t("password")}">
+
+    <button class="blue" onclick="createUser()">${t("signupBtn")}</button>
+    <button onclick="loginPage()">${t("back")}</button>
+  </div>
+ `);
+}
+
+function createUser(){
+ let u = document.getElementById("nu").value;
+ let p = document.getElementById("np").value;
+
+ users.push({name:u,password:p});
+ alert("Created");
+ loginPage();
+}
+
+/* ================= LOGIN CHECK ================= */
+function login(){
+ let u = document.getElementById("u").value.trim();
+ let p = document.getElementById("p").value;
+ let err = document.getElementById("err");
+
+ let user = users.find(x=>x.name.toLowerCase()===u.toLowerCase());
+
+ if(!user){
+   let similar = users.find(x=>x.name.toLowerCase().includes(u.toLowerCase()));
+   err.innerHTML = `
+     ${t("wrongUser")}<br>
+     ${t("hint")}<br>
+     ${similar ? "🔎 "+similar.name : ""}
+   `;
+   return;
+ }
+
+ if(user.password !== p){
+   err.innerHTML = `
+     ${t("wrongPass")}<br>
+     <span class="link" onclick="signupPage()">${t("forgot")}</span>
+   `;
+   return;
+ }
+
+ mainPage();
+}
+
+/* ================= MAIN ================= */
+function mainPage(){
+ render(`
+  <div>
+    <h2>${t("welcome")}</h2>
+
+    <img src="https://i.ibb.co/RpPJkLDX/map.png">
+
+    <br>
+
+    <button class="green" onclick="toggleLang()">${t("lang")}</button>
+
+    <div id="langs" class="lang-box"></div>
+
+    <p class="link" onclick="openYT()">${t("channel")}</p>
+
+    <br>
+    <button onclick="loginPage()">Logout</button>
+  </div>
+ `);
+}
+
+/* ================= LANG ================= */
+function toggleLang(){
+ let box = document.getElementById("langs");
+
+ if(box.innerHTML !== ""){
+   box.innerHTML="";
+   return;
+ }
+
+ box.innerHTML = `
+  <button onclick="setLang('ar')">🇸🇦 عربي</button>
+  <button onclick="setLang('en')">🇺🇸 English</button>
+  <button onclick="setLang('fr')">🇫🇷 Français</button>
+  <button onclick="setLang('es')">🇪🇸 Español</button>
+  <button onclick="setLang('ru')">🇷🇺 Русский</button>
+ `;
+}
+
+function setLang(l){
+ currentLang = l;
+ localStorage.setItem("lang",l);
+ welcome();
+}
+
+/* ================= LINK ================= */
+function openYT(){
+ window.open("https://www.youtube.com/@MN98Ty","_blank");
+}
+
+/* ================= START ================= */
+welcome();
+
+</script>
 </body>
 </html>
