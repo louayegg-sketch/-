@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خريطة الميمز</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        background: linear-gradient(135deg, #0f2027, #5f0a87);
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .btn {
+        display: block;
+        margin: 10px auto;
+        width: 200px;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .login {
+        background: #2196f3;
+    }
+
+    .signin {
+        background: #9c27b0;
+    }
+
+    .lang {
+        background: #ff9800;
+    }
+
+    img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        margin-top: 20px;
+        border-radius: 15px;
+    }
+
+    .subscribe {
+        margin-top: 25px;
+        color: #2196f3;
+        font-size: 18px;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+</style>
+
+</head>
+<body>
+
+<h2 id="title">خريطة الميمز</h2>
+
+<button class="btn login" id="loginBtn">تسجيل دخول</button>
+<button class="btn signin" id="signinBtn">إنشاء حساب</button>
+
+<!-- صورة خريطة جاهزة من الإنترنت -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg">
+
+<button class="btn lang" onclick="changeLang()">🌍 تغيير اللغة</button>
+
+<p class="subscribe" onclick="subscribe()">اشترك في قناة لؤي</p>
+
+<script>
+let lang = 0;
+
+function changeLang() {
+    lang++;
+
+    if(lang > 4) lang = 0;
+
+    if(lang === 0){
+        document.documentElement.lang = "ar";
+        document.getElementById("title").innerText = "خريطة الميمز";
+        document.getElementById("loginBtn").innerText = "تسجيل دخول";
+        document.getElementById("signinBtn").innerText = "إنشاء حساب";
+    }
+
+    if(lang === 1){
+        document.documentElement.lang = "en";
+        document.getElementById("title").innerText = "Meme Map";
+        document.getElementById("loginBtn").innerText = "Login";
+        document.getElementById("signinBtn").innerText = "Sign Up";
+    }
+
+    if(lang === 2){
+        document.documentElement.lang = "fr";
+        document.getElementById("title").innerText = "Carte des Memes";
+        document.getElementById("loginBtn").innerText = "Connexion";
+        document.getElementById("signinBtn").innerText = "Créer un compte";
+    }
+
+    if(lang === 3){
+        document.documentElement.lang = "es";
+        document.getElementById("title").innerText = "Mapa de Memes";
+        document.getElementById("loginBtn").innerText = "Iniciar sesión";
+        document.getElementById("signinBtn").innerText = "Crear cuenta";
+    }
+
+    if(lang === 4){
+        document.documentElement.lang = "ru";
+        document.getElementById("title").innerText = "Карта мемов";
+        document.getElementById("loginBtn").innerText = "Войти";
+        document.getElementById("signinBtn").innerText = "Создать аккаунт";
+    }
+}
+
+function subscribe() {
+    window.open("https://www.youtube.com/@MN98Ty", "_blank");
+}
+</script>
+
+</body>
+</html>
