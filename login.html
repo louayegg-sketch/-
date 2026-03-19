@@ -83,17 +83,14 @@ function login(){
 
     error.innerText = "";
 
-    // تحقق من الاسم
     if(passwords[name]){
 
-        // تحقق من كلمة السر
         if(passwords[name] === pass){
 
-            // نجاح
-            window.location.href = "page.html?user=" + encodeURIComponent(name);
+            // 🔥 تحويل لصفحة جديدة
+            window.location.href = "home.html?user=" + encodeURIComponent(name);
 
         } else {
-
             error.innerText = "كلمة السر غير صحيحة ❌";
         }
 
@@ -108,7 +105,6 @@ function login(){
     }
 }
 
-// إيجاد أقرب اسم
 function findClosest(input){
 
     let names = Object.keys(passwords);
@@ -126,7 +122,6 @@ function findClosest(input){
     return best;
 }
 
-// حساب الفرق بين الكلمات
 function levenshtein(a,b){
     let m=[];
     for(let i=0;i<=b.length;i++){m[i]=[i];}
