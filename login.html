@@ -3,103 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول</title>
+<title>Login</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #12001a, #3a0ca3);
-        color: white;
-    }
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #1a0025, #3a0ca3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
 
-    .box {
-        background: rgba(0,0,0,0.4);
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-        width: 320px;
-    }
+.box {
+    background: rgba(0,0,0,0.5);
+    padding: 25px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: center;
+}
 
-    input {
-        width: 90%;
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 10px;
-        border: none;
-        outline: none;
-    }
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+}
 
-    button {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 12px;
-        background: #2196f3;
-        color: white;
-        cursor: pointer;
-        transition: 0.2s;
-    }
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: green;
+    color: white;
+    cursor: pointer;
+}
 
-    button:active {
-        transform: scale(0.9);
-    }
+button:active {
+    transform: scale(0.9);
+}
 
-    .error {
-        color: red;
-        margin-top: 10px;
-        font-size: 14px;
-        white-space: pre-line;
-    }
+.error {
+    color: red;
+    margin-top: 10px;
+    white-space: pre-line;
+}
 
-    .popup {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        display: none;
-        justify-content: center;
-        align-items: center;
-    }
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
 
-    .card {
-        background: #1e1e2f;
-        padding: 20px;
-        border-radius: 15px;
-        width: 340px;
-        text-align: right;
-        animation: zoom 0.3s ease;
-    }
+.card {
+    background: #222;
+    padding: 20px;
+    border-radius: 12px;
+    width: 340px;
+    text-align: right;
+}
 
-    @keyframes zoom {
-        from {transform: scale(0.5);}
-        to {transform: scale(1);}
-    }
-
-    .close {
-        margin-top: 10px;
-        background: red;
-        border-radius: 10px;
-    }
+.close {
+    margin-top: 10px;
+    background: red;
+}
 </style>
 
 </head>
+
 <body>
 
 <div class="box">
     <h2>تسجيل الدخول</h2>
-
-    <input type="text" id="user" placeholder="اسم المستخدم">
-    <input type="password" id="pass" placeholder="كلمة المرور">
-
+    <input id="user" placeholder="الاسم">
+    <input id="pass" type="password" placeholder="كلمة المرور">
     <button onclick="login()">دخول</button>
-
     <div id="msg" class="error"></div>
 </div>
 
@@ -112,88 +98,55 @@
 </div>
 
 <script>
+
 const accounts = {
 
-"حمود": {pass:"58321", info:`عدد الجنود: 270<br>الاقتصاد: 31$`},
-"عمر": {pass:"74219", info:`عدد الجنود: 3500<br>الاقتصاد: 125$<br>1 نووي`},
-"علي جواد": {pass:"61984", info:`عدد الجنود: 820<br>الاقتصاد: 131$<br>الجواز: لؤي`},
-"ماهر": {pass:"90427", info:`عدد الجنود: 5625<br>الاقتصاد: 120$`},
-"بدر": {pass:"27165", info:`عدد الجنود: 1070<br>1 صاروخ طراز 5<br>الجواز: لؤي`},
-"لؤي": {pass:"36819", info:`لفل9<br>عدد الجنود: 13200<br>الاقتصاد: 9908$<br>نووي: 78<br>لفل المنتخب: 4`},
-"احمد": {pass:"55073", info:`عدد الجنود: 1740<br>الاقتصاد: 100$`},
-"حماد": {pass:"14692", info:`عدد الجنود: 340<br>الاقتصاد: 50$`},
-"جورنمي": {pass:"82740", info:`عدد الجنود: 480<br>الاقتصاد: 24$`},
-"محمد": {pass:"93516", info:`عدد الجنود: 130<br>5 صواريخ طراز 5`},
-"قيس": {pass:"11864", info:`لفل6<br>عدد الجنود: 5500<br>7 نووي`},
-"يونس": {pass:"66290", info:`عدد الجنود: 10<br>الجواز: لؤي`},
-"احمد2": {pass:"40758", info:`عدد الجنود: 1200`},
-"مريم": {pass:"78103", info:`عدد الجنود: 140<br>الجواز: لؤي`},
-"عبد الله": {pass:"25917", info:`عدد الجنود: 20`},
-"مؤمنة": {pass:"63048", info:`عدد الجنود: 200`},
-"ناصر": {pass:"99421", info:`عدد الجنود: 90`},
-"رحيم": {pass:"31580", info:`عدد الجنود: 5000`},
-"حسونياس": {pass:"47296", info:`عدد الجنود: 860`},
-"ادم": {pass:"86035", info:`عدد الجنود: 300`},
-"سانتش": {pass:"10293", info:`عدد الجنود: 37700`},
-"نونو": {pass:"55872", info:`عدد الجنود: 15`},
-"روسيا": {pass:"77701", info:`عدد الجنود: 0`},
-"سكايلي الاحمر": {pass:"44109", info:`عدد الجنود: 0`},
-"ريد تيب": {pass:"20984", info:`عدد الجنود: 8000`},
-"ورد": {pass:"67315", info:`عدد الجنود: 1270`},
-"ادم ايطاليا": {pass:"39072", info:`عدد الجنود: 8`},
-"عبد الوهاب": {pass:"12856", info:`عدد الجنود: 2020`},
-"عبدو": {pass:"84560", info:`عدد الجنود: 11500`},
-"سلطان": {pass:"29471", info:`عدد الجنود: 250`},
-"وديد": {pass:"51638", info:`عدد الجنود: 1200`},
-"الوليد": {pass:"74288", info:`عدد الجنود: 11500`},
-"وليان": {pass:"60845", info:`عدد الجنود: 300`},
-"نزار": {pass:"96321", info:`عدد الجنود: 2450`},
-"عثمان": {pass:"13579", info:`عدد الجنود: 320`},
-"لونا": {pass:"82460", info:`عدد الجنود: 420`},
-"مهدي": {pass:"45712", info:`عدد الجنود: 125`},
-"وائل": {pass:"69024", info:`عدد الجنود: 57`},
-"تيم": {pass:"31876", info:`عدد الجنود: 2220`},
-"امين": {pass:"77125", info:`عدد الجنود: 850`},
-"سبونر": {pass:"50291", info:`عدد الجنود: 650`},
-"سوني": {pass:"88463", info:`عدد الجنود: 2300`},
-"فلاديمير (حسن)": {pass:"24680", info:`عدد الجنود: 1700`},
-"لونا (برمودا)": {pass:"93740", info:`عدد الجنود: 205`}
+"حمود":{pass:"58321",soldiers:270,money:"31$",military:1,team:1},
+"عمر":{pass:"74219",soldiers:3500,money:"125$",military:1,team:1,extra:"1 نووي"},
+"علي جواد":{pass:"61984",soldiers:820,money:"131$",military:1,team:1,extra:"جواز: لؤي"},
+"ماهر":{pass:"90427",soldiers:5625,money:"120$",military:1,team:1},
+"بدر":{pass:"27165",soldiers:1070,money:"126$",military:1,team:1,extra:"صاروخ طراز 5"},
+"لؤي":{pass:"36819",soldiers:13200,money:"9908$",military:2,team:4,extra:"نووي 78 + تخفي"},
+"احمد":{pass:"55073",soldiers:1740,money:"100$",military:1,team:1},
+"حماد":{pass:"14692",soldiers:340,money:"50$",military:1,team:1},
+"جورنمي":{pass:"82740",soldiers:480,money:"24$",military:1,team:1},
+"محمد":{pass:"93516",soldiers:130,money:"185$",military:1,team:1,extra:"صواريخ + طراز 20"},
+"قيس":{pass:"11864",soldiers:5500,money:"3700$",military:1,team:5,extra:"7 نووي"},
+"يونس":{pass:"66290",soldiers:10,money:"45$",military:1,team:1,extra:"جواز: لؤي"},
+"احمد2":{pass:"40758",soldiers:1200,money:"100$",military:1,team:1},
+"مريم":{pass:"78103",soldiers:140,money:"100$",military:1,team:1,extra:"جواز: لؤي"},
+"عبد الله":{pass:"25917",soldiers:20,money:"0$",military:1,team:1,extra:"منجم ماس"},
+"مؤمنة":{pass:"63048",soldiers:200,money:"80$",military:1,team:1},
+"ناصر":{pass:"99421",soldiers:90,money:"100$",military:1,team:1},
+"رحيم":{pass:"31580",soldiers:5000,money:"100$",military:1,team:1},
+"حسونياس":{pass:"47296",soldiers:860,money:"100$",military:1,team:1},
+"ادم":{pass:"86035",soldiers:300,money:"130$",military:1,team:1},
+"سانتش":{pass:"10293",soldiers:37700,money:"100$",military:1,team:1,extra:"جواز: لؤي"},
+"نونو":{pass:"55872",soldiers:15,money:"100$",military:1,team:1},
+"روسيا":{pass:"77701",soldiers:0,money:"0$",military:1,team:1},
+"سكايلي الاحمر":{pass:"44109",soldiers:0,money:"0$",military:0,team:0},
+"ريد تيب":{pass:"20984",soldiers:8000,money:"100$",military:1,team:1},
+"ورد":{pass:"67315",soldiers:1270,money:"100$",military:1,team:1},
+"ادم ايطاليا":{pass:"39072",soldiers:8,money:"100$",military:1,team:1},
+"عبد الوهاب":{pass:"12856",soldiers:2020,money:"195$",military:1,team:3},
+"عبدو":{pass:"84560",soldiers:11500,money:"100$",military:1,team:1},
+"سلطان":{pass:"29471",soldiers:250,money:"100$",military:1,team:1},
+"وديد":{pass:"51638",soldiers:1200,money:"385$",military:"1.060",team:1,extra:"نفط لفل5 + صواريخ + دفاع"},
+"الوليد":{pass:"74288",soldiers:11500,money:"100$",military:1,team:1},
+"وليان":{pass:"60845",soldiers:300,money:"525$",military:1,team:1,extra:"ديون 500 + نووي"},
+"نزار":{pass:"96321",soldiers:2450,money:"100$",military:1,team:1},
+"عثمان":{pass:"13579",soldiers:320,money:"100$",military:1,team:1},
+"لونا":{pass:"82460",soldiers:420,money:"100$",military:1,team:1},
+"مهدي":{pass:"45712",soldiers:125,money:"100$",military:1,team:1},
+"وائل":{pass:"69024",soldiers:57,money:"30$",military:1,team:1,extra:"خشب + حديد"},
+"تيم":{pass:"31876",soldiers:2220,money:"200$",military:1,team:1},
+"امين":{pass:"77125",soldiers:850,money:"100$",military:1,team:1},
+"سبونر":{pass:"50291",soldiers:650,money:"100$",military:1,team:1},
+"سوني":{pass:"88463",soldiers:2300,money:"100$",military:1,team:1,extra:"2800 ثوريين"},
+"فلاديمير":{pass:"24680",soldiers:1700,money:"100$",military:1,team:1},
+"لونا (برمودا)":{pass:"93740",soldiers:205,money:"100$",military:1,team:1}
+
 };
-
-const names = Object.keys(accounts);
-
-function levenshtein(a, b){
-    let matrix = [];
-    for(let i=0;i<=b.length;i++){ matrix[i]=[i]; }
-    for(let j=0;j<=a.length;j++){ matrix[0][j]=j; }
-
-    for(let i=1;i<=b.length;i++){
-        for(let j=1;j<=a.length;j++){
-            if(b[i-1]==a[j-1]){
-                matrix[i][j]=matrix[i-1][j-1];
-            } else {
-                matrix[i][j]=Math.min(
-                    matrix[i-1][j-1]+1,
-                    matrix[i][j-1]+1,
-                    matrix[i-1][j]+1
-                );
-            }
-        }
-    }
-    return matrix[b.length][a.length];
-}
-
-function closestName(input){
-    let best="", min=999;
-    names.forEach(n=>{
-        let d = levenshtein(input,n);
-        if(d < min){
-            min = d;
-            best = n;
-        }
-    });
-    return best;
-}
 
 function login(){
     let user = document.getElementById("user").value;
@@ -204,21 +157,35 @@ function login(){
 
     if(accounts[user]){
         if(accounts[user].pass === pass){
+
+            let u = accounts[user];
+
             document.getElementById("name").innerText = user;
-            document.getElementById("info").innerHTML = accounts[user].info;
+
+            let extraText = u.extra ? `<br>📌 ${u.extra}` : "";
+
+            document.getElementById("info").innerHTML = `
+            👥 الجنود: ${u.soldiers}<br>
+            💰 الاقتصاد: ${u.money}<br>
+            🪖 العسكري: ${u.military}<br>
+            🏆 المنتخب: ${u.team}
+            ${extraText}
+            `;
+
             document.getElementById("popup").style.display = "flex";
+
         } else {
             msg.innerText = "كلمة السر غير صحيحة ❌";
         }
     } else {
-        let closest = closestName(user);
-        msg.innerText = "الاسم غير موجود ❌\nأقرب اسم: " + closest;
+        msg.innerText = "الاسم غير موجود ❌";
     }
 }
 
 function closePopup(){
     document.getElementById("popup").style.display = "none";
 }
+
 </script>
 
 </body>
