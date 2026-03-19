@@ -1,1 +1,139 @@
-.
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#12001a;
+    color:white;
+}
+
+/* الهيدر */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+}
+
+/* الصورة */
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#555;
+    cursor:pointer;
+}
+
+/* القائمة الجانبية */
+.sidebar{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:260px;
+    height:100%;
+    background:#222;
+    padding:20px;
+    transition:0.4s;
+}
+
+.sidebar.active{
+    right:0;
+}
+
+/* المحتوى */
+.card{
+    text-align:center;
+    margin-top:50px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:red;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h3 id="welcome"></h3>
+    <div class="avatar" onclick="toggleMenu()"></div>
+</div>
+
+<div class="card">
+    <p>اضغط على الصورة لرؤية معلوماتك 👆</p>
+</div>
+
+<!-- القائمة -->
+<div class="sidebar" id="sidebar">
+    <h3>معلومات الحساب</h3>
+
+    <p id="userName"></p>
+    <p id="userPass"></p>
+    <hr>
+    <p id="soldiers"></p>
+    <p id="money"></p>
+    <p id="military"></p>
+    <p id="team"></p>
+</div>
+
+<button onclick="logout()">تسجيل خروج</button>
+
+<script src="pass.js"></script>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+const user = params.get("user");
+
+if(!user || !passwords[user]){
+    window.location.href = "login.html";
+}
+
+// بيانات المستخدم الكاملة (عدّلها حسب pass.js إذا عندك)
+let data = {
+    pass: passwords[user],
+    soldiers: "غير محدد",
+    money: "غير محدد",
+    military: "غير محدد",
+    team: "غير محدد"
+};
+
+// 👇 هنا تربطها لو عندك ملف فيه معلومات إضافية
+// حالياً نحط بيانات تجريبية أو تربطها بملف ثاني إذا عندك
+
+// ترحيب
+document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
+
+// تعبئة القائمة
+document.getElementById("userName").innerText = "👤 الاسم: " + user;
+document.getElementById("userPass").innerText = "🔑 كلمة السر: " + data.pass;
+
+document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
+document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
+document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
+document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
+
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
+function logout(){
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
