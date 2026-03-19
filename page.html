@@ -14,7 +14,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     background: #12001a;
     color: white;
 }
@@ -31,21 +30,23 @@ body {
     font-size: 16px;
 }
 
-/* أزرار الدخول */
+/* أزرق */
 .blue {
     background: #2196f3;
-}
-
-/* زر اللغة */
-.green {
-    background: #4caf50;
 }
 
 .btn:active {
     transform: scale(0.9);
 }
 
-/* صورة الخريطة */
+/* حاوية الأزرار في الوسط */
+.center-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* الصورة */
 img {
     width: 220px;
     height: 220px;
@@ -53,54 +54,96 @@ img {
     margin: 20px 0;
     object-fit: cover;
 }
+
+/* زر اللغة */
+.lang-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* القائمة */
+.lang-menu {
+    position: absolute;
+    bottom: 80px;
+    background: #222;
+    padding: 10px;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+}
+
+.lang-item {
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lang-item:hover {
+    background: #444;
+}
+
+.flag {
+    width: 20px;
+}
 </style>
 </head>
 
 <body>
 
-<div id="buttons">
+<div class="center-buttons">
     <button class="btn blue" onclick="goLogin()">Login</button>
     <button class="btn blue">Sign in</button>
 </div>
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/World_map_blank_without_borders.svg" alt="map">
 
-<button class="btn green" onclick="changeLang()" id="langBtn">اللغة</button>
+<!-- زر اللغة -->
+<div style="position:relative;">
+    <button class="lang-btn" onclick="toggleLangMenu()" id="langBtn">🌐</button>
+
+    <div class="lang-menu" id="langMenu">
+        <div class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</div>
+        <div class="lang-item" onclick="setLang('en')">🇬🇧 English</div>
+        <div class="lang-item" onclick="setLang('fr')">🇫🇷 Français</div>
+        <div class="lang-item" onclick="setLang('ru')">🇷🇺 Русский</div>
+        <div class="lang-item" onclick="setLang('es')">🇪🇸 Español</div>
+    </div>
+</div>
 
 <script>
 function goLogin(){
     window.location.href = "login.html";
 }
 
-/* تغيير اللغة */
-function changeLang(){
-    let current = localStorage.getItem("lang") || "ar";
-
-    if(current === "ar"){
-        localStorage.setItem("lang","en");
-        applyLang("en");
-    } else {
-        localStorage.setItem("lang","ar");
-        applyLang("ar");
-    }
+/* فتح/إغلاق القائمة */
+function toggleLangMenu(){
+    let menu = document.getElementById("langMenu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 }
 
-/* تطبيق اللغة */
-function applyLang(lang){
+/* اختيار اللغة */
+function setLang(lang){
+    localStorage.setItem("lang", lang);
+    document.getElementById("langMenu").style.display = "none";
+}
+
+/* إغلاق القائمة عند الضغط خارجها */
+document.addEventListener("click", function(e){
+    let menu = document.getElementById("langMenu");
     let btn = document.getElementById("langBtn");
 
-    if(lang === "ar"){
-        btn.innerText = "اللغة";
-    } else {
-        btn.innerText = "Language";
+    if(!menu.contains(e.target) && !btn.contains(e.target)){
+        menu.style.display = "none";
     }
-}
-
-/* تحميل اللغة عند فتح الصفحة */
-window.onload = function(){
-    let lang = localStorage.getItem("lang") || "ar";
-    applyLang(lang);
-}
+});
 </script>
 
 </body>
