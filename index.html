@@ -14,6 +14,26 @@ body {
   color:white;
 }
 
+.top-bar {
+  position:fixed;
+  top:10px;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:0 15px;
+}
+
+/* كارد */
+.card {
+  background: rgba(0,0,0,0.4);
+  padding:25px;
+  border-radius:20px;
+  width:90%;
+  max-width:350px;
+  margin:auto;
+  margin-top:100px;
+}
+
 /* أزرار */
 button {
   padding:12px 20px;
@@ -39,12 +59,12 @@ button:active {
 
 /* إدخالات */
 input {
-  padding:10px;
-  margin:8px;
-  width:80%;
-  max-width:300px;
+  padding:14px;
+  margin:10px;
+  width:90%;
   border-radius:12px;
-  border:none;
+  border:2px solid black;
+  font-size:16px;
 }
 
 /* صورة */
@@ -68,16 +88,6 @@ img {
   cursor:pointer;
 }
 
-/* شريط علوي */
-.top-bar {
-  position:fixed;
-  top:10px;
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  padding:0 15px;
-}
-
 /* انميشن */
 #app {
   animation: fadeIn 0.4s ease;
@@ -94,16 +104,18 @@ img {
 
 <div class="top-bar">
   <button onclick="goBack()">↩️</button>
+  <button onclick="startScreen()">🏠</button>
 </div>
 
 <div id="app"></div>
 
 <script>
 
-// اللغة الحالية
 let currentLang = "ar";
+let historyStack = [];
+let savedUser = "";
+let savedPass = "";
 
-// النصوص
 const T = {
   ar: {
     welcome: "مرحبا بك في خريطة الميمز",
@@ -167,10 +179,6 @@ const T = {
   }
 };
 
-// المستخدمين
-let historyStack = [];
-
-// التنقل
 function show(fn){
   historyStack.push(fn);
   fn();
@@ -183,7 +191,7 @@ function goBack(){
   else startScreen();
 }
 
-// البداية
+/* البداية */
 function startScreen(){
   historyStack = [];
   document.getElementById("app").innerHTML = `
@@ -194,7 +202,7 @@ function startScreen(){
   `;
 }
 
-// صفحة الدخول
+/* صفحة الدخول */
 function loginPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
@@ -215,32 +223,87 @@ function loginPage(){
   });
 }
 
-// تسجيل الدخول
+/* تسجيل الدخول */
 function loginForm(){
   show(()=>{
     document.getElementById("app").innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
-        <input placeholder="${T[currentLang].username}">
-        <input type="password" placeholder="${T[currentLang].password}">
-        <button class="blue" onclick="mainPage()">${T[currentLang].enter}</button>
+      <div class="card">
+        <input id="loginUser" placeholder="${T[currentLang].username}">
+        <input id="loginPass" type="password" placeholder="${T[currentLang].password}">
+
+        <button class="blue" onclick="loginCheck()">${T[currentLang].enter}</button>
+
+        <br><br>
+        <button class="green" onclick="startScreen()">↩️ رجوع</button>
       </div>
     `;
   });
 }
 
-// إنشاء حساب
+/* إنشاء حساب */
 function signinPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
-      <div style="padding:20px;">
-        <p>${T[currentLang].contact}</p>
-        <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
+      <div class="card">
+
+        <h2>${T[currentLang].signup}</h2>
+
+        <input id="newUser" placeholder="${T[currentLang].username}">
+        <input id="newPass" type="password" placeholder="${T[currentLang].password}">
+
+        <button class="blue" onclick="createAccount()">${T[currentLang].enter}</button>
+
+        <br><br>
+        <button class="green" onclick="startScreen()">↩️ رجوع</button>
+
       </div>
     `;
   });
 }
 
-// الصفحة الرئيسية
+/* إنشاء الحساب */
+function createAccount(){
+  let u = document.getElementById("newUser").value;
+  let p = document.getElementById("newPass").value;
+
+  if(!u || !p){
+    alert("املأ البيانات");
+    return;
+  }
+
+  savedUser = u;
+  savedPass = p;
+
+  document.getElementById("app").innerHTML = `
+    <div class="card">
+      <h2>تم إنشاء الحساب ✅</h2>
+      <p>👤 ${u}</p>
+      <p>🔒 ${p}</p>
+      <button class="green" onclick="startScreen()">🏠 القائمة الرئيسية</button>
+    </div>
+  `;
+}
+
+/* تسجيل الدخول */
+function loginCheck(){
+  let u = document.getElementById("loginUser").value;
+  let p = document.getElementById("loginPass").value;
+
+  if(u === savedUser && p === savedPass){
+    document.getElementById("app").innerHTML = `
+      <div class="card">
+        <h2>مرحباً 👋</h2>
+        <p>👤 ${u}</p>
+        <p>🔒 ${p}</p>
+        <button class="green" onclick="mainPage()">دخول للخريطة</button>
+      </div>
+    `;
+  } else {
+    alert("بيانات خاطئة ❌");
+  }
+}
+
+/* الصفحة الرئيسية */
 function mainPage(){
   show(()=>{
     document.getElementById("app").innerHTML = `
@@ -258,7 +321,7 @@ function mainPage(){
   });
 }
 
-// اللغات
+/* اللغات */
 function toggleLang(){
   let box = document.getElementById("langBox");
 
@@ -284,7 +347,7 @@ function toggleLang(){
   `;
 }
 
-// تغيير اللغة
+/* تغيير اللغة */
 function setLang(l){
   currentLang = l;
 
@@ -301,16 +364,12 @@ function setLang(l){
   }, 100);
 }
 
-// روابط
+/* روابط */
 function openYT(){
   window.open("https://www.youtube.com/@MN98Ty","_blank");
 }
 
-function openInsta(){
-  window.open("https://instagram.com/Louaye_Gamer_i","_blank");
-}
-
-// تشغيل
+/* تشغيل */
 startScreen();
 
 </script>
