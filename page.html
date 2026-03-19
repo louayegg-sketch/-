@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الصفحة الرئيسية</title>
+<title>الصفحة الثانية</title>
 
 <style>
 body {
@@ -14,7 +14,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #12001a;
+    background: linear-gradient(135deg, #0f0c29, #3a0ca3, #7209b7);
     color: white;
 }
 
@@ -27,7 +27,7 @@ body {
 .btn {
     margin: 10px;
     padding: 15px;
-    width: 180px;
+    width: 160px;
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -35,12 +35,16 @@ body {
     font-size: 16px;
 }
 
+.btn:active {
+    transform: scale(0.9);
+}
+
 .blue {
     background: #2196f3;
 }
 
-.btn:active {
-    transform: scale(0.9);
+.green {
+    background: #4caf50;
 }
 
 img {
@@ -61,203 +65,31 @@ img {
     cursor: pointer;
     font-size: 18px;
 }
-
-.lang-menu {
-    position: absolute;
-    bottom: 80px;
-    background: #222;
-    padding: 10px;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-}
-
-.lang-item {
-    padding: 8px;
-    cursor: pointer;
-}
-
-.lang-item:hover {
-    background: #444;
-}
 </style>
 </head>
 
 <body>
 
 <div class="center-buttons">
-    <button class="btn blue" id="loginBtn" onclick="goLogin()">تسجيل الدخول</button>
-    <button class="btn blue" id="signinBtn">حساب جديد</button>
+    <button class="btn blue" onclick="goLogin()">تسجيل الدخول</button>
+    <button class="btn blue">حساب جديد</button>
 </div>
 
+<!-- صورة الخريطة -->
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1024px-World_map_-_low_resolution.svg.png">
 
-<div style="position:relative;">
-    <button class="lang-btn" onclick="toggleLangMenu()">🌐</button>
-
-    <div class="lang-menu" id="langMenu">
-        <div class="lang-item" onclick="setLang('ar')">🇸🇦 العربية</div>
-        <div class="lang-item" onclick="setLang('en')">🇬🇧 English</div>
-        <div class="lang-item" onclick="setLang('fr')">🇫🇷 Français</div>
-        <div class="lang-item" onclick="setLang('ru')">🇷🇺 Русский</div>
-        <div class="lang-item" onclick="setLang('es')">🇪🇸 Español</div>
-    </div>
-</div>
+<!-- زر اللغة -->
+<button class="lang-btn" onclick="langComingSoon()">🌐</button>
 
 <script>
 function goLogin(){
     window.location.href = "login.html";
 }
 
-/* فتح القائمة */
-function toggleLangMenu(){
-    let menu = document.getElementById("langMenu");
-    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-}
-
-/* تغيير اللغة */
-function setLang(lang){
-    localStorage.setItem("lang", lang);
-    applyLang(lang);
-    document.getElementById("langMenu").style.display = "none";
-}
-
-/* تطبيق اللغة */
-function applyLang(lang){
-
-    document.documentElement.lang = lang;
-
-    let loginBtn = document.getElementById("loginBtn");
-    let signinBtn = document.getElementById("signinBtn");
-
-    if(lang === "ar"){
-        loginBtn.innerText = "تسجيل الدخول";
-        signinBtn.innerText = "حساب جديد";
-    }
-
-    if(lang === "en"){
-        loginBtn.innerText = "Login";
-        signinBtn.innerText = "Sign up";
-    }
-
-    if(lang === "fr"){
-        loginBtn.innerText = "Connexion";
-        signinBtn.innerText = "Créer compte";
-    }
-
-    if(lang === "ru"){
-        loginBtn.innerText = "Войти";
-        signinBtn.innerText = "Регистрация";
-    }
-
-    if(lang === "es"){
-        loginBtn.innerText = "Iniciar sesión";
-        signinBtn.innerText = "Registrarse";
-    }
-}
-
-/* عند فتح الصفحة */
-window.onload = function(){
-    let lang = localStorage.getItem("lang") || "ar";
-    applyLang(lang);
-}
-
-/* إغلاق القائمة عند الضغط خارجها */
-document.addEventListener("click", function(e){
-    let menu = document.getElementById("langMenu");
-    let btn = document.querySelector(".lang-btn");
-
-    if(!menu.contains(e.target) && !btn.contains(e.target)){
-        menu.style.display = "none";
-    }
-});
-<script>
-function applyLang(lang){
-
-    document.documentElement.lang = lang;
-
-    // غيّر حسب عناصر الصفحة الموجودة عندك
-    let loginBtn = document.getElementById("loginBtn");
-    let signinBtn = document.getElementById("signinBtn");
-
-    if(loginBtn && signinBtn){
-
-        if(lang === "ar"){
-            loginBtn.innerText = "تسجيل الدخول";
-            signinBtn.innerText = "حساب جديد";
-        }
-
-        if(lang === "en"){
-            loginBtn.innerText = "Login";
-            signinBtn.innerText = "Sign up";
-        }
-
-        if(lang === "fr"){
-            loginBtn.innerText = "Connexion";
-            signinBtn.innerText = "Créer compte";
-        }
-
-        if(lang === "ru"){
-            loginBtn.innerText = "Войти";
-            signinBtn.innerText = "Регистрация";
-        }
-
-        if(lang === "es"){
-            loginBtn.innerText = "Iniciar sesión";
-            signinBtn.innerText = "Registrarse";
-        }
-    }
-}
-
-/* عند فتح أي صفحة */
-window.onload = function(){
-    let lang = localStorage.getItem("lang") || "ar";
-    applyLang(lang);
+function langComingSoon(){
+    alert("ميزة تغيير اللغة تحت الإنشاء 🚧");
 }
 </script>
-<script>
-function applyLang(lang){
 
-    document.documentElement.lang = lang;
-
-    // غيّر حسب عناصر الصفحة الموجودة عندك
-    let loginBtn = document.getElementById("loginBtn");
-    let signinBtn = document.getElementById("signinBtn");
-
-    if(loginBtn && signinBtn){
-
-        if(lang === "ar"){
-            loginBtn.innerText = "تسجيل الدخول";
-            signinBtn.innerText = "حساب جديد";
-        }
-
-        if(lang === "en"){
-            loginBtn.innerText = "Login";
-            signinBtn.innerText = "Sign up";
-        }
-
-        if(lang === "fr"){
-            loginBtn.innerText = "Connexion";
-            signinBtn.innerText = "Créer compte";
-        }
-
-        if(lang === "ru"){
-            loginBtn.innerText = "Войти";
-            signinBtn.innerText = "Регистрация";
-        }
-
-        if(lang === "es"){
-            loginBtn.innerText = "Iniciar sesión";
-            signinBtn.innerText = "Registrarse";
-        }
-    }
-}
-
-/* عند فتح أي صفحة */
-window.onload = function(){
-    let lang = localStorage.getItem("lang") || "ar";
-    applyLang(lang);
-}
-</script>
 </body>
 </html>
