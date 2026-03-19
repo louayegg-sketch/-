@@ -2,57 +2,70 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>نظام المستخدمين</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خريطة الميمز</title>
 
 <style>
 body {
+  margin:0;
   font-family: Arial;
-  text-align: center;
-  background: #f0f0f0;
-  padding: 20px;
+  text-align:center;
+  background: linear-gradient(135deg,#1f1c2c,#928dab);
+  color:white;
 }
 
 button {
-  padding: 15px 25px;
-  margin: 10px;
-  border: none;
-  border-radius: 20px;
-  background: #00c3ff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
+  padding:15px 25px;
+  margin:10px;
+  border:none;
+  border-radius:20px;
+  font-size:16px;
+  cursor:pointer;
 }
 
+.green { background:#28a745; color:white; }
+.blue { background:#007bff; color:white; }
+
 input {
-  padding: 10px;
-  margin: 10px;
-  width: 80%;
-  border-radius: 15px;
-  border: 1px solid #ccc;
+  padding:12px;
+  margin:10px;
+  width:80%;
+  border-radius:15px;
+  border:none;
 }
 
 .box {
-  background: white;
-  padding: 15px;
-  border-radius: 15px;
-  margin-top: 20px;
+  background:white;
+  color:black;
+  padding:15px;
+  border-radius:15px;
+  margin:20px;
 }
-</style>
 
+.top-btn {
+  position:fixed;
+  top:10px;
+  padding:10px;
+}
+
+#homeBtn { right:10px; }
+#backBtn { left:10px; }
+
+.link { color:#00c3ff; cursor:pointer; }
+.error { color:red; }
+</style>
 </head>
+
 <body>
 
-<h2>نظام تسجيل الدخول</h2>
+<button id="homeBtn" class="top-btn">🏠</button>
+<button id="backBtn" class="top-btn">🔄</button>
 
-<button onclick="showLogin()">🔐 Login</button>
-<button onclick="showSignIn()">📝 Sign In</button>
-
-<div id="content"></div>
+<div id="app"></div>
 
 <script>
 
-// 🔥 هنا تحط المستخدمين بنفسك
+// 🔥 حط المستخدمين هنا
 const users = {"لؤي": {الجنود:13200, الاقتصاد:"9908$", الديون:"0$", العسكري:2, لفل_المنتخب:4, نووي:78, التخفي:true, password:"67890", المركز_العسكري:"#1#"},
 "سانتش": {الجنود:37700, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"88990", المركز_العسكري:"#2#"},
 "عبدو": {الجنود:11500, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"60606", المركز_العسكري:"#3#"},
@@ -87,60 +100,127 @@ const users = {"لؤي": {الجنود:13200, الاقتصاد:"9908$", الدي
 "تيم": {الجنود:2220, الاقتصاد:"200$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"77777", المركز_العسكري:"#32#"}
 };
 
+let historyStack = [];
 
-// ================= LOGIN =================
-function showLogin() {
-  document.getElementById("content").innerHTML = `
-    <input id="username" placeholder="الاسم">
-    <input id="password" type="password" placeholder="كلمة السر">
-    <button onclick="login()">دخول</button>
-    <p id="error"></p>
+// ================= صفحات =================
+
+function savePage(fn){
+  historyStack.push(fn);
+}
+
+function goBack(){
+  historyStack.pop();
+  let last = historyStack.pop();
+  if(last) last();
+}
+
+function home(){
+  document.getElementById("app").innerHTML = `
+    <h1>مرحبا بك في خريطة الميمز</h1>
+    <button class="green" onclick="start()">ابدأ</button>
   `;
 }
 
-function login() {
-  let u = document.getElementById("username").value;
-  let p = document.getElementById("password").value;
-
-  if (users[u] && users[u].password === p) {
-    showUser(u);
-  } else {
-    document.getElementById("error").innerText = "❌ خطأ في البيانات";
-  }
-}
-
-
-// ================= SIGN IN =================
-function showSignIn() {
-  document.getElementById("content").innerHTML = `
-    <input placeholder="اسم جديد">
-    <input type="password" placeholder="كلمة سر">
-    <button onclick="fakeSign()">إنشاء</button>
-    <p id="msg"></p>
+function start(){
+  savePage(home);
+  document.getElementById("app").innerHTML = `
+    <button class="blue" onclick="loginPage()">Login</button><br>
+    <button class="blue" onclick="signinPage()">Sign In</button>
   `;
 }
 
-function fakeSign() {
-  document.getElementById("msg").innerText = "✔️ تم (عرض فقط)";
-}
-
-
-// ================= SHOW USER =================
-function showUser(name) {
-  let u = users[name];
-
-  let html = `
+function signinPage(){
+  savePage(start);
+  document.getElementById("app").innerHTML = `
     <div class="box">
-      <h3>${name}</h3>
-      <p>الجنود: ${u.الجنود || 0}</p>
-      <p>الاقتصاد: ${u.الاقتصاد || 0}</p>
-      <p>العسكري: ${u.العسكري || 0}</p>
-      <p>لفل المنتخب: ${u.لفل_المنتخب || 0}</p>
+      <p>اذا تبغا تسوي حساب جديد تواصل مع صاحب الخريطة لؤي فالانستا</p>
+      <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
     </div>
   `;
-
-  document.getElementById("content").innerHTML = html;
 }
+
+function loginPage(){
+  savePage(start);
+  document.getElementById("app").innerHTML = `
+    <input id="username" placeholder="اكتب الاسم">
+    <input id="password" type="password" placeholder="كلمة السر">
+    <button class="blue" onclick="login()">دخول</button>
+    <p id="error"></p>
+    <p id="suggest"></p>
+  `;
+}
+
+// ================= تسجيل الدخول =================
+
+function getClosestName(input){
+  let names = Object.keys(users);
+  return names.find(n => n.includes(input)) || "";
+}
+
+function login(){
+  let u = document.getElementById("username").value.trim();
+  let p = document.getElementById("password").value;
+
+  let error = document.getElementById("error");
+  let suggest = document.getElementById("suggest");
+
+  if(!users[u]){
+    let close = getClosestName(u);
+    error.innerHTML = "❌ الاسم مش موجود (تأكد ما في مسافات)";
+    suggest.innerHTML = close ? "هل تقصد: " + close : "";
+    return;
+  }
+
+  if(users[u].password !== p){
+    error.innerHTML = "❌ كلمة السر ليست صحيحة";
+    suggest.innerHTML = `<span class="link" onclick="signinPage()">هل نسيت كلمة السر؟</span>`;
+    return;
+  }
+
+  mainPage();
+}
+
+// ================= الصفحة الرئيسية =================
+
+function mainPage(){
+  savePage(loginPage);
+  document.getElementById("app").innerHTML = `
+    <img src="https://i.ibb.co/RpPJkLDX/map.png" width="80%"><br>
+
+    <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
+
+    <br><br>
+    <p>🌐 تغيير اللغة</p>
+    <button onclick="changeLang('ar')">عربي</button>
+    <button onclick="changeLang('en')">English</button>
+    <button onclick="changeLang('es')">Español</button>
+    <button onclick="changeLang('ru')">Русский</button>
+    <button onclick="changeLang('fr')">Français</button>
+  `;
+}
+
+// ================= روابط =================
+
+function openInsta(){
+  window.open("https://instagram.com/Louaye_Gamer_i","_blank");
+}
+
+function openYT(){
+  window.open("https://www.youtube.com/@MN98Ty","_blank");
+}
+
+// ================= لغة (شكل فقط) =================
+function changeLang(l){
+  alert("تم تغيير اللغة (تجريبي)");
+}
+
+// ================= أزرار فوق =================
+
+document.getElementById("homeBtn").onclick = home;
+document.getElementById("backBtn").onclick = goBack;
+
+// تشغيل
+home();
 
 </script>
 
