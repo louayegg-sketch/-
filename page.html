@@ -3,154 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>خريطة الميمز</title>
+<title>الصفحة الثانية</title>
 
 <style>
     body {
         margin: 0;
         font-family: Arial;
-        background: linear-gradient(135deg, #12001a, #3a0ca3); /* بنفسجي أغمق */
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0f0c29, #3a0ca3, #7209b7);
         color: white;
-        text-align: center;
-        padding: 20px;
-    }
-
-    h2 {
-        margin-bottom: 20px;
     }
 
     .btn {
-        display: block;
-        margin: 10px auto;
-        width: 200px;
-        padding: 12px;
-        font-size: 16px;
-        border-radius: 12px;
+        margin: 10px;
+        padding: 15px;
+        width: 140px;
         border: none;
+        border-radius: 12px;
         cursor: pointer;
         transition: 0.2s;
+        font-size: 16px;
     }
 
-    .login { background: #2196f3; }
-    .signin { background: #9c27b0; }
-
-    /* زر اللغة مربع */
-    .lang-btn {
-        width: 120px;
-        height: 120px;
-        border-radius: 10px;
-        background: #ff9800;
-    }
-
-    /* انميشن الضغط */
     .btn:active {
         transform: scale(0.9);
+    }
+
+    .login {
+        background: #2196f3;
+    }
+
+    .signin {
+        background: #4caf50;
     }
 
     img {
         width: 200px;
         height: 200px;
-        object-fit: cover;
-        margin-top: 20px;
-        border-radius: 15px;
-    }
-
-    .subscribe {
-        margin-top: 25px;
-        color: #2196f3;
-        font-size: 18px;
-        cursor: pointer;
-        text-decoration: underline;
-    }
-
-    /* قائمة اللغة */
-    .lang-menu {
-        display: none;
-        margin-top: 10px;
-    }
-
-    .lang-item {
-        background: #222;
-        margin: 5px auto;
-        padding: 10px;
-        width: 200px;
         border-radius: 10px;
-        cursor: pointer;
-        transition: 0.2s;
+        margin: 20px 0;
     }
 
-    .lang-item:hover {
-        background: #444;
-        transform: scale(1.05);
+    .lang {
+        background: #ff9800;
     }
 </style>
-
 </head>
+
 <body>
 
-<h2 id="title">خريطة الميمز</h2>
-
-<button class="btn login" id="loginBtn">تسجيل دخول</button>
-<button class="btn signin" id="signinBtn">إنشاء حساب</button>
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg">
-
-<!-- زر اللغة -->
-<button class="btn lang-btn" onclick="toggleMenu()">🌍 اللغة</button>
-
-<!-- قائمة اللغات -->
-<div id="langMenu" class="lang-menu">
-    <div class="lang-item" onclick="setLang('ar')">🇸🇦 عربي</div>
-    <div class="lang-item" onclick="setLang('en')">🇬🇧 English</div>
-    <div class="lang-item" onclick="setLang('fr')">🇫🇷 Français</div>
-    <div class="lang-item" onclick="setLang('es')">🇪🇸 Español</div>
-    <div class="lang-item" onclick="setLang('ru')">🇷🇺 Русский</div>
+<div>
+    <button class="btn login" onclick="goLogin()">Login</button>
+    <button class="btn signin">Sign in</button>
 </div>
 
-<p class="subscribe" onclick="subscribe()">اشترك في قناة لؤي</p>
+<img src="https://via.placeholder.com/200" alt="map">
+
+<button class="btn lang">Change Language</button>
 
 <script>
-function toggleMenu(){
-    let menu = document.getElementById("langMenu");
-    menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
-
-function setLang(lang){
-    if(lang === "ar"){
-        document.getElementById("title").innerText = "خريطة الميمز";
-        document.getElementById("loginBtn").innerText = "تسجيل دخول";
-        document.getElementById("signinBtn").innerText = "إنشاء حساب";
-    }
-
-    if(lang === "en"){
-        document.getElementById("title").innerText = "Meme Map";
-        document.getElementById("loginBtn").innerText = "Login";
-        document.getElementById("signinBtn").innerText = "Sign Up";
-    }
-
-    if(lang === "fr"){
-        document.getElementById("title").innerText = "Carte des Memes";
-        document.getElementById("loginBtn").innerText = "Connexion";
-        document.getElementById("signinBtn").innerText = "Créer un compte";
-    }
-
-    if(lang === "es"){
-        document.getElementById("title").innerText = "Mapa de Memes";
-        document.getElementById("loginBtn").innerText = "Iniciar sesión";
-        document.getElementById("signinBtn").innerText = "Crear cuenta";
-    }
-
-    if(lang === "ru"){
-        document.getElementById("title").innerText = "Карта мемов";
-        document.getElementById("loginBtn").innerText = "Войти";
-        document.getElementById("signinBtn").innerText = "Создать аккаунт";
-    }
-
-    document.getElementById("langMenu").style.display = "none";
-}
-
-function subscribe() {
-    window.open("https://www.youtube.com/@MN98Ty", "_blank");
+function goLogin(){
+    window.location.href = "login.html";
 }
 </script>
 
