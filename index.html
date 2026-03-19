@@ -3,166 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meme Map</title>
+<title>خريطة الميمز</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background: linear-gradient(135deg,#1f1c2c,#928dab);
-  color:white;
-  text-align:center;
-}
+    body {
+        margin: 0;
+        font-family: Arial;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
 
-.card{
-  width:300px;
-  margin:80px auto;
-  padding:20px;
-  border-radius:15px;
-  background:rgba(0,0,0,0.6);
-}
+        /* الخلفية أزرق + بنفسجي */
+        background: linear-gradient(135deg, #1e3c72, #8e2de2);
+    }
 
-button{
-  padding:10px;
-  margin:5px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
+    .container {
+        padding: 20px;
+    }
 
-.green{background:#28a745;color:white;}
-.blue{background:#007bff;color:white;}
+    h1 {
+        font-size: 24px;
+        animation: zoom 2s infinite;
+    }
 
-input{
-  width:85%;
-  padding:10px;
-  margin:6px;
-  border-radius:6px;
-  border:2px solid black;
-}
+    /* انميشن الزوم */
+    @keyframes zoom {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
 
-.error{
-  color:red;
-  font-size:14px;
-}
+    button {
+        margin-top: 20px;
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 12px;
+        background: #00c853;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    /* انميشن الضغط */
+    button:active {
+        transform: scale(0.9);
+        background: #00a844;
+    }
+
+    /* تحسين للجوال */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 20px;
+        }
+
+        button {
+            width: 80%;
+            font-size: 16px;
+        }
+    }
 </style>
-</head>
 
+</head>
 <body>
 
-<div id="app"></div>
+<div class="container">
+    <h1>مرحبا بك في خريطة الميمز! 😂</h1>
+    <button onclick="start()">ابدأ</button>
+</div>
 
 <script>
-let users = [{name:"admin", password:"1234"}];
-let lang = "ar";
-
-/* ================= TEXT ================= */
-const T = {
- ar:{
-  welcome:"مرحبا بك",
-  login:"تسجيل الدخول",
-  signup:"إنشاء حساب",
-  username:"الاسم",
-  password:"كلمة السر",
-  start:"البدء",
-  wrongUser:"❌ الاسم غير موجود",
-  wrongPass:"❌ كلمة السر خاطئة"
- }
-};
-
-function t(key){ return T[lang][key]; }
-
-/* ================= RENDER ================= */
-function render(html){
- document.getElementById("app").innerHTML = html;
-}
-
-/* ================= WELCOME ================= */
-function welcome(){
- render(`
-  <div class="card">
-    <h2>${t("welcome")}</h2>
-    <button class="green" onclick="loginPage()">${t("start")}</button>
-  </div>
- `);
-}
-
-/* ================= LOGIN ================= */
-function loginPage(){
- render(`
-  <div class="card">
-    <h2>${t("login")}</h2>
-
-    <input id="u" placeholder="${t("username")}">
-    <input id="p" type="password" placeholder="${t("password")}">
-
-    <div id="err" class="error"></div>
-
-    <button class="blue" onclick="login()">Login</button>
-    <button class="green" onclick="signupPage()">${t("signup")}</button>
-  </div>
- `);
-}
-
-/* ================= SIGNUP ================= */
-function signupPage(){
- render(`
-  <div class="card">
-    <h2>${t("signup")}</h2>
-
-    <input id="nu" placeholder="${t("username")}">
-    <input id="np" type="password" placeholder="${t("password")}">
-
-    <button class="blue" onclick="create()">Create</button>
-    <button onclick="loginPage()">Back</button>
-  </div>
- `);
-}
-
-function create(){
- let u=document.getElementById("nu").value;
- let p=document.getElementById("np").value;
- users.push({name:u,password:p});
- loginPage();
-}
-
-/* ================= LOGIN CHECK ================= */
-function login(){
- let u=document.getElementById("u").value.trim();
- let p=document.getElementById("p").value;
- let err=document.getElementById("err");
-
- let user=users.find(x=>x.name===u);
-
- if(!user){
-   err.innerText = t("wrongUser");
-   return;
- }
-
- if(user.password!==p){
-   err.innerText = t("wrongPass");
-   return;
- }
-
- mainPage();
-}
-
-/* ================= MAIN ================= */
-function mainPage(){
- render(`
-  <div class="card">
-    <h2>${t("welcome")}</h2>
-
-    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:100%;border-radius:10px">
-
-    <br><br>
-    <button class="blue" onclick="loginPage()">Logout</button>
-  </div>
- `);
-}
-
-/* ================= START ================= */
-welcome();
+    function start() {
+        alert("جاهز للدخول 🔥");
+    }
 </script>
 
 </body>
