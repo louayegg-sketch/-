@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #12001a, #3a0ca3);
+        color: white;
+    }
+
+    .box {
+        background: rgba(0,0,0,0.4);
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        width: 300px;
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        background: #2196f3;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:active {
+        transform: scale(0.9);
+    }
+
+    .error {
+        color: red;
+        margin-top: 10px;
+        font-size: 14px;
+        white-space: pre-line;
+    }
+
+    .popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        background: #1e1e2f;
+        padding: 20px;
+        border-radius: 15px;
+        width: 320px;
+        text-align: right;
+        animation: zoom 0.3s ease;
+    }
+
+    @keyframes zoom {
+        from {transform: scale(0.5);}
+        to {transform: scale(1);}
+    }
+
+    .close {
+        margin-top: 10px;
+        background: red;
+        border-radius: 10px;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="box">
+    <h2>تسجيل الدخول</h2>
+
+    <input type="text" id="user" placeholder="اسم المستخدم">
+    <input type="password" id="pass" placeholder="كلمة المرور">
+
+    <button onclick="login()">دخول</button>
+
+    <div id="msg" class="error"></div>
+</div>
+
+<div class="popup" id="popup">
+    <div class="card">
+        <h3 id="name"></h3>
+        <div id="info"></div>
+        <button class="close" onclick="closePopup()">إغلاق</button>
+    </div>
+</div>
+
+<script>
+const accounts = {
+"حمود": {pass:"58321", info:`عدد الجنود: 270<br>الاقتصاد: 31$`},
+"عمر": {pass:"74219", info:`عدد الجنود: 3500<br>الاقتصاد: 125$<br>1 نووي`},
+"علي جواد": {pass:"61984", info:`عدد الجنود: 820<br>الاقتصاد: 131$<br>الجواز: لؤي`},
+"ماهر": {pass:"90427", info:`عدد الجنود: 5625<br>الاقتصاد: 120$`},
+"بدر": {pass:"27165", info:`عدد الجنود: 1070<br>1 صاروخ طراز 5<br>الجواز: لؤي`},
+"لؤي": {pass:"36819", info:`لفل9<br>عدد الجنود: 13200<br>الاقتصاد: 9908$<br>نووي: 78<br>لفل المنتخب: 4`},
+"احمد": {pass:"55073", info:`عدد الجنود: 1740<br>الاقتصاد: 100$`},
+"حماد": {pass:"14692", info:`عدد الجنود: 340<br>الاقتصاد: 50$<br>الة نفط لفل1`},
+"جورنمي": {pass:"82740", info:`عدد الجنود: 480<br>الاقتصاد: 24$`},
+"محمد": {pass:"93516", info:`عدد الجنود: 130<br>5 صواريخ طراز 5<br>1 طراز 20`},
+"قيس": {pass:"11864", info:`لفل6<br>عدد الجنود: 5500<br>7 نووي<br>لفل المنتخب: 5`},
+"يونس": {pass:"66290", info:`عدد الجنود: 10<br>الجواز: لؤي`},
+"احمد2": {pass:"40758", info:`عدد الجنود: 1200`},
+"مريم": {pass:"78103", info:`عدد الجنود: 140<br>الجواز: لؤي`},
+"عبد الله": {pass:"25917", info:`عدد الجنود: 20<br>الة استخراج الماس لفل1`},
+"مؤمنة": {pass:"63048", info:`عدد الجنود: 200`},
+"ناصر": {pass:"99421", info:`عدد الجنود: 90`},
+"رحيم": {pass:"31580", info:`عدد الجنود: 5000`},
+"حسونياس": {pass:"47296", info:`عدد الجنود: 860`},
+"ادم": {pass:"86035", info:`عدد الجنود: 300`},
+"سانتش": {pass:"10293", info:`عدد الجنود: 37700<br>الجواز: لؤي`},
+"نونو": {pass:"55872", info:`عدد الجنود: 15`},
+"روسيا": {pass:"77701", info:`عدد الجنود: 0`},
+"سكايلي الاحمر": {pass:"44109", info:`عدد الجنود: 0`},
+"ريد تيب": {pass:"20984", info:`عدد الجنود: 8000`},
+"ورد": {pass:"67315", info:`عدد الجنود: 1270`},
+"ادم ايطاليا": {pass:"39072", info:`عدد الجنود: 8`},
+"عبد الوهاب": {pass:"12856", info:`لفل4<br>عدد الجنود: 2020`},
+"عبدو": {pass:"84560", info:`عدد الجنود: 11500`},
+"سلطان": {pass:"29471", info:`عدد الجنود: 250`},
+"وديد": {pass:"51638", info:`عدد الجنود: 1200<br>الدفاع<br>صاروخ طراز 5`},
+"الوليد": {pass:"74288", info:`عدد الجنود: 11500`},
+"وليان": {pass:"60845", info:`عدد الجنود: 300<br>5 صاروخ طراز 5<br>نووي طراز 5`},
+"نزار": {pass:"96321", info:`عدد الجنود: 2450`},
+"عثمان": {pass:"13579", info:`عدد الجنود: 320`},
+"لونا": {pass:"82460", info:`عدد الجنود: 420`},
+"مهدي": {pass:"45712", info:`عدد الجنود: 125`},
+"وائل": {pass:"69024", info:`عدد الجنود: 57<br>الة خشب<br>الة حديد`},
+"تيم": {pass:"31876", info:`عدد الجنود: 2220`},
+"امين": {pass:"77125", info:`عدد الجنود: 850`},
+"سبونر": {pass:"50291", info:`عدد الجنود: 650`},
+"سوني": {pass:"88463", info:`عدد الجنود: 2300`},
+"فلاديمير (حسن)": {pass:"24680", info:`عدد الجنود: 1700`},
+"لونا (برمودا)": {pass:"93740", info:`عدد الجنود: 205`}
+};
+
+const names = Object.keys(accounts);
+
+function levenshtein(a, b){
+    let matrix = [];
+    for(let i=0;i<=b.length;i++){ matrix[i]=[i]; }
+    for(let j=0;j<=a.length;j++){ matrix[0][j]=j; }
+
+    for(let i=1;i<=b.length;i++){
+        for(let j=1;j<=a.length;j++){
+            if(b[i-1]==a[j-1]){
+                matrix[i][j]=matrix[i-1][j-1];
+            } else {
+                matrix[i][j]=Math.min(
+                    matrix[i-1][j-1]+1,
+                    matrix[i][j-1]+1,
+                    matrix[i-1][j]+1
+                );
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+
+function closestName(input){
+    let best="", min=999;
+    names.forEach(n=>{
+        let d = levenshtein(input,n);
+        if(d < min){
+            min = d;
+            best = n;
+        }
+    });
+    return best;
+}
+
+function login(){
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
+    let msg = document.getElementById("msg");
+
+    msg.innerText = "";
+
+    if(accounts[user]){
+        if(accounts[user].pass === pass){
+            document.getElementById("name").innerText = user;
+            document.getElementById("info").innerHTML = accounts[user].info;
+            document.getElementById("popup").style.display = "flex";
+        } else {
+            msg.innerText = "كلمة السر غير صحيحة ❌";
+        }
+    } else {
+        let closest = closestName(user);
+        msg.innerText = "الاسم غير موجود ❌\nهل تقصد: " + closest + " ؟";
+    }
+}
+
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
