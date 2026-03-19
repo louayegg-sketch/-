@@ -3,74 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الصفحة الثانية</title>
+<title>الصفحة الرئيسية</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+body {
+    margin: 0;
+    font-family: Arial;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-        /* ✅ نفس خلفية الهوم */
-        background: #12001a;
+    background: #12001a;
+    color: white;
+}
 
-        color: white;
-    }
+/* الأزرار */
+.btn {
+    margin: 10px;
+    padding: 15px;
+    width: 180px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 16px;
+}
 
-    .btn {
-        margin: 10px;
-        padding: 15px;
-        width: 140px;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: 0.2s;
-        font-size: 16px;
-    }
+/* أزرار الدخول */
+.blue {
+    background: #2196f3;
+}
 
-    .btn:active {
-        transform: scale(0.9);
-    }
+/* زر اللغة */
+.green {
+    background: #4caf50;
+}
 
-    .login {
-        background: #2196f3;
-    }
+.btn:active {
+    transform: scale(0.9);
+}
 
-    .signin {
-        background: #4caf50;
-    }
-
-    img {
-        width: 200px;
-        height: 200px;
-        border-radius: 10px;
-        margin: 20px 0;
-    }
-
-    .lang {
-        background: #ff9800;
-    }
+/* صورة الخريطة */
+img {
+    width: 220px;
+    height: 220px;
+    border-radius: 12px;
+    margin: 20px 0;
+    object-fit: cover;
+}
 </style>
 </head>
 
 <body>
 
-<div>
-    <button class="btn login" onclick="goLogin()">Login</button>
-    <button class="btn signin">Sign in</button>
+<div id="buttons">
+    <button class="btn blue" onclick="goLogin()">Login</button>
+    <button class="btn blue">Sign in</button>
 </div>
 
-<img src="https://via.placeholder.com/200" alt="map">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/88/World_map_blank_without_borders.svg" alt="map">
 
-<button class="btn lang">Change Language</button>
+<button class="btn green" onclick="changeLang()" id="langBtn">اللغة</button>
 
 <script>
 function goLogin(){
     window.location.href = "login.html";
+}
+
+/* تغيير اللغة */
+function changeLang(){
+    let current = localStorage.getItem("lang") || "ar";
+
+    if(current === "ar"){
+        localStorage.setItem("lang","en");
+        applyLang("en");
+    } else {
+        localStorage.setItem("lang","ar");
+        applyLang("ar");
+    }
+}
+
+/* تطبيق اللغة */
+function applyLang(lang){
+    let btn = document.getElementById("langBtn");
+
+    if(lang === "ar"){
+        btn.innerText = "اللغة";
+    } else {
+        btn.innerText = "Language";
+    }
+}
+
+/* تحميل اللغة عند فتح الصفحة */
+window.onload = function(){
+    let lang = localStorage.getItem("lang") || "ar";
+    applyLang(lang);
 }
 </script>
 
