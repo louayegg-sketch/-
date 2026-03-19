@@ -2,44 +2,42 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>خريطة الميمز</title>
+<title>خريطة الميمز التفاعلية</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial, sans-serif; text-align:center; margin:0; padding:20px; background: linear-gradient(135deg, #1f1c2c, #928dab); color:black; }
-button.main-btn, button.login-btn { cursor:pointer; transition: transform 0.2s ease; }
-button.main-btn:active, button.login-btn:active { transform: scale(0.95); }
+body { font-family: Arial, sans-serif; text-align:center; margin:0; padding:20px; background: linear-gradient(135deg,#1f1c2c,#928dab); color:black; }
+button { cursor:pointer; transition: transform 0.2s ease; }
+button:active { transform: scale(0.95); }
 button.main-btn { padding:20px 40px; margin:10px; border:none; border-radius:30px; background:#00c3ff; color:white; font-size:20px; }
 button.login-btn { padding:18px 35px; border:none; border-radius:25px; background:#00c3ff; color:white; font-size:18px; margin-top:15px; }
 input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%; font-size:18px; display:block; margin-left:auto; margin-right:auto; }
 #content { margin-top:20px; text-align:center; }
 #error { color:red; font-weight:bold; }
-.user-box { background:white; color:black; border-radius:15px; padding:20px; margin:20px auto; max-width:90%; box-shadow: 0 0 20px rgba(0,0,0,0.3); text-align:right; opacity:0; transform:translateY(20px); transition:all 0.5s ease-in-out; }
+.user-box { background:white; color:black; border-radius:15px; padding:20px; margin:20px auto; max-width:90%; box-shadow:0 0 20px rgba(0,0,0,0.3); text-align:right; opacity:0; transform:translateY(20px); transition:all 0.5s ease-in-out; }
 #map-img { max-width:90%; height:auto; border-radius:15px; margin:20px auto; display:block; }
 #lang-btn { background:#28a745; color:white; padding:10px 20px; border:none; border-radius:15px; cursor:pointer; margin-bottom:10px; }
 #lang-list { display:none; margin-bottom:20px; }
 #lang-list button { margin:5px; padding:8px 15px; border:none; border-radius:12px; cursor:pointer; background:#28a745; color:white; }
-#loading { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); border:8px solid #f3f3f3; border-top:8px solid #00c3ff; border-radius:50%; width:60px; height:60px; animation: spin 1s linear infinite; z-index:1000; }
-@keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+#loading { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); border:8px solid #f3f3f3; border-top:8px solid #00c3ff; border-radius:50%; width:60px; height:60px; animation: spin 1s linear infinite; z-index:1000; }
+@keyframes spin { 0% { transform:translate(-50%,-50%) rotate(0deg); } 100% { transform:translate(-50%,-50%) rotate(360deg); } }
 #home-btn { position:fixed; top:15px; right:15px; padding:10px 15px; border-radius:15px; background:#00c3ff; color:white; border:none; cursor:pointer; z-index:1000; }
 </style>
 </head>
 <body>
 
 <audio id="click-sound" src="click.mp3"></audio>
-
 <div id="loading"></div>
 <button id="home-btn" onclick="goHome()">🏠</button>
 
 <div id="home">
   <button class="main-btn" onclick="playSound(); showLogin()">🔐 تسجيل الدخول</button>
-  <button class="main-btn" onclick="playSound(); showSignIn()">📝 تسجيل جديد</button>
+
   <img id="map-img" src="https://i.ibb.co/RpPJkLDX/map.png" alt="خريطة الميمز">
-  <!-- نص الاشتراك تحت الصورة -->
+
   <p style="color:white; font-size:14px; margin-top:10px;">
-  اشترك فقناتة لؤي (
-  <a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">اشتراك</a>
-  )
+    اشترك فقناتة لؤي (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">اشتراك</a>)
   </p>
+
   <div>
     <button id="lang-btn" onclick="toggleLangList()">تغيير اللغة</button>
     <div id="lang-list">
@@ -55,74 +53,91 @@ input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%;
 <div id="content"></div>
 
 <script>
-function playSound() {
-  const sound = document.getElementById("click-sound");
-  sound.currentTime = 0;
-  sound.play();
+function playSound(){ const s=document.getElementById("click-sound"); s.currentTime=0; s.play(); }
+function showLoading(callback){
+  const loading=document.getElementById("loading");
+  loading.style.display="block";
+  let delay=Math.random()*2000+1000;
+  setTimeout(()=>{ loading.style.display="none"; callback(); }, delay);
+}
+function goHome(){ document.getElementById("home").style.display="block"; document.getElementById("content").innerHTML=""; }
+function toggleLangList(){ let l=document.getElementById("lang-list"); l.style.display = (l.style.display==="none")?"block":"none"; }
+function changeLang(lang){ showLoading(()=>alert("تم تغيير اللغة لـ "+lang)); }
+
+function showLogin(){
+  document.getElementById("home").style.display="none";
+  document.getElementById("content").innerHTML=`
+  <input type="text" id="username" placeholder="أدخل الاسم">
+  <input type="password" id="password" placeholder="كلمة السر">
+  <button class="login-btn" onclick="login()">تسجيل دخول</button>
+  <p id="error"></p>`;
 }
 
-function normalize(str){ return str.trim().replace(/\s+/g,' ').toLowerCase(); }
-
+// === بيانات كل المستخدمين بالكامل ===
 const users = {
-  "لؤي": { password:"49520", الجنود:13200, العسكري:2, الاقتصاد:"9908$", المنتخب:4, "الة نفط":"1", "الة استخراج الحديد":"1", "نووي":"78", "التخفي":"نعم" },
-  "حماد": { password:"46238", الجنود:340, العسكري:1, الاقتصاد:"50$", المنتخب:1, "الة نفط":"1" },
-  "بدر": { password:"38217", الجنود:1070, العسكري:1, الاقتصاد:"126$", "صاروخ طراز 5":"1", الجواز:"لؤي", المنتخب:1 },
-  "مؤمنة": { password:"71826", الجنود:200, العسكري:1, الاقتصاد:"80$", المنتخب:1 },
-  "ناصر": { password:"30517", الجنود:90, العسكري:1, الاقتصاد:"100$", المنتخب:1 },
-  "لونا": { password:"420", الجنود:50, العسكري:1, الاقتصاد:"60$", المنتخب:1 },
-  // أضف باقي الأسماء هنا بنفس الشكل
+"لؤي": { lvl:9, الجنود:13200, الاقتصاد:"9908$", الديون:"0$", العسكري:2, "المركز العسكري":"#2", "الة استخراج النفط":1, "الة استخراج الحديد":1, "الة استخراج اليورانيوم":1, نووي:78, المنتخب:4, التخفي:true, الجواز:"36", password:"لؤي" },
+"سانتش": { الجنود:37700, الاقتصاد:"100$", الديون:"0$", العسكري:1, "المركز العسكري":"#1", المنتخب:1, الجواز:"لؤي", password:"سانتش" },
+"قيس": { lvl:6, الجنود:5500, الاقتصاد:"3700$", الديون:"3$", العسكري:1, "المركز العسكري":"#7", "التين نفط":5, "4الات نفذ":1, "الة الماس":5, الجواز:"18", المنتخب:5, نووي:7, توزيع الجيش:true, password:"قيس" },
+"بدر": { الجنود:1070, الاقتصاد:"126$", الديون:"0$", العسكري:1, "المركز العسكري":"#13", المنتخب:1, "صاروخ طراز 5":1, الجواز:"لؤي", password:"بدر" },
+"حماد": { الجنود:340, الاقتصاد:"50$", الديون:"0$", العسكري:1, "المركز العسكري":"#10", المنتخب:1, "الة نفط":1, password:"حماد" },
+"حمود": { الجنود:270, الاقتصاد:"31$", الديون:"0$", العسكري:1, "المركز العسكري":"#15", المنتخب:1, "الة نفط":1, password:"حمود" },
+"عمر": { الجنود:3500, الاقتصاد:"125$", الديون:"0$", العسكري:1, "المركز العسكري":"#12", المنتخب:1, نووي:1, password:"عمر" },
+"علي جواد": { الجنود:820, الاقتصاد:"131$", الديون:"0$", العسكري:1, "المركز العسكري":"#14", المنتخب:1, الجواز:"لؤي", password:"علي جواد" },
+"ماهر": { الجنود:5625, الاقتصاد:"120$", الديون:"0$", العسكري:1, "المركز العسكري":"#11", المنتخب:1, password:"ماهر" },
+"ناصر": { الجنود:90, الاقتصاد:"100$", الديون:"0$", العسكري:1, "المركز العسكري":"#16", المنتخب:1, password:"ناصر" },
+"أحمد": { الجنود:1740, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"أحمد" },
+"محمد": { الجنود:130, الاقتصاد:"185$", الديون:"0$", العسكري:1, "5صواريخ طراز 5":1, "1طراز 20":1, المنتخب:1, password:"محمد" },
+"مريم": { الجنود:140, الاقتصاد:"100$", الديون:"0$", العسكري:1, الجواز:"لؤي", المنتخب:1, password:"مريم" },
+"عبد الله": { الجنود:20, الاقتصاد:"0$", الديون:"0$", العسكري:1, "الة استخراج الماس":1, المنتخب:1, password:"عبد الله" },
+"مؤمنة": { الجنود:200, الاقتصاد:"80$", الديون:"0$", العسكري:1, المنتخب:1, password:"مؤمنة" },
+"رحيم": { الجنود:5000, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"رحيم" },
+"حسونياس": { الجنود:860, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"حسونياس" },
+"ادم": { الجنود:300, الاقتصاد:"130$", الديون:"0$", العسكري:1, المنتخب:1, password:"ادم" },
+"نونو": { الجنود:15, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"نونو" },
+"روسيا": { الجنود:0, الاقتصاد:"0$", الديون:"0$", العسكري:1, المنتخب:1, password:"روسيا" },
+"ريد تيب": { الجنود:8000, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"ريد تيب" },
+"ورد": { الجنود:1270, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"ورد" },
+"ادم ايطاليا": { الجنود:8, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"ادم ايطاليا" },
+"عبد الوهاب": { lvl:4, الجنود:2020, الاقتصاد:"195$", الديون:"0$", العسكري:1, المنتخب:3, password:"عبد الوهاب" },
+"عبدو": { الجنود:11500, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"عبدو" },
+"سلطان": { الجنود:250, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"سلطان" },
+"وديد": { الجنود:1200, الاقتصاد:"385$", الديون:"0$", العسكري:1.060, المنتخب:1, "التين استخراج النفط":5, "صاروخ طراز 5":1, الدفاع:true, password:"وديد" },
+"الوليد": { الجنود:11500, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"الوليد" },
+"وليان": { الجنود:300, الاقتصاد:"525$", الديون:"500$", العسكري:1, المنتخب:1, التخفي:true, "5 صاروخ طراز 5":1, "نووي طراز 5":1, password:"وليان" },
+"نزار": { الجنود:2450, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"نزار" },
+"عثمان": { الجنود:320, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"عثمان" },
+"لونا": { الجنود:420, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"لونا" },
+"مهدي": { الجنود:125, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"مهدي" },
+"وائل": { الجنود:57, الاقتصاد:"30$", الديون:"0$", العسكري:1, "الة خشب":1, "الة حديد":1, المنتخب:1, password:"وائل" },
+"تيم": { الجنود:2220, الاقتصاد:"200$", الديون:"0$", العسكري:1, المنتخب:1, password:"تيم" },
+"امين": { الجنود:850, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"امين" },
+"سبونر": { الجنود:650, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"سبونر" },
+"سوني": { الجنود:2300, "عدد الثوريين":2800, الاقتصاد:"100$", "الة نفط":2, "4سواريخ":1, النسخ:true, password:"سوني" },
+"فلاديمير": { الجنود:1700, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"فلاديمير" },
+"برمودا": { الجنود:205, الاقتصاد:"100$", الديون:"0$", العسكري:1, المنتخب:1, password:"برمودا" }
 };
-
-const translations = {
-  "ar": { login:"تسجيل الدخول", signIn:"تسجيل جديد", username:"اسمك", password:"كلمة السر", errorName:"❌ الاسم غير موجود", errorPass:"❌ كلمة السر غير صحيحة", note:"⚠️ ملاحظة: معلومات الآلات ليست دقيقة 100٪!", strength:"القوة الكلية", contact:"لازم ترسل لصاحب الخريطة فالخاص فالانستا 📩 @Louaye_Gamer_i", militaryRank:"المركز العالمي العسكري" },
-  "en": { login:"Login", signIn:"Sign In", username:"Username", password:"Password", errorName:"❌ Name not found", errorPass:"❌ Incorrect password", note:"⚠️ Note: Equipment info not 100% accurate!", strength:"Total strength", contact:"You must contact the map owner via Instagram 📩 @Louaye_Gamer_i", militaryRank:"Global Military Rank" }
-};
-
-let currentLang="ar";
-
-function toggleLangList(){ const list=document.getElementById("lang-list"); list.style.display=list.style.display==='none'?'block':'none'; }
-function getRandomLoadingTime(){ return Math.random()*2.5+0.5; }
-function showLoading(callback){ const loading=document.getElementById("loading"); loading.style.display="block"; const duration=getRandomLoadingTime()*1000; setTimeout(()=>{ loading.style.display="none"; if(callback) callback(); },duration); }
-
-function changeLang(lang){ showLoading(()=>{ currentLang=lang; document.querySelectorAll(".main-btn")[0].innerText=translations[lang].login; document.querySelectorAll(".main-btn")[1].innerText=translations[lang].signIn; updateHomeBtnPosition(); }); }
-
-function showLogin(){ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<h2>${translations[currentLang].login}</h2><input id="username" placeholder="${translations[currentLang].username}"><input id="password" type="password" placeholder="${translations[currentLang].password}"><button class="login-btn" onclick="playSound(); login()">${translations[currentLang].login}</button><p id="error"></p>`; }
-
-function showSignIn(){ document.getElementById("home").style.display="none"; document.getElementById("content").innerHTML = `<div style="color:black; font-weight:bold; text-align:center;"><h2>${translations[currentLang].signIn}</h2><p>${translations[currentLang].contact}</p><a href="https://instagram.com/Louaye_Gamer_i" target="_blank"><button class="login-btn">📷 تواصل على انستغرام</button></a></div>`; }
 
 function login(){
-  let inputUser = normalize(document.getElementById("username").value);
-  let inputPass = document.getElementById("password").value.trim();
-  let error = document.getElementById("error");
-  let foundUser = null;
-  for(const key in users){ if(normalize(key)===inputUser){ foundUser=key; break; } }
-  if(!foundUser){ error.innerText = translations[currentLang].errorName; return; }
-  if(users[foundUser].password !== inputPass){ error.innerText = translations[currentLang].errorPass; return; }
-
-  showLoading(()=>{
-      let u=users[foundUser];
-      let strength=(u.العسكري||0)*(u.الجنود||0);
-      const allUsers=Object.values(users).map(user=>(user.العسكري||0)*(user.الجنود||0)).sort((a,b)=>b-a);
-      let rank=allUsers.indexOf(strength)+1;
-
-      let display=`<div class="user-box">`;
-      display+=`<strong>${translations[currentLang].note}</strong><br><br>`;
-      display+=`👤 الاسم: ${foundUser}<br>`;
-      display+=`• ${translations[currentLang].strength}: ${strength}<br>`;
-      display+=`• ${translations[currentLang].militaryRank}: ${rank}<br>`;
-      for(const key in u){ if(key!=="password") display+=`• ${key}: ${u[key]}<br>`; }
-      display+=`</div>`;
-
-      document.getElementById("content").innerHTML = display;
-      setTimeout(()=>{ const box = document.querySelector(".user-box"); box.style.opacity=1; box.style.transform="translateY(0)"; },50);
-  });
+  let u=document.getElementById("username").value;
+  let p=document.getElementById("password").value;
+  if(users[u] && users[u].password===p){
+    showLoading(()=>showUserInfo(u));
+  } else {
+    document.getElementById("error").textContent="الاسم أو كلمة السر خاطئة!";
+  }
 }
 
-function goHome(){ const loading=document.getElementById("loading"); loading.style.display="block"; setTimeout(()=>{ loading.style.display="none"; document.getElementById("home").style.display="block"; document.getElementById("content").innerHTML=""; updateHomeBtnPosition(); },500); }
-
-function updateHomeBtnPosition(){ const btn=document.getElementById("home-btn"); if(currentLang==="ar"){ btn.style.right="15px"; btn.style.left="unset"; } else { btn.style.left="15px"; btn.style.right="unset"; } }
-
-updateHomeBtnPosition();
+function showUserInfo(user){
+  let info=users[user];
+  let html=`<div class="user-box">`;
+  for(let key in info){
+    if(key!=="password"){
+      html+=`<p><strong>${key}:</strong> ${info[key]}</p>`;
+    }
+  }
+  html+=`</div>`;
+  document.getElementById("content").innerHTML=html;
+}
 </script>
 </body>
 </html>
