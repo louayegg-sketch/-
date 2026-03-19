@@ -21,7 +21,7 @@ body{
     padding:15px;
 }
 
-/* صورة المستخدم */
+/* الصورة */
 .avatar{
     width:50px;
     height:50px;
@@ -29,6 +29,11 @@ body{
     object-fit:cover;
     background:#555;
     cursor:pointer;
+    transition:0.3s;
+}
+
+.avatar:hover{
+    transform:scale(1.1);
 }
 
 /* القائمة */
@@ -41,24 +46,14 @@ body{
     background:#222;
     padding:20px;
     transition:0.4s;
+    box-shadow:-5px 0 15px rgba(0,0,0,0.5);
 }
 
 .sidebar.active{
     right:0;
 }
 
-/* زر رفع الصورة */
-.upload{
-    margin-top:10px;
-    font-size:12px;
-}
-
-/* محتوى */
-.card{
-    text-align:center;
-    margin-top:40px;
-}
-
+/* زر */
 button{
     margin-top:20px;
     padding:10px;
@@ -67,6 +62,12 @@ button{
     background:red;
     color:white;
     cursor:pointer;
+}
+
+/* محتوى */
+.card{
+    text-align:center;
+    margin-top:40px;
 }
 </style>
 </head>
@@ -77,13 +78,13 @@ button{
     <h3 id="welcome"></h3>
 
     <label>
-        <img id="avatar" class="avatar" src="" onclick="toggleMenu()">
+        <img id="avatar" class="avatar" onclick="toggleMenu()">
         <input type="file" accept="image/*" id="fileInput" hidden onchange="changeImage(event)">
     </label>
 </div>
 
 <div class="card">
-    <p>اضغط على الصورة لتفتح القائمة 👆</p>
+    <p>اضغط على الصورة لفتح القائمة 👆</p>
 </div>
 
 <!-- القائمة -->
@@ -112,10 +113,10 @@ if(!user || !users[user]){
     window.location.href = "login.html";
 }
 
-// عرض الاسم
+// ترحيب
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-// جلب بيانات المستخدم
+// بيانات المستخدم
 let data = users[user];
 
 // عرض المعلومات
@@ -125,13 +126,13 @@ document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
 document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
 document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
 
-// تحميل الصورة من التخزين
+// تحميل الصورة المحفوظة
 let savedImage = localStorage.getItem("avatar_" + user);
 if(savedImage){
     document.getElementById("avatar").src = savedImage;
 }
 
-// فتح/غلق القائمة
+// فتح/إغلاق القائمة
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("active");
 }
@@ -145,12 +146,26 @@ function changeImage(event){
             let imgData = e.target.result;
             document.getElementById("avatar").src = imgData;
 
-            // حفظ الصورة
             localStorage.setItem("avatar_" + user, imgData);
         }
         reader.readAsDataURL(file);
     }
 }
+
+// إغلاق القائمة عند الضغط خارجها
+document.addEventListener("click", function(e){
+
+    let sidebar = document.getElementById("sidebar");
+    let avatar = document.getElementById("avatar");
+
+    if(sidebar.classList.contains("active")){
+
+        if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
+            sidebar.classList.remove("active");
+        }
+    }
+
+});
 
 // تسجيل خروج
 function logout(){
