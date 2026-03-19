@@ -9,10 +9,14 @@
     body {
         margin: 0;
         font-family: Arial;
-        background: linear-gradient(135deg, #0f2027, #5f0a87);
+        background: linear-gradient(135deg, #12001a, #3a0ca3); /* بنفسجي أغمق */
         color: white;
         text-align: center;
         padding: 20px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
     }
 
     .btn {
@@ -24,18 +28,23 @@
         border-radius: 12px;
         border: none;
         cursor: pointer;
+        transition: 0.2s;
     }
 
-    .login {
-        background: #2196f3;
-    }
+    .login { background: #2196f3; }
+    .signin { background: #9c27b0; }
 
-    .signin {
-        background: #9c27b0;
-    }
-
-    .lang {
+    /* زر اللغة مربع */
+    .lang-btn {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
         background: #ff9800;
+    }
+
+    /* انميشن الضغط */
+    .btn:active {
+        transform: scale(0.9);
     }
 
     img {
@@ -53,6 +62,27 @@
         cursor: pointer;
         text-decoration: underline;
     }
+
+    /* قائمة اللغة */
+    .lang-menu {
+        display: none;
+        margin-top: 10px;
+    }
+
+    .lang-item {
+        background: #222;
+        margin: 5px auto;
+        padding: 10px;
+        width: 200px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .lang-item:hover {
+        background: #444;
+        transform: scale(1.05);
+    }
 </style>
 
 </head>
@@ -63,55 +93,60 @@
 <button class="btn login" id="loginBtn">تسجيل دخول</button>
 <button class="btn signin" id="signinBtn">إنشاء حساب</button>
 
-<!-- صورة خريطة جاهزة من الإنترنت -->
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg">
 
-<button class="btn lang" onclick="changeLang()">🌍 تغيير اللغة</button>
+<!-- زر اللغة -->
+<button class="btn lang-btn" onclick="toggleMenu()">🌍 اللغة</button>
+
+<!-- قائمة اللغات -->
+<div id="langMenu" class="lang-menu">
+    <div class="lang-item" onclick="setLang('ar')">🇸🇦 عربي</div>
+    <div class="lang-item" onclick="setLang('en')">🇬🇧 English</div>
+    <div class="lang-item" onclick="setLang('fr')">🇫🇷 Français</div>
+    <div class="lang-item" onclick="setLang('es')">🇪🇸 Español</div>
+    <div class="lang-item" onclick="setLang('ru')">🇷🇺 Русский</div>
+</div>
 
 <p class="subscribe" onclick="subscribe()">اشترك في قناة لؤي</p>
 
 <script>
-let lang = 0;
+function toggleMenu(){
+    let menu = document.getElementById("langMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
 
-function changeLang() {
-    lang++;
-
-    if(lang > 4) lang = 0;
-
-    if(lang === 0){
-        document.documentElement.lang = "ar";
+function setLang(lang){
+    if(lang === "ar"){
         document.getElementById("title").innerText = "خريطة الميمز";
         document.getElementById("loginBtn").innerText = "تسجيل دخول";
         document.getElementById("signinBtn").innerText = "إنشاء حساب";
     }
 
-    if(lang === 1){
-        document.documentElement.lang = "en";
+    if(lang === "en"){
         document.getElementById("title").innerText = "Meme Map";
         document.getElementById("loginBtn").innerText = "Login";
         document.getElementById("signinBtn").innerText = "Sign Up";
     }
 
-    if(lang === 2){
-        document.documentElement.lang = "fr";
+    if(lang === "fr"){
         document.getElementById("title").innerText = "Carte des Memes";
         document.getElementById("loginBtn").innerText = "Connexion";
         document.getElementById("signinBtn").innerText = "Créer un compte";
     }
 
-    if(lang === 3){
-        document.documentElement.lang = "es";
+    if(lang === "es"){
         document.getElementById("title").innerText = "Mapa de Memes";
         document.getElementById("loginBtn").innerText = "Iniciar sesión";
         document.getElementById("signinBtn").innerText = "Crear cuenta";
     }
 
-    if(lang === 4){
-        document.documentElement.lang = "ru";
+    if(lang === "ru"){
         document.getElementById("title").innerText = "Карта мемов";
         document.getElementById("loginBtn").innerText = "Войти";
         document.getElementById("signinBtn").innerText = "Создать аккаунт";
     }
+
+    document.getElementById("langMenu").style.display = "none";
 }
 
 function subscribe() {
