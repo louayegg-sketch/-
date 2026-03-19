@@ -3,74 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>page</title>
+<title>الصفحة الثانية</title>
 
 <style>
-body{
-    margin:0;
-    font-family:Arial;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#0f0c29,#3a0ca3,#7209b7);
-    color:white;
+body {
+    margin: 0;
+    font-family: Arial;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f2027, #5f0a87);
+    color: white;
 }
 
-.btn{
-    margin:10px;
-    padding:15px;
-    width:180px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:16px;
+h1 {
+    animation: zoom 2s infinite;
+    text-shadow: 0px 4px 10px rgba(0,0,0,0.8);
 }
 
-.blue{
-    background:#2196f3;
+@keyframes zoom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
-img{
-    width:220px;
-    height:220px;
-    border-radius:12px;
-    margin:20px 0;
-    object-fit:cover;
+.center-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.lang-btn{
-    width:60px;
-    height:60px;
-    border:none;
-    border-radius:10px;
-    background:#4caf50;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
+.btn {
+    margin: 10px;
+    padding: 15px;
+    width: 160px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 16px;
+}
+
+.btn:active {
+    transform: scale(0.9);
+}
+
+.blue {
+    background: #2196f3;
+}
+
+.green {
+    background: #4caf50;
+}
+
+img {
+    width: 220px;
+    height: 220px;
+    border-radius: 12px;
+    margin: 20px 0;
+    object-fit: cover;
+}
+
+.lang-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
 }
 </style>
 </head>
 
 <body>
 
-<button class="btn blue" id="loginBtn">تسجيل الدخول</button>
-<button class="btn blue" id="signinBtn">حساب جديد</button>
+<h1>الصفحة الرئيسية</h1>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1024px-World_map_-_low_resolution.svg.png">
+<div class="center-buttons">
+    <button class="btn blue" onclick="goLogin()">تسجيل الدخول</button>
+    <button class="btn blue" onclick="signup()">حساب جديد</button>
+</div>
 
+<!-- الخريطة -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" alt="map">
+
+<!-- زر اللغة -->
 <button class="lang-btn" onclick="langComingSoon()">🌐</button>
 
 <script>
-// تشغيل الأزرار
-document.getElementById("loginBtn").onclick = function(){
+function goLogin(){
     window.location.href = "login.html";
-};
+}
 
-document.getElementById("signinBtn").onclick = function(){
-    alert("صفحة التسجيل تحت التطوير");
-};
+function signup(){
+    alert("صفحة التسجيل قيد التطوير");
+}
 
 function langComingSoon(){
     alert("ميزة تغيير اللغة تحت الإنشاء 🚧");
