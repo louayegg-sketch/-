@@ -10,8 +10,13 @@ body {
   margin:0;
   font-family: Arial;
   text-align:center;
-  background: linear-gradient(135deg,#1f1c2c,#928dab);
+  background: linear-gradient(135deg, #1f1c2c, #4b3f72, #928dab);
   color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
 
 button {
@@ -30,6 +35,7 @@ input {
   padding:12px;
   margin:10px;
   width:80%;
+  max-width:300px;
   border-radius:15px;
   border:none;
 }
@@ -66,7 +72,7 @@ input {
 <script>
 
 // 🔥 حط المستخدمين هنا
-const users = {"لؤي": {الجنود:13200, الاقتصاد:"9908$", الديون:"0$", العسكري:2, لفل_المنتخب:4, نووي:78, التخفي:true, password:"67890", المركز_العسكري:"#1#"},
+const users = { "لؤي": {الجنود:13200, الاقتصاد:"9908$", الديون:"0$", العسكري:2, لفل_المنتخب:4, نووي:78, التخفي:true, password:"67890", المركز_العسكري:"#1#"},
 "سانتش": {الجنود:37700, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"88990", المركز_العسكري:"#2#"},
 "عبدو": {الجنود:11500, الاقتصاد:"100$", الديون:"0$", العسكري:1, لفل_المنتخب:1, password:"60606", المركز_العسكري:"#3#"},
 "قيس": {الجنود:5500, الاقتصاد:"3700$", الديون:"3$", العسكري:1, لفل_المنتخب:5, نووي:7, password:"13579", المركز_العسكري:"#4#"},
@@ -102,11 +108,8 @@ const users = {"لؤي": {الجنود:13200, الاقتصاد:"9908$", الدي
 
 let historyStack = [];
 
-// ================= صفحات =================
-
-function savePage(fn){
-  historyStack.push(fn);
-}
+// ===== صفحات =====
+function savePage(fn){ historyStack.push(fn); }
 
 function goBack(){
   historyStack.pop();
@@ -145,18 +148,37 @@ function loginPage(){
     <input id="username" placeholder="اكتب الاسم">
     <input id="password" type="password" placeholder="كلمة السر">
     <button class="blue" onclick="login()">دخول</button>
-    <p id="error"></p>
+    <p id="error" class="error"></p>
     <p id="suggest"></p>
   `;
 }
 
-// ================= تسجيل الدخول =================
+// ===== اقتراح اسم =====
+function similarity(a,b){
+  let same = 0;
+  for(let i=0;i<Math.min(a.length,b.length);i++){
+    if(a[i] === b[i]) same++;
+  }
+  return same;
+}
 
 function getClosestName(input){
   let names = Object.keys(users);
-  return names.find(n => n.includes(input)) || "";
+  let best = "";
+  let bestScore = 0;
+
+  names.forEach(name=>{
+    let score = similarity(input, name);
+    if(score > bestScore){
+      bestScore = score;
+      best = name;
+    }
+  });
+
+  return best;
 }
 
+// ===== تسجيل الدخول =====
 function login(){
   let u = document.getElementById("username").value.trim();
   let p = document.getElementById("password").value;
@@ -166,7 +188,7 @@ function login(){
 
   if(!users[u]){
     let close = getClosestName(u);
-    error.innerHTML = "❌ الاسم مش موجود (تأكد ما في مسافات)";
+    error.innerHTML = "❌ الاسم مش موجود (تأكد تحذف المسافات)";
     suggest.innerHTML = close ? "هل تقصد: " + close : "";
     return;
   }
@@ -180,27 +202,25 @@ function login(){
   mainPage();
 }
 
-// ================= الصفحة الرئيسية =================
-
+// ===== الصفحة الرئيسية =====
 function mainPage(){
   savePage(loginPage);
   document.getElementById("app").innerHTML = `
-    <img src="https://i.ibb.co/RpPJkLDX/map.png" width="80%"><br>
+    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:400px;"><br>
 
     <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
 
-    <br><br>
+    <br>
     <p>🌐 تغيير اللغة</p>
-    <button onclick="changeLang('ar')">عربي</button>
-    <button onclick="changeLang('en')">English</button>
-    <button onclick="changeLang('es')">Español</button>
-    <button onclick="changeLang('ru')">Русский</button>
-    <button onclick="changeLang('fr')">Français</button>
+    <button>عربي</button>
+    <button>English</button>
+    <button>Español</button>
+    <button>Русский</button>
+    <button>Français</button>
   `;
 }
 
-// ================= روابط =================
-
+// ===== روابط =====
 function openInsta(){
   window.open("https://instagram.com/Louaye_Gamer_i","_blank");
 }
@@ -209,13 +229,7 @@ function openYT(){
   window.open("https://www.youtube.com/@MN98Ty","_blank");
 }
 
-// ================= لغة (شكل فقط) =================
-function changeLang(l){
-  alert("تم تغيير اللغة (تجريبي)");
-}
-
-// ================= أزرار فوق =================
-
+// ===== أزرار =====
 document.getElementById("homeBtn").onclick = home;
 document.getElementById("backBtn").onclick = goBack;
 
