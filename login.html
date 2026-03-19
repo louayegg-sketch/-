@@ -9,184 +9,114 @@
 body{
     margin:0;
     font-family:Arial;
-    background:#12001a;
-    color:white;
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    background:linear-gradient(135deg,#0f2027,#5f0a87);
+    color:white;
 }
 
-.box{
-    background:#222;
+.container{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    background:rgba(0,0,0,0.3);
     padding:20px;
-    border-radius:15px;
-    width:300px;
-    text-align:center;
+    border-radius:12px;
 }
 
 input{
-    width:90%;
     padding:10px;
-    margin:8px;
-    border-radius:8px;
     border:none;
+    border-radius:8px;
+    outline:none;
 }
 
 button{
-    width:100%;
     padding:10px;
-    margin-top:10px;
     border:none;
     border-radius:8px;
-    background:green;
+    background:#2196f3;
     color:white;
     cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    background:darkgreen;
-    transform:scale(1.05);
-}
-
-.error{
-    color:red;
-    margin-top:10px;
-    white-space:pre-line;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-    <h2>تسجيل الدخول</h2>
+<div class="container">
+    <h2 id="title">تسجيل الدخول</h2>
 
-    <input id="username" placeholder="الاسم">
-    <input id="password" type="password" placeholder="كلمة السر">
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
 
     <button onclick="login()">دخول</button>
-
-    <div id="error" class="error"></div>
 </div>
 
-<script src="pass.js"></script>
-
 <script>
-
 function login(){
-
-    let name = document.getElementById("username").value.trim();
+    let user = document.getElementById("username").value;
     let pass = document.getElementById("password").value;
-    let error = document.getElementById("error");
 
-    error.innerText = "";
+    if(user === "" || pass === ""){
+        alert("املأ البيانات");
+        return;
+    }
 
-    if(passwords[name]){
-
-        if(passwords[name] === pass){
-
-            // 🔥 تحويل لصفحة جديدة
-            window.location.href = "home.html?user=" + encodeURIComponent(name);
-
-        } else {
-            error.innerText = "كلمة السر غير صحيحة ❌";
-        }
-
+    // مثال بسيط
+    if(user === "admin" && pass === "1234"){
+        localStorage.setItem("user", user);
+        window.location.href = "home.html";
     } else {
-
-        let closest = findClosest(name);
-
-        error.innerText =
-        "الاسم غير موجود ❌\n" +
-        "تأكد من حذف المسافات\n" +
-        "أقرب اسم: " + closest;
+        alert("بيانات خاطئة");
     }
 }
 
-function findClosest(input){
-
-    let names = Object.keys(passwords);
-    let best="";
-    let min=999;
-
-    for(let name of names){
-        let d = levenshtein(input,name);
-        if(d < min){
-            min = d;
-            best = name;
-        }
-    }
-
-    return best;
-}
-
-function levenshtein(a,b){
-    let m=[];
-    for(let i=0;i<=b.length;i++){m[i]=[i];}
-    for(let j=0;j<=a.length;j++){m[0][j]=j;}
-
-    for(let i=1;i<=b.length;i++){
-        for(let j=1;j<=a.length;j++){
-            if(b[i-1]==a[j-1]){
-                m[i][j]=m[i-1][j-1];
-            } else {
-                m[i][j]=Math.min(
-                    m[i-1][j-1]+1,
-                    m[i][j-1]+1,
-                    m[i-1][j]+1
-                );
-            }
-        }
-    }
-    return m[b.length][a.length];
-}
-
-</script>
-<script>
+/* اللغة بدون ما تخرب الإدخال */
 function applyLang(lang){
+    let title = document.getElementById("title");
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
 
-    document.documentElement.lang = lang;
+    if(lang === "en"){
+        title.innerText = "Login";
+        username.placeholder = "Username";
+        password.placeholder = "Password";
+    }
 
-    // غيّر حسب عناصر الصفحة الموجودة عندك
-    let loginBtn = document.getElementById("loginBtn");
-    let signinBtn = document.getElementById("signinBtn");
+    if(lang === "fr"){
+        title.innerText = "Connexion";
+        username.placeholder = "Nom d'utilisateur";
+        password.placeholder = "Mot de passe";
+    }
 
-    if(loginBtn && signinBtn){
+    if(lang === "ru"){
+        title.innerText = "Войти";
+        username.placeholder = "Имя пользователя";
+        password.placeholder = "Пароль";
+    }
 
-        if(lang === "ar"){
-            loginBtn.innerText = "تسجيل الدخول";
-            signinBtn.innerText = "حساب جديد";
-        }
+    if(lang === "es"){
+        title.innerText = "Iniciar sesión";
+        username.placeholder = "Usuario";
+        password.placeholder = "Contraseña";
+    }
 
-        if(lang === "en"){
-            loginBtn.innerText = "Login";
-            signinBtn.innerText = "Sign up";
-        }
-
-        if(lang === "fr"){
-            loginBtn.innerText = "Connexion";
-            signinBtn.innerText = "Créer compte";
-        }
-
-        if(lang === "ru"){
-            loginBtn.innerText = "Войти";
-            signinBtn.innerText = "Регистрация";
-        }
-
-        if(lang === "es"){
-            loginBtn.innerText = "Iniciar sesión";
-            signinBtn.innerText = "Registrarse";
-        }
+    if(lang === "ar"){
+        title.innerText = "تسجيل الدخول";
+        username.placeholder = "اسم المستخدم";
+        password.placeholder = "كلمة المرور";
     }
 }
 
-/* عند فتح أي صفحة */
+/* تشغيل اللغة عند التحميل */
 window.onload = function(){
     let lang = localStorage.getItem("lang") || "ar";
     applyLang(lang);
 }
 </script>
+
 </body>
 </html>
