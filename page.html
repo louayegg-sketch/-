@@ -43,7 +43,6 @@ body {
     transform: scale(0.9);
 }
 
-/* صورة الخريطة */
 img {
     width: 220px;
     height: 220px;
@@ -52,7 +51,6 @@ img {
     object-fit: cover;
 }
 
-/* زر اللغة */
 .lang-btn {
     width: 60px;
     height: 60px;
@@ -64,7 +62,6 @@ img {
     font-size: 18px;
 }
 
-/* القائمة */
 .lang-menu {
     position: absolute;
     bottom: 80px;
@@ -78,9 +75,6 @@ img {
 .lang-item {
     padding: 8px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .lang-item:hover {
@@ -96,10 +90,8 @@ img {
     <button class="btn blue" id="signinBtn">حساب جديد</button>
 </div>
 
-<!-- صورة خريطة شغالة -->
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1024px-World_map_-_low_resolution.svg.png">
 
-<!-- زر اللغة -->
 <div style="position:relative;">
     <button class="lang-btn" onclick="toggleLangMenu()">🌐</button>
 
@@ -117,7 +109,7 @@ function goLogin(){
     window.location.href = "login.html";
 }
 
-/* فتح/إغلاق القائمة */
+/* فتح القائمة */
 function toggleLangMenu(){
     let menu = document.getElementById("langMenu");
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
@@ -132,6 +124,9 @@ function setLang(lang){
 
 /* تطبيق اللغة */
 function applyLang(lang){
+
+    document.documentElement.lang = lang;
+
     let loginBtn = document.getElementById("loginBtn");
     let signinBtn = document.getElementById("signinBtn");
 
@@ -161,7 +156,7 @@ function applyLang(lang){
     }
 }
 
-/* تحميل اللغة */
+/* عند فتح الصفحة */
 window.onload = function(){
     let lang = localStorage.getItem("lang") || "ar";
     applyLang(lang);
@@ -177,6 +172,6 @@ document.addEventListener("click", function(e){
     }
 });
 </script>
-<script src="lang.js"></script>
+
 </body>
 </html>
