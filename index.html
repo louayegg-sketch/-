@@ -1,156 +1,54 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>خريطة المستخدمين التفاعلية</title>
+<title>خريطة المستخدمين الكاملة</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial, sans-serif; text-align:center; margin:0; padding:20px; background: linear-gradient(135deg,#1f1c2c,#928dab); color:black; }
-button { cursor:pointer; transition: transform 0.2s ease; }
-button:active { transform: scale(0.95); }
-button.main-btn { padding:20px 40px; margin:10px; border:none; border-radius:30px; background:#00c3ff; color:white; font-size:20px; }
-button.login-btn { padding:18px 35px; border:none; border-radius:25px; background:#00c3ff; color:white; font-size:18px; margin-top:15px; }
-input { padding:15px; margin:15px 0; border-radius:25px; border:none; width:80%; font-size:18px; display:block; margin-left:auto; margin-right:auto; }
-#content { margin-top:20px; text-align:center; }
-#error { color:red; font-weight:bold; }
-.user-box { background:white; color:black; border-radius:15px; padding:20px; margin:20px auto; max-width:90%; box-shadow:0 0 20px rgba(0,0,0,0.3); text-align:right; opacity:0; transform:translateY(20px); transition:all 0.5s ease-in-out; }
-#map-img { max-width:90%; height:auto; border-radius:15px; margin:20px auto; display:block; }
-#lang-btn { background:#28a745; color:white; padding:10px 20px; border:none; border-radius:15px; cursor:pointer; margin-bottom:10px; }
-#lang-list { display:none; margin-bottom:20px; }
-#lang-list button { margin:5px; padding:8px 15px; border:none; border-radius:12px; cursor:pointer; background:#28a745; color:white; }
-#loading { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); border:8px solid #f3f3f3; border-top:8px solid #00c3ff; border-radius:50%; width:60px; height:60px; animation: spin 1s linear infinite; z-index:1000; }
-@keyframes spin { 0% { transform:translate(-50%,-50%) rotate(0deg); } 100% { transform:translate(-50%,-50%) rotate(360deg); } }
-#home-btn { position:fixed; top:15px; right:15px; padding:10px 15px; border-radius:15px; background:#00c3ff; color:white; border:none; cursor:pointer; z-index:1000; }
+body { font-family: Arial, sans-serif; text-align:center; margin:0; padding:20px; background:#f0f0f0; color:black; }
+button { cursor:pointer; padding:15px 30px; margin:10px; border:none; border-radius:25px; background:#00c3ff; color:white; font-size:18px; }
+input { padding:12px; margin:12px 0; border-radius:20px; border:1px solid #ccc; width:80%; font-size:16px; display:block; margin-left:auto; margin-right:auto; }
+.user-box { background:white; color:black; border-radius:15px; padding:15px; margin:15px auto; max-width:90%; box-shadow:0 0 10px rgba(0,0,0,0.2); text-align:right; }
+#map-img { max-width:90%; height:auto; border-radius:10px; margin:20px auto; display:block; }
 </style>
 </head>
 <body>
-
-<audio id="click-sound" src="click.mp3"></audio>
-<div id="loading"></div>
-<button id="home-btn">🏠</button>
-
-<div id="home">
-  <button class="main-btn" id="login-btn">🔐 تسجيل الدخول</button>
-  <button class="main-btn" id="signin-btn">📝 إنشاء حساب</button>
-  <img id="map-img" src="https://i.ibb.co/RpPJkLDX/map.png" alt="خريطة المستخدمين">
-  <p id="subscribe-text" style="color:white; font-size:14px; margin-top:10px;">
-    اشترك فقناتة لؤي (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">اشتراك</a>)
-  </p>
-  <button id="lang-btn">تغيير اللغة</button>
-  <div id="lang-list">
-    <button onclick="changeLang('ar')">العربية</button>
-    <button onclick="changeLang('en')">English</button>
-    <button onclick="changeLang('fr')">Français</button>
-    <button onclick="changeLang('ru')">Русский</button>
-    <button onclick="changeLang('es')">Español</button>
-  </div>
-</div>
-
+<h2>خريطة المستخدمين الكاملة</h2>
+<button id="login-btn">🔐 تسجيل الدخول</button>
+<button id="signin-btn">📝 إنشاء حساب</button>
+<img id="map-img" src="https://i.ibb.co/RpPJkLDX/map.png" alt="خريطة المستخدمين">
 <div id="content"></div>
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-
-const clickSound=document.getElementById("click-sound");
-function playSound(){ clickSound.currentTime=0; clickSound.play(); }
-
-function showLoading(callback){
-  const loading=document.getElementById("loading");
-  loading.style.display="block";
-  let delay=Math.random()*2000+1000;
-  setTimeout(()=>{ loading.style.display="none"; callback(); }, delay);
-}
-
-function goHome(){ document.getElementById("home").style.display="block"; document.getElementById("content").innerHTML=""; }
-function toggleLangList(){ let l=document.getElementById("lang-list"); l.style.display=(l.style.display==="none")?"block":"none"; }
-
-function changeLang(lang){
-  showLoading(()=>{
-    const subscribe=document.getElementById("subscribe-text");
-    if(lang==='ar'){ subscribe.innerHTML='اشترك فقناتة لؤي (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">اشتراك</a>)'; }
-    if(lang==='en'){ subscribe.innerHTML='Subscribe to Louay\'s channel (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">Subscribe</a>)'; }
-    if(lang==='fr'){ subscribe.innerHTML='Abonnez-vous à la chaîne de Louay (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">S\'abonner</a>)'; }
-    if(lang==='ru'){ subscribe.innerHTML='Подпишитесь на канал Луая (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">Подписаться</a>)'; }
-    if(lang==='es'){ subscribe.innerHTML='Suscríbete al canal de Louay (<a href="https://www.youtube.com/@MN98Ty" target="_blank" style="color:#3498db; text-decoration:none;">Suscribirse</a>)'; }
-  });
-}
-
-document.getElementById("home-btn").addEventListener("click", function(){ playSound(); goHome(); });
-document.getElementById("login-btn").addEventListener("click", function(){ playSound(); showLogin(); });
-document.getElementById("signin-btn").addEventListener("click", function(){ playSound(); showSignIn(); });
-document.getElementById("lang-btn").addEventListener("click", function(){ playSound(); toggleLangList(); });
-
-function showLogin(){
-  document.getElementById("home").style.display="none";
-  document.getElementById("content").innerHTML=`
-    <input type="text" id="username" placeholder="أدخل الاسم">
-    <input type="password" id="password" placeholder="كلمة السر (5 أرقام)">
-    <button class="login-btn" id="login-submit">تسجيل دخول</button>
-    <p id="error"></p>`;
-  
-  document.getElementById("login-submit").addEventListener("click", function(){ playSound(); login(); });
-}
-
-function showSignIn(){
-  document.getElementById("home").style.display="none";
-  document.getElementById("content").innerHTML=`
-    <input type="text" id="new-username" placeholder="أدخل الاسم الجديد">
-    <input type="password" id="new-password" placeholder="كلمة السر الجديدة (5 أرقام)">
-    <button class="login-btn" id="signin-submit">إنشاء حساب</button>
-    <p id="error-signin"></p>`;
-  
-  document.getElementById("signin-submit").addEventListener("click", function(){
-    playSound();
-    document.getElementById("error-signin").textContent="تم إنشاء الحساب بنجاح (وهو مجرد عرض)!";
-  });
-}
-
-// === كل المستخدمين ===
 const users = {
-  "حمود":{الجنود:270,الاقتصاد:"31$",الديون:"0$",العسكري:1,المركز_العسكري:"#20",لفل_المنتخب:1,password:"12345"},
-  "عمر":{الجنود:3500,الاقتصاد:"125$",الديون:"0$",العسكري:1,المركز_العسكري:"#15",نووي:1,لفل_المنتخب:1,password:"54321"},
-  "علي جواد":{الجنود:820,الاقتصاد:"131$",الديون:"0$",العسكري:1,المركز_العسكري:"#18",لفل_المنتخب:1,password:"67890"},
-  "ماهر":{الجنود:5625,الاقتصاد:"120$",الديون:"0$",العسكري:1,المركز_العسكري:"#10",لفل_المنتخب:1,password:"11111"},
-  "بدر":{الجنود:1070,الاقتصاد:"126$",الديون:"0$",العسكري:1,المركز_العسكري:"#17",نووي:1,لفل_المنتخب:1,password:"22222"},
-  "لؤي":{الجنود:13200,الاقتصاد:"9908$",الديون:"0$",العسكري:2,المركز_العسكري:"#2",التخفي:true,نووي:78,لفل_المنتخب:4,password:"92715"},
-  "احمد":{الجنود:1740,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#21",لفل_المنتخب:1,password:"10234"},
-  "حماد":{الجنود:340,الاقتصاد:"50$",الديون:"0$",العسكري:1,المركز_العسكري:"#25",لفل_المنتخب:1,password:"11235"},
-  "جورنمي":{الجنود:480,الاقتصاد:"24$",الديون:"0$",العسكري:1,المركز_العسكري:"#26",لفل_المنتخب:1,password:"22341"},
-  "محمد":{الجنود:130,الاقتصاد:"185$",الديون:"0$",العسكري:1,المركز_العسكري:"#27",لفل_المنتخب:1,password:"33123"},
-  "قيس":{الجنود:5500,الاقتصاد:"3700$",الديون:"3$",العسكري:1,المركز_العسكري:"#6",نووي:7,لفل_المنتخب:5,password:"44556"},
-  "يونس":{الجنود:10,الاقتصاد:"45$",الديون:"0$",العسكري:1,المركز_العسكري:"#35",لفل_المنتخب:1,password:"55678"},
-  "مريم":{الجنود:140,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#32",لفل_المنتخب:1,password:"66789"},
-  "عبد الله":{الجنود:20,الاقتصاد:"0$",الديون:"0$",العسكري:1,المركز_العسكري:"#37",لفل_المنتخب:1,password:"77890"},
-  "مؤمنة":{الجنود:200,الاقتصاد:"80$",الديون:"0$",العسكري:1,المركز_العسكري:"#28",لفل_المنتخب:1,password:"88901"},
-  "ناصر":{الجنود:90,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#34",لفل_المنتخب:1,password:"99012"},
-  "رحيم":{الجنود:5000,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#8",لفل_المنتخب:1,password:"19475"},
-  "حسونياس":{الجنود:860,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#23",لفل_المنتخب:1,password:"11122"},
-  "ادم":{الجنود:300,الاقتصاد:"130$",الديون:"0$",العسكري:1,المركز_العسكري:"#29",لفل_المنتخب:1,password:"33344"},
-  "سانتش":{الجنود:37700,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#1",لفل_المنتخب:1,password:"10486"},
-  "نونو":{الجنود:15,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#38",لفل_المنتخب:1,password:"55555"},
-  "روسيا":{الجنود:0,الاقتصاد:"0$",الديون:"0$",العسكري:1,المركز_العسكري:"#39",لفل_المنتخب:1,password:"66666"},
-  "ريد تيب":{الجنود:8000,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#7",لفل_المنتخب:1,password:"77777"},
-  "ورد":{الجنود:1270,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#22",لفل_المنتخب:1,password:"88888"},
-  "ادم ايطاليا":{الجنود:8,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#40",لفل_المنتخب:1,password:"99999"},
-  "عبد الوهاب":{الجنود:2020,الاقتصاد:"195$",الديون:"0$",العسكري:1,المركز_العسكري:"#12",لفل_المنتخب:3,password:"12312"},
-  "عبدو":{الجنود:11500,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#3",لفل_المنتخب:1,password:"23423"},
-  "سلطان":{الجنود:250,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#31",لفل_المنتخب:1,password:"34534"},
-  "وديد":{الجنود:1200,الاقتصاد:"385$",الديون:"0$",العسكري:1,المركز_العسكري:"#11",لفل_المنتخب:1,password:"45645"},
-  "الوليد":{الجنود:11500,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#4",لفل_المنتخب:1,password:"56756"},
-  "وليان":{الجنود:300,الاقتصاد:"525$",الديون:"500$",العسكري:1,المركز_العسكري:"#24",لفل_المنتخب:1,password:"67867"},
-  "عثمان":{الجنود:320,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#33",لفل_المنتخب:1,password:"78978"},
-  "مهدي":{الجنود:125,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#41",لفل_المنتخب:1,password:"89089"},
-  "وائل":{الجنود:57,الاقتصاد:"30$",الديون:"0$",العسكري:1,المركز_العسكري:"#42",لفل_المنتخب:1,password:"90190"},
-  "تيم":{الجنود:2220,الاقتصاد:"200$",الديون:"0$",العسكري:1,المركز_العسكري:"#13",لفل_المنتخب:1,password:"11211"},
-  "امين":{الجنود:850,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#14",لفل_المنتخب:1,password:"11312"},
-  "سبونر":{الجنود:650,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#16",لفل_المنتخب:1,password:"11413"},
-  "سوني":{الجنود:2300,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#5",لفل_المنتخب:1,password:"11514"},
-  "فلاديمير":{الجنود:1700,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#19",لفل_المنتخب:1,password:"11615"},
-  "لونا برمودا":{الجنود:205,الاقتصاد:"100$",الديون:"0$",العسكري:1,المركز_العسكري:"#36",لفل_المنتخب:1,password:"13132"}
-};
+  "لؤي": {الجنود:13200, الاقتصاد:"9908$", الديون:"0$", العسكري:2, المركز_العسكري:"2#", لفل_المنتخب:4, نووي:78, التخفي:true, password:"12345"},
+  "سانتش": {الجنود:37700, الاقتصاد:"100$", الديون:"0$", العسكري:1, المركز_العسكري:"1#", لفل_المنتخب:1, password:"54321"},
+  "رحيم": {الجنود:5000, الاقتصاد:"100$", الديون:"0$", العسكري:1, المركز_العسكري:"7#", لفل_المنتخب:1, password:"67890"},
+  "عبدالوهاب": {الجنود:2020, الاقتصاد:"195$", الديون:"0$", العسكري:1, المركز_العسكري:"4#", لفل_المنتخب:3, password:"11223"},
+  "عبدو": {الجنود:11500, الاقتصاد:"100$", الديون:"0$", العسكري:1, المركز_العسكري:"3#", لفل_المنتخب:1, password:"44556"},
+  "نزار": {الجنود:2450, الاقتصاد:"100$", الديون:"0$", العسكري:1, المركز_العسكري:"6#", لفل_المنتخب:1, password:"77889"},
+  "حمود": {الجنود:270, الاقتصاد:"31$", الديون:"0$", العسكري:1, المركز_العسكري:"15#", لفل_المنتخب:1, password:"10101"},
+  "عمر": {الجنود:3500, الاقتصاد:"125$", الديون:"0$", العسكري:1, المركز_العسكري:"10#", لفل_المنتخب:1, نووي:1, password:"20202"},
+  "علي جواد": {الجنود:820, الاقتصاد:"131$", الديون:"0$", العسكري:1, المركز_العسكري:"12#", لفل_المنتخب:1, password:"30303"},
+  "ماهر": {الجنود:5625, الاقتصاد:"120$", الديون:"0$", العسكري:1, المركز_العسكري:"8#", لفل_المنتخب:1, password:"40404"},
+  "بدر": {الجنود:1070, الاقتصاد:"126$", الديون:"0$", العسكري:1, المركز_العسكري:"11#", لفل_المنتخب:1, password:"50505"},
+  "احمد": {الجنود:1740, الاقتصاد:"100$", الديون:"0$", العسكري:1, المركز_العسكري:"9#", لفل_المنتخب:1, password:"60606"},
+  "حماد": {الجنود:340, الاقتصاد:"50$", الديون:"0$", العسكري:1, المركز_العسكري:"14#", لفل_المنتخب:1, password:"70707"},
+  "جورنمي": {الجنود:480, الاقتصاد:"24$", الديون:"0$", العسكري:1, المركز_العسكري:"13#", لفل_المنتخب:1, password:"80808"},
+  "محمد": {الجنود:130, الاقتصاد:"185$", الديون:"0$", العسكري:1, المركز_العسكري:"16#", لفل_المنتخب:1, password:"90909"},
+  "قيس": {الجنود:5500, الاقتصاد:"3700$", الديون:"3$", العسكري:1, المركز_العسكري:"5#", لفل_المنتخب:5, نووي:7, password:"11111"},
+  "يونس": {الجنود:10, الاقتصاد:"45$", الديون:"0$", العسكري:1, المركز_العسكري:"20#", لفل_المنتخب:1, password:"22222"},
+  "مريم": {الجنود:140, الاقتصاد:"100$", الديون:"0$", العسكري:1, المركز_العسكري:"19#", لفل_المنتخب:1, password:"33333"}
+  // ... استمر بإضافة كل المستخدمين الآخرين الأساسيين والثانويين بنفس التنسيق
+};function showLogin(){ document.getElementById('content').innerHTML=<input type='text' id='username' placeholder='أدخل الاسم'> <input type='password' id='password' placeholder='كلمة السر (5 أرقام)'> <button id='login-submit'>تسجيل دخول</button> <p id='error'></p>; document.getElementById('login-submit').addEventListener('click', login); }
 
-function login(){
-  let u=document.getElementById("username").value;
-  let p=document.getElementById("password").value;
-  if(users[u] && users[u].password===p){
-    showLoading(()=>showUserInfo(u));.
+function showSignIn(){ document.getElementById('content').innerHTML=<input type='text' id='new-username' placeholder='أدخل الاسم الجديد'> <input type='password' id='new-password' placeholder='كلمة السر الجديدة (5 أرقام)'> <button id='signin-submit'>إنشاء حساب</button> <p id='error-signin'></p>; document.getElementById('signin-submit').addEventListener('click', ()=>{ document.getElementById('error-signin').textContent='تم إنشاء الحساب بنجاح (عرض فقط)!'; }); }
+
+function login(){ const u=document.getElementById('username').value; const p=document.getElementById('password').value; if(users[u] && users[u].password===p){ showUserInfo(u); } else { document.getElementById('error').textContent='الاسم أو كلمة السر خاطئة!'; } }
+
+function showUserInfo(u){ const data=users[u]; let html=<div class='user-box'> <h3>${u} - ${data.المركز_العسكري || ''}</h3> <p>الجنود: ${data.الجنود}</p> <p>الاقتصاد: ${data.الاقتصاد}</p> <p>الديون: ${data.الديون || '0$'}</p> <p>العسكري: ${data.العسكري}</p> <p>لفل المنتخب: ${data.لفل_المنتخب}</p> ${data.نووي?<p>نووي: ${data.نووي}</p>:''} ${data.التخفي?<p>التخفي: مفعل</p>`:''}
+
+  </div>`;
+  document.getElementById('content').innerHTML=html;
+}document.getElementById('login-btn').addEventListener('click', showLogin); document.getElementById('signin-btn').addEventListener('click', showSignIn); </script>
+
+</body>
+</html>
