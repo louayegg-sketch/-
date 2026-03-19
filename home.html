@@ -13,7 +13,6 @@ body{
     color:white;
 }
 
-/* الهيدر */
 .header{
     display:flex;
     justify-content:space-between;
@@ -21,7 +20,6 @@ body{
     padding:15px;
 }
 
-/* الصورة */
 .avatar{
     width:50px;
     height:50px;
@@ -36,7 +34,6 @@ body{
     transform:scale(1.1);
 }
 
-/* القائمة */
 .sidebar{
     position:fixed;
     top:0;
@@ -46,28 +43,54 @@ body{
     background:#222;
     padding:20px;
     transition:0.4s;
-    box-shadow:-5px 0 15px rgba(0,0,0,0.5);
 }
 
 .sidebar.active{
     right:0;
 }
 
-/* زر */
 button{
-    margin-top:20px;
+    margin-top:10px;
     padding:10px;
     border:none;
     border-radius:8px;
-    background:red;
+    background:#444;
     color:white;
     cursor:pointer;
 }
 
-/* محتوى */
+button:hover{
+    background:#666;
+}
+
 .card{
     text-align:center;
     margin-top:40px;
+}
+
+/* نافذة تعديل الصورة */
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+canvas{
+    border:1px solid white;
+    margin-top:10px;
 }
 </style>
 </head>
@@ -76,11 +99,7 @@ button{
 
 <div class="header">
     <h3 id="welcome"></h3>
-
-    <label>
-        <img id="avatar" class="avatar" onclick="toggleMenu()">
-        <input type="file" accept="image/*" id="fileInput" hidden onchange="changeImage(event)">
-    </label>
+    <img id="avatar" class="avatar" onclick="toggleMenu()">
 </div>
 
 <div class="card">
@@ -99,7 +118,26 @@ button{
 
     <hr>
 
+    <button onclick="openEditor()">تغيير الصورة</button>
     <button onclick="logout()">تسجيل خروج</button>
+</div>
+
+<!-- نافذة تعديل الصورة -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3>تعديل الصورة</h3>
+
+        <input type="file" id="fileInput" accept="image/*">
+
+        <br>
+
+        <canvas id="canvas" width="200" height="200"></canvas>
+
+        <br>
+
+        <button onclick="saveImage()">حفظ</button>
+        <button onclick="closeModal()">إلغاء</button>
+    </div>
 </div>
 
 <script src="users.js"></script>
@@ -113,7 +151,7 @@ if(!user || !users[user]){
     window.location.href = "login.html";
 }
 
-// ترحيب
+// عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
 // بيانات المستخدم
@@ -132,24 +170,50 @@ if(savedImage){
     document.getElementById("avatar").src = savedImage;
 }
 
-// فتح/إغلاق القائمة
+// القائمة
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("active");
 }
 
-// تغيير الصورة
-function changeImage(event){
-    let file = event.target.files[0];
+// فتح نافذة تعديل الصورة
+function openEditor(){
+    document.getElementById("modal").style.display = "flex";
+}
+
+// إغلاق النافذة
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+// رسم الصورة داخل canvas
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+let img = new Image();
+
+document.getElementById("fileInput").onchange = function(e){
+    let file = e.target.files[0];
     if(file){
         let reader = new FileReader();
-        reader.onload = function(e){
-            let imgData = e.target.result;
-            document.getElementById("avatar").src = imgData;
-
-            localStorage.setItem("avatar_" + user, imgData);
+        reader.onload = function(event){
+            img.onload = function(){
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            }
+            img.src = event.target.result;
         }
         reader.readAsDataURL(file);
     }
+}
+
+// حفظ الصورة
+function saveImage(){
+    let dataURL = canvas.toDataURL("image/png");
+
+    document.getElementById("avatar").src = dataURL;
+
+    localStorage.setItem("avatar_" + user, dataURL);
+
+    closeModal();
 }
 
 // إغلاق القائمة عند الضغط خارجها
