@@ -16,8 +16,8 @@
         text-align: center;
         color: white;
 
-        /* الخلفية أزرق + بنفسجي */
-        background: linear-gradient(135deg, #1e3c72, #8e2de2);
+        /* خلفية أغمق */
+        background: linear-gradient(135deg, #0f2027, #5f0a87);
     }
 
     .container {
@@ -27,6 +27,10 @@
     h1 {
         font-size: 24px;
         animation: zoom 2s infinite;
+
+        /* حواف للنص */
+        -webkit-text-stroke: 1px black;
+        text-shadow: 2px 2px 5px black;
     }
 
     /* انميشن الزوم */
@@ -40,18 +44,18 @@
         margin-top: 20px;
         padding: 15px 30px;
         font-size: 18px;
-        border: none;
-        border-radius: 12px;
-        background: #00c853;
+        border-radius: 30px; /* دائرية أكثر */
+        border: 2px solid yellow; /* حواف صفراء */
+        background: #00a844; /* أخضر أغمق */
         color: white;
         cursor: pointer;
-        transition: 0.2s;
+        transition: 0.15s;
     }
 
     /* انميشن الضغط */
     button:active {
-        transform: scale(0.9);
-        background: #00a844;
+        transform: scale(0.85);
+        background: #008f39;
     }
 
     /* تحسين للجوال */
@@ -77,7 +81,7 @@
 
 <script>
     function start() {
-        alert("جاهز للدخول 🔥");
+        // ما عاد في رسالة 👍
     }
 </script>
 
