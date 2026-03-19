@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>خريطة الميمز</title>
+<title>Map Memes</title>
 
 <style>
 body {
@@ -12,11 +12,6 @@ body {
   text-align:center;
   background: linear-gradient(135deg, #1f1c2c, #4b3f72, #928dab);
   color:white;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
 }
 
 button {
@@ -40,87 +35,216 @@ input {
   border:none;
 }
 
+img {
+  width:85%;
+  max-width:400px;
+  border-radius:20px;
+  margin-top:15px;
+}
+
+.table-lang td {
+  border:1px solid white;
+  padding:10px;
+  cursor:pointer;
+}
+
 .link { color:#00c3ff; cursor:pointer; }
 
-#langMenu {
-  display:none;
-  margin-top:10px;
+.top-bar {
+  position:fixed;
+  top:10px;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:0 15px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="top-bar">
+  <button onclick="goBack()">↩️</button>
+</div>
+
 <div id="app"></div>
 
 <script>
 
+// ===== اللغة الحالية =====
+let currentLang = "ar";
+
+// ===== النصوص =====
+const T = {
+  ar: {
+    welcome: "مرحبا بك في خريطة الميمز",
+    start: "ابدأ",
+    login: "تسجيل الدخول",
+    signup: "إنشاء حساب",
+    username: "الاسم",
+    password: "كلمة السر",
+    enter: "دخول",
+    lang: "تغيير اللغة",
+    subscribe: "اشترك في قناة لؤي",
+    notfound: "❌ الاسم غير موجود",
+    wrongpass: "❌ كلمة السر خاطئة",
+    forgot: "هل نسيت كلمة السر؟",
+    contact: "اذا تبغا تسوي حساب جديد تواصل مع لؤي فالانستا"
+  },
+  en: {
+    welcome: "Welcome to Meme Map",
+    start: "Start",
+    login: "Login",
+    signup: "Sign Up",
+    username: "Username",
+    password: "Password",
+    enter: "Enter",
+    lang: "Change Language",
+    subscribe: "Subscribe to Louaye channel",
+    notfound: "❌ User not found",
+    wrongpass: "❌ Wrong password",
+    forgot: "Forgot password?",
+    contact: "To create an account contact Louaye on Instagram"
+  }
+};
+
+// ===== المستخدمين =====
 const users = {
-  // المستخدمين عندك
+  // حط المستخدمين هنا
 };
 
 let historyStack = [];
 
-function savePage(fn){ historyStack.push(fn); }
+// ===== تنقل =====
+function show(fn){
+  historyStack.push(fn);
+  fn();
+}
 
 function goBack(){
   historyStack.pop();
   let last = historyStack.pop();
   if(last) last();
+  else startScreen();
 }
 
-// ===== عرض الصفحة مباشرة =====
-function init(){
+// ===== البداية =====
+function startScreen(){
+  historyStack = [];
   document.getElementById("app").innerHTML = `
-    
-    <button class="blue" onclick="loginForm()">Login</button>
-    <button class="blue" onclick="signinPage()">Sign In</button>
-
-    <br>
-
-    <img src="https://i.ibb.co/RpPJkLDX/map.png" style="width:80%;max-width:350px;margin-top:10px;">
-
-    <br>
-
-    <button onclick="toggleLang()">🌐 تغيير اللغة</button>
-
-    <div id="langMenu">
-      <button>عربي</button>
-      <button>English</button>
-      <button>Español</button>
-      <button>Русский</button>
-      <button>Français</button>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;">
+      <h1>${T[currentLang].welcome}</h1>
+      <button class="green" onclick="loginPage()">${T[currentLang].start}</button>
     </div>
-
-    <br>
-
-    <p class="link" onclick="openYT()">اشترك في قناة لؤي</p>
-
   `;
+}
+
+// ===== صفحة الدخول =====
+function loginPage(){
+  show(()=>{
+    document.getElementById("app").innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
+
+        <button class="blue" onclick="loginForm()">${T[currentLang].login}</button>
+        <button class="blue" onclick="signinPage()">${T[currentLang].signup}</button>
+
+        <img src="https://i.ibb.co/RpPJkLDX/map.png">
+
+        <button onclick="toggleLang()">${T[currentLang].lang}</button>
+
+        <div id="langBox"></div>
+
+        <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
+
+      </div>
+    `;
+  });
 }
 
 // ===== تسجيل الدخول =====
 function loginForm(){
-  document.getElementById("app").innerHTML = `
-    <input id="username" placeholder="اكتب الاسم">
-    <input id="password" type="password" placeholder="كلمة السر">
-    <button class="blue" onclick="login()">دخول</button>
-    <p id="error" style="color:red;"></p>
-    <p id="suggest"></p>
-  `;
+  show(()=>{
+    document.getElementById("app").innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
+        <input id="username" placeholder="${T[currentLang].username}">
+        <input id="password" type="password" placeholder="${T[currentLang].password}">
+        <button class="blue" onclick="login()">${T[currentLang].enter}</button>
+        <p id="error" style="color:red;"></p>
+        <p id="suggest"></p>
+      </div>
+    `;
+  });
 }
 
+// ===== إنشاء حساب =====
 function signinPage(){
-  document.getElementById("app").innerHTML = `
-    <p>اذا تبغا تسوي حساب جديد تواصل مع صاحب الخريطة لؤي فالانستا</p>
-    <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
+  show(()=>{
+    document.getElementById("app").innerHTML = `
+      <div style="padding:20px;">
+        <p>${T[currentLang].contact}</p>
+        <p class="link" onclick="openInsta()">@Louaye_Gamer_i</p>
+      </div>
+    `;
+  });
+}
+
+// ===== login =====
+function login(){
+  let u=document.getElementById("username").value.trim();
+  let p=document.getElementById("password").value;
+
+  let error=document.getElementById("error");
+  let suggest=document.getElementById("suggest");
+
+  if(!users[u]){
+    error.innerHTML=T[currentLang].notfound;
+    suggest.innerHTML="";
+    return;
+  }
+
+  if(users[u].password!==p){
+    error.innerHTML=T[currentLang].wrongpass;
+    suggest.innerHTML=`<span class="link" onclick="signinPage()">${T[currentLang].forgot}</span>`;
+    return;
+  }
+
+  mainPage();
+}
+
+// ===== الصفحة الرئيسية =====
+function mainPage(){
+  show(()=>{
+    document.getElementById("app").innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
+        <h2>✔️</h2>
+
+        <img src="https://i.ibb.co/RpPJkLDX/map.png">
+
+        <button onclick="toggleLang()">${T[currentLang].lang}</button>
+
+        <div id="langBox"></div>
+
+        <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
+      </div>
+    `;
+  });
+}
+
+// ===== اللغات =====
+function toggleLang(){
+  document.getElementById("langBox").innerHTML = `
+    <table class="table-lang">
+      <tr>
+        <td onclick="setLang('ar')">عربي</td>
+        <td onclick="setLang('en')">English</td>
+      </tr>
+    </table>
   `;
 }
 
-// ===== لغة =====
-function toggleLang(){
-  let m=document.getElementById("langMenu");
-  m.style.display = m.style.display==="block"?"none":"block";
+function setLang(l){
+  currentLang = l;
+  startScreen(); // إعادة تحميل كل الواجهة باللغة الجديدة
 }
 
 // ===== روابط =====
@@ -132,8 +256,8 @@ function openInsta(){
   window.open("https://instagram.com/Louaye_Gamer_i","_blank");
 }
 
-// ===== تشغيل =====
-init();
+// تشغيل
+startScreen();
 
 </script>
 
