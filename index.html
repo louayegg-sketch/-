@@ -22,21 +22,22 @@ button {
   border-radius:15px;
   font-size:15px;
   cursor:pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 button:hover {
-  transform: scale(1.08);
-  opacity: 0.9;
+  transform: scale(1.1);
+  filter: brightness(1.1);
 }
 
 button:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
 .blue { background:#007bff; color:white; }
 .green { background:#28a745; color:white; }
 
+/* إدخالات */
 input {
   padding:10px;
   margin:8px;
@@ -62,9 +63,12 @@ img {
 }
 
 /* رابط */
-.link { color:#00c3ff; cursor:pointer; }
+.link {
+  color:#00c3ff;
+  cursor:pointer;
+}
 
-/* زر الرجوع */
+/* شريط علوي */
 .top-bar {
   position:fixed;
   top:10px;
@@ -74,7 +78,7 @@ img {
   padding:0 15px;
 }
 
-/* انميشن الصفحة */
+/* انميشن */
 #app {
   animation: fadeIn 0.4s ease;
 }
@@ -109,7 +113,7 @@ const T = {
     username: "الاسم",
     password: "كلمة السر",
     enter: "دخول",
-    lang: "تغيير اللغة",
+    lang: "اللغة",
     subscribe: "اشترك في قناة لؤي",
     contact: "اذا تبغا تسوي حساب جديد تواصل مع لؤي فالانستا"
   },
@@ -121,7 +125,7 @@ const T = {
     username: "Username",
     password: "Password",
     enter: "Enter",
-    lang: "Change Language",
+    lang: "Language",
     subscribe: "Subscribe to Louaye channel",
     contact: "To create an account contact Louaye on Instagram"
   },
@@ -133,7 +137,7 @@ const T = {
     username: "Nom d'utilisateur",
     password: "Mot de passe",
     enter: "Entrer",
-    lang: "Changer de langue",
+    lang: "Langue",
     subscribe: "Abonnez-vous à la chaîne Louaye",
     contact: "Pour créer un compte contactez Louaye sur Instagram"
   },
@@ -145,7 +149,7 @@ const T = {
     username: "Usuario",
     password: "Contraseña",
     enter: "Entrar",
-    lang: "Cambiar idioma",
+    lang: "Idioma",
     subscribe: "Suscríbete al canal de Louaye",
     contact: "Para crear una cuenta contacta a Louaye en Instagram"
   },
@@ -157,14 +161,13 @@ const T = {
     username: "Имя пользователя",
     password: "Пароль",
     enter: "Войти",
-    lang: "Сменить язык",
+    lang: "Язык",
     subscribe: "Подпишитесь на канал Louaye",
     contact: "Чтобы создать аккаунт, свяжитесь с Louaye в Instagram"
   }
 };
 
 // المستخدمين
-const users = {};
 let historyStack = [];
 
 // التنقل
@@ -202,7 +205,7 @@ function loginPage(){
 
         <img src="https://i.ibb.co/RpPJkLDX/map.png">
 
-        <button onclick="toggleLang()">${T[currentLang].lang}</button>
+        <button class="green" onclick="toggleLang()">🌐</button>
         <div id="langBox"></div>
 
         <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
@@ -245,7 +248,7 @@ function mainPage(){
 
         <img src="https://i.ibb.co/RpPJkLDX/map.png">
 
-        <button onclick="toggleLang()">${T[currentLang].lang}</button>
+        <button class="green" onclick="toggleLang()">🌐</button>
         <div id="langBox"></div>
 
         <p class="link" onclick="openYT()">${T[currentLang].subscribe}</p>
@@ -269,24 +272,28 @@ function toggleLang(){
   box.innerHTML = `
     <table class="table-lang">
       <tr>
-        <td onclick="setLang('ar')">العربية</td>
-        <td onclick="setLang('en')">English</td>
-        <td onclick="setLang('fr')">Français</td>
+        <td onclick="setLang('ar')">🇸🇦 العربية</td>
+        <td onclick="setLang('en')">🇺🇸 English</td>
+        <td onclick="setLang('fr')">🇫🇷 Français</td>
       </tr>
       <tr>
-        <td onclick="setLang('es')">Español</td>
-        <td onclick="setLang('ru')">Русский</td>
+        <td onclick="setLang('es')">🇪🇸 Español</td>
+        <td onclick="setLang('ru')">🇷🇺 Русский</td>
       </tr>
     </table>
   `;
 }
 
-// تغيير اللغة بدون مشاكل
+// تغيير اللغة
 function setLang(l){
   currentLang = l;
 
-  let last = historyStack[historyStack.length - 1];
-  if(last) last();
+  if(historyStack.length > 0){
+    let current = historyStack[historyStack.length - 1];
+    current();
+  } else {
+    startScreen();
+  }
 
   setTimeout(()=>{
     let box = document.getElementById("langBox");
