@@ -135,14 +135,12 @@ button:hover{
 
 <script>
 
-// المستخدم
 let user = localStorage.getItem("user");
 
 if(!user){
     window.location.href = "login.html";
 }
 
-// بيانات المستخدم
 let data = (typeof users !== "undefined" && users[user]) ? users[user] : {
     soldiers: 0,
     money: 0,
@@ -150,38 +148,31 @@ let data = (typeof users !== "undefined" && users[user]) ? users[user] : {
     team: "غير معروف"
 };
 
-// عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-// عرض المعلومات داخل القائمة
 document.getElementById("userName").innerText = "👤 الاسم: " + user;
 document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
 document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
 document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
 document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
 
-// الصورة
 let img = localStorage.getItem("avatar_" + user);
 if(img){
     document.getElementById("avatar").src = img;
 }
 
-// فتح القائمة
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("active");
 }
 
-// فتح الإعدادات
 function openSettings(){
     document.getElementById("settingsPanel").classList.add("active");
 }
 
-// تغيير اللغة
 function changeLang(){
     alert("تغيير اللغة تحت الإنشاء");
 }
 
-// تغيير الصورة
 function changeImage(){
     let input = document.createElement("input");
     input.type = "file";
@@ -203,18 +194,22 @@ function changeImage(){
     input.click();
 }
 
-// تسجيل خروج
 function logout(){
     localStorage.removeItem("user");
     window.location.href = "login.html";
 }
 
-// الذهاب للمتجر
 function goShop(){
     window.location.href = "shop.html";
 }
 
-// إغلاق القوائم عند الضغط خارجها
+/* 🔥 أي زر شراء/بيع في أي صفحة لاحقاً */
+document.addEventListener("click", function(e){
+    if(e.target.classList.contains("buy-btn") || e.target.classList.contains("sell-btn")){
+        window.location.href = "buying.html";
+    }
+});
+
 document.addEventListener("click", function(e){
 
     let sidebar = document.getElementById("sidebar");
