@@ -47,7 +47,6 @@ button {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    transition: 0.2s;
 }
 
 button:active {
@@ -77,19 +76,16 @@ button:active {
 
 <script>
 
-// قائمة المستخدمين
 const users = [
     { username: "admin", password: "1234" },
     { username: "louaye", password: "0000" },
     { username: "player1", password: "1111" }
 ];
 
-// تنظيف الاسم
 function normalize(name){
     return name.toLowerCase().replace(/\s/g, "");
 }
 
-// إيجاد اسم قريب
 function findClosestName(input){
     let best = null;
     let bestScore = -1;
@@ -113,7 +109,6 @@ function findClosestName(input){
     return best;
 }
 
-// تسجيل الدخول
 document.getElementById("loginBtn").addEventListener("click", function(){
 
     let userInput = document.getElementById("username").value;
@@ -123,7 +118,7 @@ document.getElementById("loginBtn").addEventListener("click", function(){
     msg.innerText = "";
 
     if(userInput === "" || passInput === ""){
-        msg.innerText = "املأ البيانات";
+        msg.innerText = "❌ في بيانات ناقصة";
         return;
     }
 
@@ -135,7 +130,7 @@ document.getElementById("loginBtn").addEventListener("click", function(){
     if(!foundUser){
         let suggestion = findClosestName(userInput);
 
-        msg.innerText = "❌ الاسم غير موجود\nحاول بدون مسافات: " + cleanInput;
+        msg.innerText = "❌ في خطأ في اسم المستخدم\nتأكد من الاسم بدون مسافات";
 
         if(suggestion){
             msg.innerText += "\nاقتراح: " + suggestion;
@@ -144,13 +139,20 @@ document.getElementById("loginBtn").addEventListener("click", function(){
         return;
     }
 
-    // ❌ كلمة السر
+    // ❌ كلمة السر غلط
     if(foundUser.password !== passInput){
+        let suggestion = findClosestName(userInput);
+
         msg.innerText = "❌ كلمة السر غير صحيحة";
+
+        if(suggestion){
+            msg.innerText += "\nهل تقصد: " + suggestion + "؟";
+        }
+
         return;
     }
 
-    // ✅ دخول
+    // ✅ نجاح
     localStorage.setItem("user", foundUser.username);
     window.location.href = "home.html";
 });
