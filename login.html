@@ -13,7 +13,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f0c29, #3a0ca3, #7209b7);
+    background: #0a1a2f; /* أزرق غامق ثابت */
     color: white;
 }
 
@@ -21,7 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.5);
     padding: 30px;
     border-radius: 15px;
     width: 320px;
@@ -126,33 +126,26 @@ document.getElementById("loginBtn").addEventListener("click", function(){
 
     let foundUser = users.find(u => normalize(u.username) === cleanInput);
 
+    let suggestion = findClosestName(userInput);
+
     // ❌ الاسم غير موجود
     if(!foundUser){
-        let suggestion = findClosestName(userInput);
-
-        msg.innerText = "❌ في خطأ في اسم المستخدم\nتأكد من الاسم بدون مسافات";
-
-        if(suggestion){
-            msg.innerText += "\nاقتراح: " + suggestion;
-        }
-
+        msg.innerText =
+            "❌ الاسم غير موجود\n" +
+            "جرب حذف المسافات\n" +
+            (suggestion ? `هل تقصد: ${suggestion}` : "");
         return;
     }
 
     // ❌ كلمة السر غلط
     if(foundUser.password !== passInput){
-        let suggestion = findClosestName(userInput);
-
-        msg.innerText = "❌ كلمة السر غير صحيحة";
-
-        if(suggestion){
-            msg.innerText += "\nهل تقصد: " + suggestion + "؟";
-        }
-
+        msg.innerText =
+            "❌ كلمة السر غير صحيحة\n" +
+            "تحقق منها";
         return;
     }
 
-    // ✅ نجاح
+    // ✅ دخول ناجح
     localStorage.setItem("user", foundUser.username);
     window.location.href = "home.html";
 });
