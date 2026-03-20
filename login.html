@@ -4,14 +4,12 @@
 <meta charset="UTF-8">
 <title>Login</title>
 </head>
-<body>
+<body style="background:#12001a;color:white;text-align:center;font-family:Arial;">
 
 <h2>تسجيل الدخول</h2>
 
-<input id="username" placeholder="اسم المستخدم">
-<br><br>
-<input id="password" placeholder="كلمة المرور" type="password">
-<br><br>
+<input id="username" placeholder="اسم المستخدم"><br><br>
+<input id="password" type="password" placeholder="كلمة المرور"><br><br>
 
 <button onclick="login()">دخول</button>
 
@@ -19,26 +17,9 @@
 
 <script>
 
-function getSimilarName(input, usersObj){
-    let names = Object.keys(usersObj);
-    let bestMatch = null;
-    let bestScore = 0;
-
-    names.forEach(name => {
-        let score = similarity(input, name);
-        if(score > bestScore){
-            bestScore = score;
-            bestMatch = name;
-        }
-    });
-
-    return { name: bestMatch, score: bestScore };
-}
-
 function similarity(a, b){
     let longer = a.length > b.length ? a : b;
     let shorter = a.length > b.length ? b : a;
-
     let matches = 0;
 
     for(let i = 0; i < shorter.length; i++){
@@ -50,22 +31,41 @@ function similarity(a, b){
     return matches / longer.length;
 }
 
+function getSimilar(input){
+    let best = null;
+    let score = 0;
+
+    Object.keys(users).forEach(name=>{
+        let s = similarity(input, name);
+        if(s > score){
+            score = s;
+            best = name;
+        }
+    });
+
+    return {best, score};
+}
+
 function login(){
 
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
     if(users[username] && users[username].pass === password){
+
         localStorage.setItem("user", username);
         window.location.href = "home.html";
-    } else {
-        let result = getSimilarName(username, users);
 
-        if(result.score > 0.4){
-            alert("❌ الاسم غير صحيح\nهل تقصد: " + result.name);
+    } else {
+
+        let res = getSimilar(username);
+
+        if(res.score > 0.4){
+            alert("❌ الاسم غير صحيح\nهل تقصد: " + res.best);
         } else {
             alert("❌ الحساب غير موجود");
         }
+
     }
 }
 
