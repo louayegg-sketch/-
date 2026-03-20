@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأخبار</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background: linear-gradient(135deg, #12001a, #2a003f);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.box{
+    background:#1a1a2e;
+    padding:25px;
+    border-radius:20px;
+    width:320px;
+    box-shadow:0 0 20px rgba(0,0,0,0.6);
+    text-align:center;
+}
+
+/* العنوان الكبير */
+.title{
+    color:red;
+    font-size:28px;
+    font-weight:bold;
+    text-shadow:0 0 10px red, 0 0 20px red;
+    margin-bottom:15px;
+}
+
+.news{
+    margin-top:10px;
+    text-align:right;
+    line-height:1.6;
+}
+
+.news-item{
+    background:#222;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+button{
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2ecc71;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <div class="title">آخر الأخبار</div>
+
+    <div class="news">
+
+        <div class="news-item">🔹 اتحاد ولين و سبونر</div>
+
+        <div class="news-item">🔹 دفاع مشترك بين الوليد و اتحاد ولين و سبونر</div>
+
+        <div class="news-item">🔹 وصول جنود قيس (2000 جندي) لمكان حرب سوني (انتظار الموافقة من سكايلي)</div>
+
+        <div class="news-item">🔹 موافقة سكايلي و تحالف بينهما ضد سوني</div>
+
+        <div class="news-item">🔹 عبور سكايلي و قيس حدود سوني و اندلاع حرب ضخمة!</div>
+
+    </div>
+
+    <button onclick="goBack()">🔙 رجوع</button>
+
+</div>
+
+<script>
+function goBack(){
+    window.location.href = "home.html";
+}
+</script>
+
+</body>
+</html>
