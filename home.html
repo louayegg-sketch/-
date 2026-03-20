@@ -78,6 +78,17 @@ button:hover{
 .logout{
     background:red;
 }
+
+/* زر المتجر */
+.shop-btn{
+    background:orange;
+    color:black;
+    margin-top:10px;
+}
+
+.shop-btn:hover{
+    background:#ffb84d;
+}
 </style>
 </head>
 
@@ -90,6 +101,9 @@ button:hover{
 
 <div style="padding:20px;">
     <p>اضغط على الصورة لفتح القائمة 👆</p>
+
+    <!-- زر المتجر -->
+    <button class="shop-btn" onclick="goShop()">🛒 المتجر</button>
 </div>
 
 <!-- القائمة الرئيسية -->
@@ -193,6 +207,11 @@ function changeImage(){
 function logout(){
     localStorage.removeItem("user");
     window.location.href = "login.html";
+}
+
+// الذهاب للمتجر
+function goShop(){
+    window.location.href = "shop.html";
 }
 
 // إغلاق القوائم عند الضغط خارجها
