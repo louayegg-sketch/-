@@ -4,22 +4,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background: linear-gradient(135deg, #12001a, #2a003f);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.box{
+    background:#1e1e1e;
+    padding:25px;
+    border-radius:15px;
+    width:300px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+    outline:none;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:orange;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#ffb84d;
+}
+
+.suggestion{
+    color:#aaa;
+    font-size:12px;
+    margin-top:-5px;
+}
+</style>
 </head>
 
 <body>
 
-<h2>تسجيل الدخول</h2>
+<div class="box">
+    <h2>تسجيل الدخول</h2>
 
-<input id="username" placeholder="اسم المستخدم"><br><br>
-<input id="password" type="password" placeholder="كلمة المرور"><br><br>
+    <input id="username" placeholder="اسم المستخدم" oninput="checkName()">
+    <div id="suggest" class="suggestion"></div>
 
-<button onclick="login()">دخول</button>
+    <input id="password" type="password" placeholder="كلمة المرور">
+
+    <button onclick="login()">دخول</button>
+</div>
 
 <script src="users.js"></script>
 
 <script>
 
-// 🔹 دالة التشابه
 function similarity(a,b){
     let longer = a.length > b.length ? a : b;
     let shorter = a.length > b.length ? b : a;
@@ -35,7 +88,6 @@ function similarity(a,b){
     return matches / longer.length;
 }
 
-// 🔹 إيجاد أقرب اسم
 function findClosest(input){
     let best = null;
     let score = 0;
@@ -51,7 +103,20 @@ function findClosest(input){
     return {best, score};
 }
 
-// 🔹 تسجيل الدخول
+// اقتراح مباشر تحت الخانة
+function checkName(){
+    let input = document.getElementById("username").value;
+    let res = findClosest(input);
+
+    let suggestBox = document.getElementById("suggest");
+
+    if(res.score > 0.4){
+        suggestBox.innerText = "هل تقصد: " + res.best;
+    } else {
+        suggestBox.innerText = "";
+    }
+}
+
 function login(){
 
     let username = document.getElementById("username").value;
@@ -63,15 +128,7 @@ function login(){
         window.location.href = "home.html";
 
     } else {
-
-        let res = findClosest(username);
-
-        if(res.score > 0.4){
-            alert("❌ الاسم غير صحيح\nهل تقصد: " + res.best);
-        } else {
-            alert("❌ الحساب غير موجود");
-        }
-
+        alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة");
     }
 }
 
