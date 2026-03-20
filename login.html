@@ -2,104 +2,73 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تسجيل الدخول</title>
-
-<style>
-body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #12001a;
-    font-family: Arial;
-}
-
-.box {
-    background: linear-gradient(135deg, #0a192f, #1a0b2e);
-    padding: 30px;
-    border-radius: 15px;
-    width: 320px;
-    text-align: center;
-    color: white;
-}
-
-input {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 18px;
-    border: 2px solid black;
-    outline: none;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-button {
-    width: 70px;
-    height: 70px;
-    border-radius: 20px;
-    border: none;
-    background: green;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #00aa00;
-}
-
-#msg {
-    margin-top: 10px;
-    color: red;
-}
-</style>
+<title>Login</title>
 </head>
-
 <body>
 
-<div class="box">
 <h2>تسجيل الدخول</h2>
 
 <input id="username" placeholder="اسم المستخدم">
-<input id="password" type="password" placeholder="كلمة السر">
+<br><br>
+<input id="password" placeholder="كلمة المرور" type="password">
+<br><br>
 
 <button onclick="login()">دخول</button>
-
-<div id="msg"></div>
-</div>
 
 <script src="users.js"></script>
 
 <script>
+
+function getSimilarName(input, usersObj){
+    let names = Object.keys(usersObj);
+    let bestMatch = null;
+    let bestScore = 0;
+
+    names.forEach(name => {
+        let score = similarity(input, name);
+        if(score > bestScore){
+            bestScore = score;
+            bestMatch = name;
+        }
+    });
+
+    return { name: bestMatch, score: bestScore };
+}
+
+function similarity(a, b){
+    let longer = a.length > b.length ? a : b;
+    let shorter = a.length > b.length ? b : a;
+
+    let matches = 0;
+
+    for(let i = 0; i < shorter.length; i++){
+        if(longer[i] === shorter[i]){
+            matches++;
+        }
+    }
+
+    return matches / longer.length;
+}
+
 function login(){
 
-    let u = document.getElementById("username").value.trim();
-    let p = document.getElementById("password").value;
-    let msg = document.getElementById("msg");
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-    msg.innerText = "";
+    if(users[username] && users[username].pass === password){
+        localStorage.setItem("user", username);
+        window.location.href = "home.html";
+    } else {
+        let result = getSimilarName(username, users);
 
-    if(!u || !p){
-        msg.innerText = "❌ اكتب كل المعلومات";
-        return;
+        if(result.score > 0.4){
+            alert("❌ الاسم غير صحيح\nهل تقصد: " + result.name);
+        } else {
+            alert("❌ الحساب غير موجود");
+        }
     }
-
-    if(!(u in users)){
-        msg.innerText = "❌ الاسم غير موجود";
-        return;
-    }
-
-    if(users[u].pass !== p){
-        msg.innerText = "❌ كلمة السر غير صحيحة";
-        return;
-    }
-
-    localStorage.setItem("user", u);
-    window.location.href = "home.html";
 }
+
 </script>
 
 </body>
