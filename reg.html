@@ -32,7 +32,7 @@ h2{
                  0 0 20px rgba(255,255,255,0.6);
 }
 
-/* الجملة */
+/* النص */
 .text{
     margin-top:20px;
     color:white;
@@ -41,11 +41,19 @@ h2{
 }
 
 /* الانستا */
-.insta{
+.insta a{
+    display:inline-block;
     margin-top:15px;
     color:#4fc3f7;
     text-shadow:0 0 8px #4fc3f7;
     font-weight:bold;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.insta a:hover{
+    transform:scale(1.1);
+    text-shadow:0 0 12px #4fc3f7;
 }
 
 /* زر الرجوع */
@@ -79,7 +87,9 @@ button:hover{
     </div>
 
     <div class="insta">
-        @Louaye_gamer_i
+        <a href="https://instagram.com/Louaye_Gamer_i" target="_blank">
+            @Louaye_Gamer_i
+        </a>
     </div>
 
     <button onclick="goBack()">🔙 رجوع</button>
