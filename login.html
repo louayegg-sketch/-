@@ -12,12 +12,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
     background: #12001a;
     font-family: Arial;
 }
 
-/* المربع */
 .box {
     background: linear-gradient(135deg, #0a192f, #1a0b2e);
     padding: 30px;
@@ -25,40 +23,28 @@ body {
     width: 320px;
     text-align: center;
     color: white;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* الحقول */
 input {
     width: 100%;
     padding: 14px;
     margin: 10px 0;
-
     border-radius: 18px;
     border: 2px solid black;
-
     outline: none;
-    font-size: 14px;
-
-    box-sizing: border-box;
     text-align: center;
+    box-sizing: border-box;
 }
 
-/* زر الدخول */
 button {
-    width: 90px;
-    height: 90px;
-
-    border-radius: 25px;
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
     border: none;
-
     background: green;
     color: white;
-
     font-size: 14px;
     cursor: pointer;
-
-    margin-top: 10px;
 }
 
 button:hover {
@@ -85,29 +71,9 @@ button:hover {
 <div id="msg"></div>
 </div>
 
+<script src="users.js"></script>
+
 <script>
-
-const usersData = {
-"روسيا":"77701",
-"لؤي":"36819",
-"محمد":"93516"
-};
-
-function getClosestName(input){
-    let closest = "";
-    let min = Infinity;
-
-    for(let name in usersData){
-        let diff = Math.abs(name.length - input.length);
-        if(diff < min){
-            min = diff;
-            closest = name;
-        }
-    }
-
-    return closest;
-}
-
 function login(){
 
     let u = document.getElementById("username").value.trim();
@@ -121,12 +87,12 @@ function login(){
         return;
     }
 
-    if(!(u in usersData)){
-        msg.innerText = "❌ الاسم غير موجود\nهل تقصد \"" + getClosestName(u) + "\"";
+    if(!(u in users)){
+        msg.innerText = "❌ الاسم غير موجود";
         return;
     }
 
-    if(usersData[u] !== p){
+    if(users[u].pass !== p){
         msg.innerText = "❌ كلمة السر غير صحيحة";
         return;
     }
@@ -134,7 +100,6 @@ function login(){
     localStorage.setItem("user", u);
     window.location.href = "home.html";
 }
-
 </script>
 
 </body>
