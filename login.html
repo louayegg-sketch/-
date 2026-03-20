@@ -6,40 +6,45 @@
 <title>Login</title>
 
 <style>
-body{
-    margin:0;
-    font-family:Arial;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#0f2027,#5f0a87);
-    color:white;
+body {
+    margin: 0;
+    font-family: Arial;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f2027, #5f0a87);
+    color: white;
 }
 
-.container{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    background:rgba(0,0,0,0.3);
-    padding:20px;
-    border-radius:12px;
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 12px;
 }
 
-input{
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    outline:none;
+input {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
 }
 
-button{
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    background:#2196f3;
-    color:white;
-    cursor:pointer;
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #2196f3;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:active {
+    transform: scale(0.9);
 }
 </style>
 </head>
@@ -52,11 +57,12 @@ button{
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
 
-    <button onclick="login()">دخول</button>
+    <button id="loginBtn">دخول</button>
 </div>
 
 <script>
-function login(){
+// زر تسجيل الدخول
+document.getElementById("loginBtn").onclick = function(){
     let user = document.getElementById("username").value;
     let pass = document.getElementById("password").value;
 
@@ -65,57 +71,14 @@ function login(){
         return;
     }
 
-    // مثال بسيط
+    // مثال بسيط (تقدر تربطه بملف users لاحقًا)
     if(user === "admin" && pass === "1234"){
         localStorage.setItem("user", user);
         window.location.href = "home.html";
     } else {
         alert("بيانات خاطئة");
     }
-}
-
-/* اللغة بدون ما تخرب الإدخال */
-function applyLang(lang){
-    let title = document.getElementById("title");
-    let username = document.getElementById("username");
-    let password = document.getElementById("password");
-
-    if(lang === "en"){
-        title.innerText = "Login";
-        username.placeholder = "Username";
-        password.placeholder = "Password";
-    }
-
-    if(lang === "fr"){
-        title.innerText = "Connexion";
-        username.placeholder = "Nom d'utilisateur";
-        password.placeholder = "Mot de passe";
-    }
-
-    if(lang === "ru"){
-        title.innerText = "Войти";
-        username.placeholder = "Имя пользователя";
-        password.placeholder = "Пароль";
-    }
-
-    if(lang === "es"){
-        title.innerText = "Iniciar sesión";
-        username.placeholder = "Usuario";
-        password.placeholder = "Contraseña";
-    }
-
-    if(lang === "ar"){
-        title.innerText = "تسجيل الدخول";
-        username.placeholder = "اسم المستخدم";
-        password.placeholder = "كلمة المرور";
-    }
-}
-
-/* تشغيل اللغة عند التحميل */
-window.onload = function(){
-    let lang = localStorage.getItem("lang") || "ar";
-    applyLang(lang);
-}
+};
 </script>
 
 </body>
