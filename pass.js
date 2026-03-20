@@ -1,4 +1,4 @@
-const usersData = {
+window.usersData = {
 "لؤي":"36819",
 "عمر":"74219",
 "علي جواد":"61984",
