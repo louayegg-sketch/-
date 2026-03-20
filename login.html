@@ -66,7 +66,6 @@ button {
 
 <script>
 
-// بياناتك
 const usersData = {
 "لؤي":"36819",
 "روسيا":"77701",
@@ -75,7 +74,6 @@ const usersData = {
 "عمر":"74219"
 };
 
-// إيجاد أقرب اسم
 function getClosestName(input){
     let closest = "";
     let minDiff = Infinity;
@@ -104,7 +102,6 @@ function login(){
         return;
     }
 
-    // ❌ اسم غلط
     if(!(u in usersData)){
         let suggestion = getClosestName(u);
 
@@ -115,15 +112,22 @@ function login(){
         return;
     }
 
-    // ❌ كلمة السر غلط
     if(usersData[u] !== p){
         msg.innerText = "❌ كلمة السر غير صحيحة";
         return;
     }
 
-    // ✅ دخول مباشر بدون رسالة
+    // ✅ حفظ المستخدم
     localStorage.setItem("user", u);
-    window.location.href = "home.html";
+
+    // ✅ رسالة جديدة
+    msg.style.color = "lightgreen";
+    msg.innerText = "سيتم نقلك لصفحة ملفك";
+
+    // ⏳ تأخير بسيط
+    setTimeout(()=>{
+        window.location.href = "home.html";
+    }, 700);
 }
 
 </script>
