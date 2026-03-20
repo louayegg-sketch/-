@@ -138,18 +138,24 @@ canvas{
 
 <script>
 
-// ✅ التعديل هنا (مهم)
+// ✅ جلب المستخدم من localStorage
 let user = localStorage.getItem("user");
 
-if(!user || !users[user]){
+// ❌ إذا ما فيه مستخدم → يرجع لوقين
+if(!user){
     window.location.href = "login.html";
 }
 
+// ✅ بيانات المستخدم (حتى لو users.js خربان)
+let data = (typeof users !== "undefined" && users[user]) ? users[user] : {
+    soldiers: 0,
+    money: 0,
+    military: "غير معروف",
+    team: "غير معروف"
+};
+
 // عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
-
-// بيانات المستخدم
-let data = users[user];
 
 // عرض المعلومات
 document.getElementById("userName").innerText = "👤 الاسم: " + user;
@@ -221,7 +227,7 @@ document.addEventListener("click", function(e){
 
 });
 
-// ✅ تسجيل خروج (مصلح)
+// ✅ تسجيل خروج
 function logout(){
     localStorage.removeItem("user");
     window.location.href = "login.html";
