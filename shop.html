@@ -33,6 +33,19 @@ button:hover{
     background:#666;
 }
 
+.buy-btn{
+    background:green;
+}
+
+.sell-btn{
+    background:orange;
+    color:black;
+}
+
+.sell-btn:hover{
+    background:#ffb84d;
+}
+
 .container{
     padding:15px;
 }
@@ -52,10 +65,6 @@ th, td{
 th{
     background:#222;
 }
-
-.buy-btn{
-    background:green;
-}
 </style>
 </head>
 
@@ -68,7 +77,6 @@ th{
 
 <div class="container">
 
-<!-- التجنيد -->
 <h3>👥 التجنيد</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
@@ -79,14 +87,12 @@ th{
 </tr>
 </table>
 
-<!-- التطوير العسكري -->
 <h3>🪖 التطوير العسكري</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
 <tr><td>تطويرة عسكرية +0.010</td><td>10$</td><td><button class="buy-btn">شراء</button></td></tr>
 </table>
 
-<!-- النووي -->
 <h3>☢️ النووي</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
@@ -97,19 +103,17 @@ th{
 <tr><td>آلة الاستخراج</td><td>350$</td><td><button class="buy-btn">شراء</button></td></tr>
 </table>
 
-<!-- الموارد -->
 <h3>⛏️ الموارد</h3>
 <table>
-<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
-<tr><td>5 خشب</td><td>1$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>5 حديد</td><td>2$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>5 ذهب</td><td>9$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>1 برميل نفط</td><td>3$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>1 الماس</td><td>5$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>1 يورانيوم</td><td>10$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><th>العنصر</th><th>السعر</th><th>بيع</th></tr>
+<tr><td>5 خشب</td><td>1$</td><td><button class="sell-btn">بيع</button></td></tr>
+<tr><td>5 حديد</td><td>2$</td><td><button class="sell-btn">بيع</button></td></tr>
+<tr><td>5 ذهب</td><td>9$</td><td><button class="sell-btn">بيع</button></td></tr>
+<tr><td>1 برميل نفط</td><td>3$</td><td><button class="sell-btn">بيع</button></td></tr>
+<tr><td>1 الماس</td><td>5$</td><td><button class="sell-btn">بيع</button></td></tr>
+<tr><td>1 يورانيوم</td><td>10$</td><td><button class="sell-btn">بيع</button></td></tr>
 </table>
 
-<!-- الآلات -->
 <h3>🏭 الآلات</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
@@ -121,7 +125,6 @@ th{
 <tr><td>آلة استخراج اليورانيوم</td><td>350$</td><td><button class="buy-btn">شراء</button></td></tr>
 </table>
 
-<!-- الصواريخ -->
 <h3>🚀 الصواريخ</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
@@ -131,20 +134,15 @@ th{
 <tr><td>صاروخ طراز 30</td><td>33$</td><td><button class="buy-btn">شراء</button></td></tr>
 </table>
 
-<!-- التطوير -->
 <h3>📈 تطوير الآلات</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
 
-<tr><td>تطوير آلة النفط لفل 2</td><td>30$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>لفل 3</td><td>60$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>لفل 4</td><td>100$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>لفل 5</td><td>140$</td><td><button class="buy-btn">شراء</button></td></tr>
-
-<tr><td>تطوير الذهب</td><td>30$ / 50$ / 100$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الحديد</td><td>20$ / 30$ / 50$ / 60$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الألماس</td><td>50$ / 100$ / 150$ / 170$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الخشب</td><td>10$ / 40$ / 60$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير النفط</td><td>30$ - 140$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الذهب</td><td>30$ - 100$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الحديد</td><td>20$ - 60$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الألماس</td><td>50$ - 170$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الخشب</td><td>10$ - 60$</td><td><button class="buy-btn">شراء</button></td></tr>
 
 <tr><td>تطوير الدولة</td><td>5$ → 10$ → 20$ → 40$ ...</td><td><button class="buy-btn">شراء</button></td></tr>
 
@@ -153,11 +151,9 @@ th{
 </div>
 
 <script>
-
 function goHome(){
     window.location.href = "home.html";
 }
-
 </script>
 
 </body>
