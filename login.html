@@ -13,14 +13,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f2027, #5f0a87);
+    background: linear-gradient(135deg, #0f0c29, #3a0ca3, #7209b7);
     color: white;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     background: rgba(0,0,0,0.4);
     padding: 30px;
     border-radius: 15px;
@@ -47,15 +47,15 @@ button {
     color: white;
     cursor: pointer;
     font-size: 16px;
-    transition: 0.2s;
 }
 
 button:active {
-    transform: scale(0.9);
+    transform: scale(0.95);
 }
 
-button:hover {
-    opacity: 0.9;
+.error {
+    color: red;
+    font-size: 14px;
 }
 </style>
 </head>
@@ -69,28 +69,81 @@ button:hover {
     <input type="password" id="password" placeholder="كلمة المرور">
 
     <button id="loginBtn">دخول</button>
+
+    <div id="msg" class="error"></div>
 </div>
 
 <script>
-// تأكد أن الزر مربوط صح
+// 👇 قائمة المستخدمين (مثال)
+const users = [
+    { username: "admin", password: "1234" },
+    { username: "louaye", password: "0000" },
+    { username: "player1", password: "1111" }
+];
+
+function findClosestName(inputName){
+    inputName = inputName.toLowerCase();
+    let bestMatch = null;
+    let minDiff = Infinity;
+
+    users.forEach(u => {
+        let name = u.username.toLowerCase();
+
+        // حساب الفرق البسيط
+        let diff = Math.abs(name.length - inputName.length);
+
+        if(name.includes(inputName) || inputName.includes(name)){
+            diff = 0;
+        }
+
+        if(diff < minDiff){
+            minDiff = diff;
+            bestMatch = u.username;
+        }
+    });
+
+    return bestMatch;
+}
+
 document.getElementById("loginBtn").addEventListener("click", function(){
 
-    let user = document.getElementById("username").value.trim();
-    let pass = document.getElementById("password").value.trim();
+    let userInput = document.getElementById("username").value;
+    let passInput = document.getElementById("password").value;
+    let msg = document.getElementById("msg");
 
-    if(user === "" || pass === ""){
-        alert("املأ البيانات");
+    msg.innerText = "";
+
+    if(userInput === "" || passInput === ""){
+        msg.innerText = "املأ البيانات";
         return;
     }
 
-    // مثال تسجيل دخول بسيط
-    if(user === "admin" && pass === "1234"){
-        localStorage.setItem("user", user);
-        window.location.href = "home.html";
-    } else {
-        alert("بيانات خاطئة");
+    let cleanInput = userInput.replace(/\s/g, "");
+
+    let foundUser = users.find(u => u.username === cleanInput);
+
+    // ❌ الاسم غير موجود
+    if(!foundUser){
+        let suggestion = findClosestName(cleanInput);
+
+        msg.innerText = "❌ الاسم غير موجود\nجرب بدون مسافات: " + cleanInput;
+
+        if(suggestion){
+            msg.innerText += "\nهل تقصد: " + suggestion + "؟";
+        }
+
+        return;
     }
 
+    // ❌ كلمة السر غلط
+    if(foundUser.password !== passInput){
+        msg.innerText = "❌ كلمة السر غير صحيحة";
+        return;
+    }
+
+    // ✅ نجاح
+    localStorage.setItem("user", foundUser.username);
+    window.location.href = "home.html";
 });
 </script>
 
