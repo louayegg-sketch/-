@@ -25,7 +25,11 @@ const users = {
 "سلطان":{pass:"29471",soldiers:250,money:"100$",military:1,team:1},
 "وديد":{pass:"51638",soldiers:1200,money:"385$",military:"1.060",team:1},
 "الوليد":{pass:"74288",soldiers:11500,money:"100$",military:1,team:1},
-"وليان":{pass:"60845",soldiers:300,money:"525$",military:1,team:1},
+
+"مارتن":{pass:"60845",soldiers:800,money:"25$",military:1,team:1},
+"فيكارا":{pass:"63048",soldiers:0,money:"0$",military:1,team:1},
+"سنوبر":{pass:"50291",soldiers:650,money:"100$",military:1,team:1},
+
 "نزار":{pass:"96321",soldiers:2450,money:"100$",military:1,team:1},
 "عثمان":{pass:"13579",soldiers:320,money:"100$",military:1,team:1},
 "لونا":{pass:"82460",soldiers:420,money:"100$",military:1,team:1},
@@ -33,8 +37,8 @@ const users = {
 "وائل":{pass:"69024",soldiers:57,money:"30$",military:1,team:1},
 "تيم":{pass:"31876",soldiers:2220,money:"200$",military:1,team:1},
 "امين":{pass:"77125",soldiers:850,money:"100$",military:1,team:1},
-"سبونر":{pass:"50291",soldiers:650,money:"100$",military:1,team:1},
 "سوني":{pass:"88463",soldiers:2300,money:"100$",military:1,team:1},
 "فلاديمير":{pass:"24680",soldiers:1700,money:"100$",military:1,team:1},
-"لونا (برمودا)":{pass:"93740",soldiers:205,money:"100$",military:1,team:1}
+
+"برمودا":{pass:"93740",soldiers:205,money:"100$",military:1,team:1}
 };
