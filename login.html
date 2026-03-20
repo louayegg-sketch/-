@@ -25,11 +25,10 @@ body {
     width: 320px;
     text-align: center;
     color: white;
-
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* الحقول */
+/* نخلي المحتوى داخل input يكون مضبوط */
 input {
     width: 100%;
     padding: 14px;
@@ -40,14 +39,17 @@ input {
 
     outline: none;
     font-size: 14px;
+
+    box-sizing: border-box;
+    text-align: center; /* 🔥 يخلي الكتابة بالوسط */
 }
 
-/* زر الدخول */
+/* زر الدخول مربع */
 button {
-    width: 100%;
-    padding: 14px;
-
-    border-radius: 30px; /* حواف دائرية بزيااادة */
+    width: 60%;              /* نخليه أصغر */
+    aspect-ratio: 1 / 1;     /* يخليه مربع */
+    
+    border-radius: 20px;     /* حواف دائرية */
     border: none;
 
     background: green;
@@ -55,6 +57,8 @@ button {
 
     font-size: 16px;
     cursor: pointer;
+
+    margin-top: 10px;
 }
 
 button:hover {
