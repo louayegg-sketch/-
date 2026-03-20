@@ -15,8 +15,6 @@
         align-items: center;
         text-align: center;
         color: white;
-
-        /* ✅ نفس خلفية الهوم */
         background: #12001a;
     }
 
@@ -54,6 +52,16 @@
         background: #008f39;
     }
 
+    /* النص الصغير في الزاوية */
+    .corner-text{
+        position: fixed;
+        bottom: 5px;
+        right: 5px;
+        font-size: 3px;
+        color: white;
+        opacity: 0.8;
+    }
+
     @media (max-width: 600px) {
         h1 {
             font-size: 20px;
@@ -74,6 +82,9 @@
     <h1>مرحبا بك في خريطة الميمز! 😂</h1>
     <button onclick="start()">ابدأ</button>
 </div>
+
+<!-- النص الصغير جدًا -->
+<div class="corner-text">مؤمنة/فيكارا</div>
 
 <script>
 function start() {
