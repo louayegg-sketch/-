@@ -19,8 +19,8 @@ body {
 .box {
     background: #1c1c1c;
     padding: 25px;
-    border-radius: 10px;
-    width: 300px;
+    border-radius: 12px;
+    width: 320px;
     text-align: center;
     color: white;
 }
@@ -30,15 +30,16 @@ input {
     padding: 10px;
     margin: 10px 0;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    outline: none;
 }
 
 button {
     width: 100%;
     padding: 10px;
     border: none;
-    border-radius: 5px;
-    background: #00a844;
+    border-radius: 6px;
+    background: #2196f3;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -47,7 +48,6 @@ button {
 #msg {
     margin-top: 10px;
     font-size: 14px;
-    color: red;
 }
 </style>
 </head>
@@ -65,41 +65,44 @@ button {
     <div id="msg"></div>
 </div>
 
+<!-- تحميل بيانات الحسابات -->
 <script src="pass.js"></script>
 
 <script>
-function normalize(text){
-    return text.trim();
-}
-
 function login(){
 
-    let username = normalize(document.getElementById("username").value);
-    let password = document.getElementById("password").value;
-    let msg = document.getElementById("msg");
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const msg = document.getElementById("msg");
 
+    msg.style.color = "red";
     msg.innerText = "";
 
-    if(!username || !password){
+    // تحقق من تحميل البيانات
+    if(!window.usersData){
+        msg.innerText = "❌ خطأ: لم يتم تحميل بيانات الحسابات";
+        return;
+    }
+
+    // تحقق من الإدخال
+    if(username === "" || password === ""){
         msg.innerText = "❌ الرجاء إدخال جميع البيانات";
         return;
     }
 
-    if(!usersData){
-        msg.innerText = "❌ خطأ في تحميل البيانات";
-        return;
-    }
-
+    // تحقق من وجود الاسم
     if(!(username in usersData)){
         msg.innerText = "❌ الاسم غير موجود جرب حذف المسافات";
         return;
     }
 
+    // تحقق من كلمة المرور
     if(usersData[username] !== password){
         msg.innerText = "❌ كلمة السر غير صحيحة تحقق منها";
         return;
     }
 
+    // نجاح
     msg.style.color = "lightgreen";
     msg.innerText = "✅ تم تسجيل الدخول";
 
