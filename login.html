@@ -3,17 +3,17 @@
 <script>
 
 function normalize(text){
-    return text.toLowerCase().replace(/\s+/g, "");
+    return text.trim().replace(/\s+/g, " ");
 }
 
 function findClosest(input){
     let closest = "";
-    let minDiff = Infinity;
+    let min = Infinity;
 
     for(let name in usersData){
         let diff = Math.abs(name.length - input.length);
-        if(diff < minDiff){
-            minDiff = diff;
+        if(diff < min){
+            min = diff;
             closest = name;
         }
     }
@@ -23,30 +23,29 @@ function findClosest(input){
 
 function login(){
 
-    let userInput = document.getElementById("username").value.trim();
-    let passInput = document.getElementById("password").value.trim();
+    let username = normalize(document.getElementById("username").value);
+    let password = document.getElementById("password").value;
     let msg = document.getElementById("msg");
 
-    msg.innerText = "";
+    msg.style.color = "red";
 
-    if(!userInput || !passInput){
-        msg.innerText = "❌ في بيانات ناقصة";
+    if(username === "" || password === ""){
+        msg.innerText = "❌ الرجاء ملء جميع الحقول";
         return;
     }
 
-    let cleanInput = normalize(userInput);
-
     let foundName = null;
 
+    // مقارنة بدون مشاكل مسافات
     for(let name in usersData){
-        if(normalize(name) === cleanInput){
+        if(name.trim() === username){
             foundName = name;
             break;
         }
     }
 
     if(!foundName){
-        let suggestion = findClosest(userInput);
+        let suggestion = findClosest(username);
 
         msg.innerText =
             "❌ الاسم غير موجود\n" +
@@ -56,16 +55,20 @@ function login(){
         return;
     }
 
-    if(usersData[foundName] !== passInput){
-        msg.innerText =
-            "❌ كلمة السر غير صحيحة\n" +
-            "تحقق منها";
+    if(usersData[foundName] !== password){
+        msg.innerText = "❌ كلمة السر غير صحيحة تحقق منها";
         return;
     }
 
     // نجاح
+    msg.style.color = "green";
+    msg.innerText = "✅ تم تسجيل الدخول";
+
     localStorage.setItem("user", foundName);
-    window.location.href = "home.html";
+
+    setTimeout(()=>{
+        window.location.href = "home.html";
+    }, 1000);
 }
 
 </script>
