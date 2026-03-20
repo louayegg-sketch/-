@@ -47,6 +47,7 @@ button {
     color: white;
     cursor: pointer;
     font-size: 16px;
+    transition: 0.2s;
 }
 
 button:active {
@@ -56,6 +57,7 @@ button:active {
 .error {
     color: red;
     font-size: 14px;
+    white-space: pre-line;
 }
 </style>
 </head>
@@ -74,37 +76,44 @@ button:active {
 </div>
 
 <script>
-// 👇 قائمة المستخدمين (مثال)
+
+// قائمة المستخدمين
 const users = [
     { username: "admin", password: "1234" },
     { username: "louaye", password: "0000" },
     { username: "player1", password: "1111" }
 ];
 
-function findClosestName(inputName){
-    inputName = inputName.toLowerCase();
-    let bestMatch = null;
-    let minDiff = Infinity;
+// تنظيف الاسم
+function normalize(name){
+    return name.toLowerCase().replace(/\s/g, "");
+}
+
+// إيجاد اسم قريب
+function findClosestName(input){
+    let best = null;
+    let bestScore = -1;
 
     users.forEach(u => {
-        let name = u.username.toLowerCase();
+        let a = normalize(u.username);
+        let b = normalize(input);
 
-        // حساب الفرق البسيط
-        let diff = Math.abs(name.length - inputName.length);
+        let score = 0;
 
-        if(name.includes(inputName) || inputName.includes(name)){
-            diff = 0;
+        for(let i = 0; i < Math.min(a.length, b.length); i++){
+            if(a[i] === b[i]) score++;
         }
 
-        if(diff < minDiff){
-            minDiff = diff;
-            bestMatch = u.username;
+        if(score > bestScore){
+            bestScore = score;
+            best = u.username;
         }
     });
 
-    return bestMatch;
+    return best;
 }
 
+// تسجيل الدخول
 document.getElementById("loginBtn").addEventListener("click", function(){
 
     let userInput = document.getElementById("username").value;
@@ -118,33 +127,34 @@ document.getElementById("loginBtn").addEventListener("click", function(){
         return;
     }
 
-    let cleanInput = userInput.replace(/\s/g, "");
+    let cleanInput = normalize(userInput);
 
-    let foundUser = users.find(u => u.username === cleanInput);
+    let foundUser = users.find(u => normalize(u.username) === cleanInput);
 
     // ❌ الاسم غير موجود
     if(!foundUser){
-        let suggestion = findClosestName(cleanInput);
+        let suggestion = findClosestName(userInput);
 
-        msg.innerText = "❌ الاسم غير موجود\nجرب بدون مسافات: " + cleanInput;
+        msg.innerText = "❌ الاسم غير موجود\nحاول بدون مسافات: " + cleanInput;
 
         if(suggestion){
-            msg.innerText += "\nهل تقصد: " + suggestion + "؟";
+            msg.innerText += "\nاقتراح: " + suggestion;
         }
 
         return;
     }
 
-    // ❌ كلمة السر غلط
+    // ❌ كلمة السر
     if(foundUser.password !== passInput){
         msg.innerText = "❌ كلمة السر غير صحيحة";
         return;
     }
 
-    // ✅ نجاح
+    // ✅ دخول
     localStorage.setItem("user", foundUser.username);
     window.location.href = "home.html";
 });
+
 </script>
 
 </body>
