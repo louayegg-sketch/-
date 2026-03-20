@@ -20,31 +20,42 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     background: rgba(0,0,0,0.4);
-    padding: 20px;
-    border-radius: 12px;
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+}
+
+h2 {
+    text-align: center;
 }
 
 input {
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 8px;
     outline: none;
+    font-size: 16px;
 }
 
 button {
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 8px;
     background: #2196f3;
     color: white;
     cursor: pointer;
+    font-size: 16px;
     transition: 0.2s;
 }
 
 button:active {
     transform: scale(0.9);
+}
+
+button:hover {
+    opacity: 0.9;
 }
 </style>
 </head>
@@ -52,7 +63,7 @@ button:active {
 <body>
 
 <div class="container">
-    <h2 id="title">تسجيل الدخول</h2>
+    <h2>تسجيل الدخول</h2>
 
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
@@ -61,24 +72,26 @@ button:active {
 </div>
 
 <script>
-// زر تسجيل الدخول
-document.getElementById("loginBtn").onclick = function(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
+// تأكد أن الزر مربوط صح
+document.getElementById("loginBtn").addEventListener("click", function(){
+
+    let user = document.getElementById("username").value.trim();
+    let pass = document.getElementById("password").value.trim();
 
     if(user === "" || pass === ""){
         alert("املأ البيانات");
         return;
     }
 
-    // مثال بسيط (تقدر تربطه بملف users لاحقًا)
+    // مثال تسجيل دخول بسيط
     if(user === "admin" && pass === "1234"){
         localStorage.setItem("user", user);
         window.location.href = "home.html";
     } else {
         alert("بيانات خاطئة");
     }
-};
+
+});
 </script>
 
 </body>
