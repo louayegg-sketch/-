@@ -1,46 +1,109 @@
-<script src="pass.js"></script>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0a192f;
+    font-family: Arial;
+}
+
+.box {
+    background: #112240;
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+    text-align: center;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 12px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #2196f3;
+    color: white;
+    cursor: pointer;
+}
+
+#msg {
+    margin-top: 10px;
+    color: red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>تسجيل الدخول</h2>
+
+    <input id="username" placeholder="اسم المستخدم">
+    <input id="password" type="password" placeholder="كلمة السر">
+
+    <button onclick="login()">دخول</button>
+
+    <div id="msg"></div>
+</div>
 
 <script>
+
+// 🔥 بياناتك هنا مباشرة (مضمونة تشتغل)
+const usersData = {
+"لؤي":"36819",
+"روسيا":"77701",
+"محمد":"93516"
+};
+
 function login(){
 
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
-    const msg = document.getElementById("msg");
+    let u = document.getElementById("username").value.trim();
+    let p = document.getElementById("password").value;
+    let msg = document.getElementById("msg");
 
     msg.innerText = "";
 
-    // تأكد أن البيانات محملة
-    if(typeof usersData === "undefined"){
-        msg.style.color = "red";
-        msg.innerText = "❌ خطأ: لم يتم تحميل الحسابات";
+    if(u === "" || p === ""){
+        msg.innerText = "❌ اكتب كل المعلومات";
         return;
     }
 
-    if(username === "" || password === ""){
-        msg.style.color = "red";
-        msg.innerText = "❌ الرجاء إدخال جميع البيانات";
+    if(!(u in usersData)){
+        msg.innerText = "❌ الاسم غير موجود";
         return;
     }
 
-    if(!(username in usersData)){
-        msg.style.color = "red";
-        msg.innerText = "❌ الاسم غير موجود جرب حذف المسافات";
-        return;
-    }
-
-    if(usersData[username] !== password){
-        msg.style.color = "red";
-        msg.innerText = "❌ كلمة السر غير صحيحة تحقق منها";
+    if(usersData[u] !== p){
+        msg.innerText = "❌ كلمة السر غير صحيحة";
         return;
     }
 
     msg.style.color = "lightgreen";
-    msg.innerText = "✅ تم تسجيل الدخول";
-
-    localStorage.setItem("user", username);
+    msg.innerText = "✅ تم الدخول";
 
     setTimeout(()=>{
         window.location.href = "home.html";
     }, 1000);
 }
+
 </script>
+
+</body>
+</html>
