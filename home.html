@@ -101,6 +101,9 @@ button:hover{
     <p>اضغط على الصورة لفتح القائمة 👆</p>
 
     <button class="shop-btn" onclick="goShop()">🛒 المتجر</button>
+
+    <!-- زر الأخبار -->
+    <button class="shop-btn" onclick="goNews()">📰 الأخبار</button>
 </div>
 
 <!-- القائمة الرئيسية -->
@@ -201,6 +204,11 @@ function logout(){
 // المتجر
 function goShop(){
     window.location.href = "shop.html";
+}
+
+// الأخبار
+function goNews(){
+    window.location.href = "news.html";
 }
 
 // إغلاق القوائم عند الضغط خارجها
