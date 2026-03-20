@@ -42,10 +42,6 @@ button:hover{
     color:black;
 }
 
-.sell-btn:hover{
-    background:#ffb84d;
-}
-
 .container{
     padding:15px;
 }
@@ -83,76 +79,68 @@ th{
 <tr>
 <td>1$ = جندي</td>
 <td>1$</td>
-<td><button class="buy-btn">شراء</button></td>
+<td><button class="buy-btn" onclick="goToBuy()">شراء</button></td>
 </tr>
 </table>
 
 <h3>🪖 التطوير العسكري</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
-<tr><td>تطويرة عسكرية +0.010</td><td>10$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr>
+<td>تطويرة عسكرية +0.010</td>
+<td>10$</td>
+<td><button class="buy-btn" onclick="goToBuy()">شراء</button></td>
+</tr>
 </table>
 
 <h3>☢️ النووي</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
-<tr><td>طراز 5</td><td>50$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>طراز 10</td><td>100$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>طراز 20</td><td>200$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>استخراج نووي</td><td>يورانيوم + آلة استخراج</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>آلة الاستخراج</td><td>350$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>طراز 5</td><td>50$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>طراز 10</td><td>100$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>طراز 20</td><td>200$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>استخراج نووي</td><td>يورانيوم + آلة استخراج</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>آلة الاستخراج</td><td>350$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
 </table>
 
 <h3>⛏️ الموارد</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>بيع</th></tr>
-<tr><td>5 خشب</td><td>1$</td><td><button class="sell-btn">بيع</button></td></tr>
-<tr><td>5 حديد</td><td>2$</td><td><button class="sell-btn">بيع</button></td></tr>
-<tr><td>5 ذهب</td><td>9$</td><td><button class="sell-btn">بيع</button></td></tr>
-<tr><td>1 برميل نفط</td><td>3$</td><td><button class="sell-btn">بيع</button></td></tr>
-<tr><td>1 الماس</td><td>5$</td><td><button class="sell-btn">بيع</button></td></tr>
-<tr><td>1 يورانيوم</td><td>10$</td><td><button class="sell-btn">بيع</button></td></tr>
+<tr><td>5 خشب</td><td>1$</td><td><button class="sell-btn" onclick="goToBuy()">بيع</button></td></tr>
+<tr><td>5 حديد</td><td>2$</td><td><button class="sell-btn" onclick="goToBuy()">بيع</button></td></tr>
+<tr><td>5 ذهب</td><td>9$</td><td><button class="sell-btn" onclick="goToBuy()">بيع</button></td></tr>
+<tr><td>1 برميل نفط</td><td>3$</td><td><button class="sell-btn" onclick="goToBuy()">بيع</button></td></tr>
+<tr><td>1 الماس</td><td>5$</td><td><button class="sell-btn" onclick="goToBuy()">بيع</button></td></tr>
+<tr><td>1 يورانيوم</td><td>10$</td><td><button class="sell-btn" onclick="goToBuy()">بيع</button></td></tr>
 </table>
 
 <h3>🏭 الآلات</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
-<tr><td>آلة استخراج الخشب</td><td>20$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>آلة استخراج الحديد</td><td>50$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>آلة استخراج الذهب</td><td>75$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>آلة استخراج النفط</td><td>50$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>آلة استخراج الألماس</td><td>130$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>آلة استخراج اليورانيوم</td><td>350$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة استخراج الخشب</td><td>20$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>آلة استخراج الحديد</td><td>50$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>آلة استخراج الذهب</td><td>75$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>آلة استخراج النفط</td><td>50$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>آلة استخراج الألماس</td><td>130$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>آلة استخراج اليورانيوم</td><td>350$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
 </table>
 
 <h3>🚀 الصواريخ</h3>
 <table>
 <tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
-<tr><td>صاروخ طراز 5</td><td>5$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>صاروخ طراز 10</td><td>11$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>صاروخ طراز 20</td><td>22$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>صاروخ طراز 30</td><td>33$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>صاروخ طراز 5</td><td>5$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>صاروخ طراز 10</td><td>11$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>صاروخ طراز 20</td><td>22$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
+<tr><td>صاروخ طراز 30</td><td>33$</td><td><button class="buy-btn" onclick="goToBuy()">شراء</button></td></tr>
 </table>
-
-<h3>📈 تطوير الآلات</h3>
-<table>
-<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
-
-<tr><td>تطوير النفط</td><td>30$ - 140$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الذهب</td><td>30$ - 100$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الحديد</td><td>20$ - 60$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الألماس</td><td>50$ - 170$</td><td><button class="buy-btn">شراء</button></td></tr>
-<tr><td>تطوير الخشب</td><td>10$ - 60$</td><td><button class="buy-btn">شراء</button></td></tr>
-
-<tr><td>تطوير الدولة</td><td>5$ → 10$ → 20$ → 40$ ...</td><td><button class="buy-btn">شراء</button></td></tr>
-
-</table>
-
-</div>
 
 <script>
 function goHome(){
     window.location.href = "home.html";
+}
+
+function goToBuy(){
+    window.location.href = "buying.html";
 }
 </script>
 
