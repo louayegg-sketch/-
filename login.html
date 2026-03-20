@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>تسجيل الدخول</title>
 
 <style>
 body {
@@ -13,45 +13,36 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #0a1a2f;
+    background: #0f2027;
     color: white;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    background: rgba(0,0,0,0.5);
-    padding: 30px;
-    border-radius: 15px;
-    width: 320px;
-}
-
-h2 {
     text-align: center;
 }
 
 input {
-    padding: 12px;
-    border: none;
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 200px;
     border-radius: 8px;
-    outline: none;
-    font-size: 16px;
+    border: none;
 }
 
 button {
-    padding: 12px;
+    padding: 10px 20px;
+    margin-top: 10px;
     border: none;
     border-radius: 8px;
+    cursor: pointer;
     background: #2196f3;
     color: white;
-    cursor: pointer;
-    font-size: 16px;
 }
 
-.error {
+#msg {
+    margin-top: 15px;
     color: red;
-    font-size: 14px;
     white-space: pre-line;
 }
 </style>
@@ -63,23 +54,38 @@ button {
     <h2>تسجيل الدخول</h2>
 
     <input type="text" id="username" placeholder="اسم المستخدم">
-    <input type="password" id="password" placeholder="كلمة المرور">
+    <input type="password" id="password" placeholder="كلمة السر">
 
     <button onclick="login()">دخول</button>
 
-    <div id="msg" class="error"></div>
+    <div id="msg"></div>
 </div>
 
 <script>
-
-// بيانات تجريبية (غيرها لاحقًا بملف users)
 const users = [
-    { username: "louaye", password: "1234" },
-    { username: "player1", password: "1111" }
+    { username: "محمد", password: "1234" },
+    { username: "أحمد", password: "1111" },
+    { username: "لؤي", password: "2024" }
 ];
 
-function normalize(name){
-    return name.toLowerCase().replace(/\s/g, "");
+function normalize(text){
+    return text.toLowerCase().replace(/\s+/g, "");
+}
+
+function findClosest(name){
+    let names = users.map(u => u.username);
+    let closest = names[0];
+    let minDiff = 999;
+
+    names.forEach(n => {
+        let diff = Math.abs(n.length - name.length);
+        if(diff < minDiff){
+            minDiff = diff;
+            closest = n;
+        }
+    });
+
+    return closest;
 }
 
 function login(){
@@ -88,9 +94,10 @@ function login(){
     let passInput = document.getElementById("password").value.trim();
     let msg = document.getElementById("msg");
 
+    msg.style.color = "red";
     msg.innerText = "";
 
-    if(userInput === "" || passInput === ""){
+    if(!userInput || !passInput){
         msg.innerText = "❌ في بيانات ناقصة";
         return;
     }
@@ -99,25 +106,30 @@ function login(){
 
     let foundUser = users.find(u => normalize(u.username) === cleanInput);
 
+    // ❌ الاسم غير موجود
     if(!foundUser){
-        msg.innerText =
-            "❌ الاسم غير موجود\n" +
-            "جرب حذف المسافات";
+        let suggestion = findClosest(userInput);
+
+        msg.innerText = "❌ الاسم غير موجود\nجرب حذف المسافات\nهل تقصد: " + suggestion;
         return;
     }
 
-    if(foundUser.password.trim() !== passInput){
-        msg.innerText =
-            "❌ كلمة السر غير صحيحة\n" +
-            "تحقق منها";
+    // ❌ كلمة السر
+    if(foundUser.password !== passInput){
+        msg.innerText = "❌ كلمة السر غير صحيحة\nتحقق منها";
         return;
     }
 
-    // نجاح
+    // ✅ نجاح
+    msg.style.color = "green";
+    msg.innerText = "✅ تم تسجيل الدخول بنجاح";
+
     localStorage.setItem("user", foundUser.username);
-    window.location.href = "home.html";
-}
 
+    setTimeout(() => {
+        window.location.href = "home.html";
+    }, 1000);
+}
 </script>
 
 </body>
