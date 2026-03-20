@@ -25,42 +25,51 @@ body{
     height:50px;
     border-radius:50%;
     object-fit:cover;
-    background:#555;
     cursor:pointer;
 }
 
-.sidebar{
+.settings-btn{
+    font-size:22px;
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+
+/* لوحة الإعدادات */
+.settings-panel{
     position:fixed;
     top:0;
     right:-300px;
-    width:260px;
+    width:250px;
     height:100%;
     background:#222;
     padding:20px;
     transition:0.4s;
 }
 
-.sidebar.active{
+.settings-panel.active{
     right:0;
 }
 
-button{
+.settings-panel button{
+    display:block;
+    width:100%;
     margin-top:10px;
     padding:10px;
     border:none;
     border-radius:8px;
+    cursor:pointer;
     background:#444;
     color:white;
-    cursor:pointer;
 }
 
-button:hover{
+.settings-panel button:hover{
     background:#666;
 }
 
-.card{
-    text-align:center;
-    margin-top:40px;
+.logout-btn{
+    background:red !important;
 }
 </style>
 </head>
@@ -69,76 +78,58 @@ button:hover{
 
 <div class="header">
     <h3 id="welcome"></h3>
-    <img id="avatar" class="avatar" onclick="toggleMenu()">
+
+    <div>
+        <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+        <img id="avatar" class="avatar">
+    </div>
 </div>
 
-<div class="card">
-    <p>اضغط على الصورة لفتح القائمة 👆</p>
+<div style="padding:20px;">
+    <p>مرحبًا 👋</p>
 </div>
 
-<div class="sidebar" id="sidebar">
-    <h3>معلومات الحساب</h3>
+<!-- لوحة الإعدادات -->
+<div id="settingsPanel" class="settings-panel">
+    <h3>الإعدادات</h3>
 
-    <p id="userName"></p>
-    <p id="soldiers"></p>
-    <p id="money"></p>
-    <p id="military"></p>
-    <p id="team"></p>
-
-    <hr>
-
-    <button onclick="openEditor()">تغيير الصورة</button>
-    <button onclick="logout()">تسجيل خروج</button>
+    <button onclick="changeLang()">🌐 تغيير اللغة</button>
+    <button onclick="changeImage()">🖼️ تغيير الصورة</button>
+    <button class="logout-btn" onclick="logout()">🚪 تسجيل خروج</button>
 </div>
 
 <script src="users.js"></script>
 
 <script>
 
-// ✅ جلب المستخدم من localStorage (مهم)
+// جلب المستخدم
 let user = localStorage.getItem("user");
 
 if(!user){
     window.location.href = "login.html";
 }
 
-// بيانات المستخدم (بدون ما يطردك لو users.js فيه مشكلة)
-let data = (typeof users !== "undefined" && users[user]) ? users[user] : {
-    soldiers: 0,
-    money: 0,
-    military: "غير معروف",
-    team: "غير معروف"
-};
-
 // عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-// عرض المعلومات
-document.getElementById("userName").innerText = "👤 الاسم: " + user;
-document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
-document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
-document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
-document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
-
-// تحميل الصورة
-let savedImage = localStorage.getItem("avatar_" + user);
-if(savedImage){
-    document.getElementById("avatar").src = savedImage;
+// صورة المستخدم
+let img = localStorage.getItem("avatar_" + user);
+if(img){
+    document.getElementById("avatar").src = img;
 }
 
-// القائمة
-function toggleMenu(){
-    document.getElementById("sidebar").classList.toggle("active");
+// فتح/غلق الإعدادات
+function toggleSettings(){
+    document.getElementById("settingsPanel").classList.toggle("active");
 }
 
-// تسجيل خروج
-function logout(){
-    localStorage.removeItem("user");
-    window.location.href = "login.html";
+// تغيير اللغة (تجريبي)
+function changeLang(){
+    alert("تغيير اللغة تحت الإنشاء");
 }
 
-// تغيير الصورة (بسيط - فتح اختيار ملف)
-function openEditor(){
+// تغيير الصورة
+function changeImage(){
     let input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
@@ -148,9 +139,9 @@ function openEditor(){
         let reader = new FileReader();
 
         reader.onload = function(event){
-            let img = event.target.result;
-            document.getElementById("avatar").src = img;
-            localStorage.setItem("avatar_" + user, img);
+            let data = event.target.result;
+            document.getElementById("avatar").src = data;
+            localStorage.setItem("avatar_" + user, data);
         }
 
         reader.readAsDataURL(file);
@@ -159,23 +150,13 @@ function openEditor(){
     input.click();
 }
 
-// إغلاق القائمة عند الضغط خارجها
-document.addEventListener("click", function(e){
-
-    let sidebar = document.getElementById("sidebar");
-    let avatar = document.getElementById("avatar");
-
-    if(sidebar.classList.contains("active")){
-        if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
-            sidebar.classList.remove("active");
-        }
-    }
-
-});
+// تسجيل خروج
+function logout(){
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+}
 
 </script>
-
-<script src="lang.js"></script>
 
 </body>
 </html>
