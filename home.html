@@ -16,6 +16,7 @@ body{
 .header{
     display:flex;
     justify-content:space-between;
+    align-items:center;
     padding:15px;
 }
 
@@ -23,9 +24,11 @@ body{
     width:50px;
     height:50px;
     border-radius:50%;
+    object-fit:cover;
     cursor:pointer;
 }
 
+/* القائمة الرئيسية */
 .sidebar{
     position:fixed;
     top:0;
@@ -41,24 +44,48 @@ body{
     right:0;
 }
 
+/* قائمة الإعدادات */
+.settings-panel{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:260px;
+    height:100%;
+    background:#333;
+    padding:20px;
+    transition:0.4s;
+}
+
+.settings-panel.active{
+    right:0;
+}
+
 button{
     margin-top:10px;
     padding:10px;
     border:none;
-    border-radius:10px;
+    border-radius:8px;
     background:#444;
     color:white;
-    width:100%;
     cursor:pointer;
+    width:100%;
 }
 
 button:hover{
     background:#666;
 }
 
+.logout{
+    background:red;
+}
+
 .shop-btn{
     background:orange;
     color:black;
+}
+
+.shop-btn:hover{
+    background:#ffb84d;
 }
 </style>
 </head>
@@ -71,13 +98,34 @@ button:hover{
 </div>
 
 <div style="padding:20px;">
+    <p>اضغط على الصورة لفتح القائمة 👆</p>
+
     <button class="shop-btn" onclick="goShop()">🛒 المتجر</button>
 </div>
 
+<!-- القائمة الرئيسية -->
 <div class="sidebar" id="sidebar">
-    <h3>الحساب</h3>
-    <p id="info"></p>
-    <button onclick="logout()">تسجيل خروج</button>
+    <h3>معلومات الحساب</h3>
+
+    <p id="userName"></p>
+    <p id="soldiers"></p>
+    <p id="money"></p>
+    <p id="military"></p>
+    <p id="team"></p>
+
+    <hr>
+
+    <button onclick="openSettings()">⚙️ الإعدادات</button>
+</div>
+
+<!-- الإعدادات -->
+<div class="settings-panel" id="settingsPanel">
+    <h3>الإعدادات</h3>
+
+    <button onclick="changeLang()">🌐 تغيير اللغة</button>
+    <button onclick="changeImage()">🖼️ تغيير الصورة</button>
+
+    <button onclick="logout()" class="logout">🚪 تسجيل خروج</button>
 </div>
 
 <script src="users.js"></script>
@@ -86,33 +134,95 @@ button:hover{
 
 let user = localStorage.getItem("user");
 
-if(!user){
+if(!user || !users[user]){
     window.location.href = "login.html";
 }
 
 let data = users[user];
 
-document.getElementById("welcome").innerText = "مرحبا " + user;
+// عرض البيانات
+document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-document.getElementById("info").innerHTML =
-"👤 الاسم: " + user + "<br>" +
-"👥 الجنود: " + data.soldiers + "<br>" +
-"💰 المال: " + data.money + "<br>" +
-"🪖 العسكري: " + data.military + "<br>" +
-"🏆 الفريق: " + data.team;
+document.getElementById("userName").innerText = "👤 الاسم: " + user;
+document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
+document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
+document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
+document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
 
+// الصورة
+let img = localStorage.getItem("avatar_" + user);
+if(img){
+    document.getElementById("avatar").src = img;
+}
+
+// القائمة
 function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("active");
 }
 
+// الإعدادات
+function openSettings(){
+    document.getElementById("settingsPanel").classList.add("active");
+}
+
+// تغيير اللغة
+function changeLang(){
+    alert("تغيير اللغة تحت الإنشاء");
+}
+
+// تغيير الصورة
+function changeImage(){
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = function(e){
+        let file = e.target.files[0];
+        let reader = new FileReader();
+
+        reader.onload = function(event){
+            let data = event.target.result;
+            document.getElementById("avatar").src = data;
+            localStorage.setItem("avatar_" + user, data);
+        }
+
+        reader.readAsDataURL(file);
+    }
+
+    input.click();
+}
+
+// تسجيل خروج
 function logout(){
     localStorage.removeItem("user");
     window.location.href = "login.html";
 }
 
+// المتجر
 function goShop(){
     window.location.href = "shop.html";
 }
+
+// إغلاق القوائم عند الضغط خارجها
+document.addEventListener("click", function(e){
+
+    let sidebar = document.getElementById("sidebar");
+    let settings = document.getElementById("settingsPanel");
+    let avatar = document.getElementById("avatar");
+
+    if(sidebar.classList.contains("active")){
+        if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
+            sidebar.classList.remove("active");
+        }
+    }
+
+    if(settings.classList.contains("active")){
+        if(!settings.contains(e.target) && !e.target.closest("button")){
+            settings.classList.remove("active");
+        }
+    }
+
+});
 
 </script>
 
