@@ -68,7 +68,6 @@ button:hover{
     margin-top:40px;
 }
 
-/* نافذة تعديل الصورة */
 .modal{
     position:fixed;
     top:0;
@@ -106,7 +105,6 @@ canvas{
     <p>اضغط على الصورة لفتح القائمة 👆</p>
 </div>
 
-<!-- القائمة -->
 <div class="sidebar" id="sidebar">
     <h3>معلومات الحساب</h3>
 
@@ -122,17 +120,13 @@ canvas{
     <button onclick="logout()">تسجيل خروج</button>
 </div>
 
-<!-- نافذة تعديل الصورة -->
 <div class="modal" id="modal">
     <div class="modal-content">
         <h3>تعديل الصورة</h3>
 
         <input type="file" id="fileInput" accept="image/*">
-
         <br>
-
         <canvas id="canvas" width="200" height="200"></canvas>
-
         <br>
 
         <button onclick="saveImage()">حفظ</button>
@@ -144,8 +138,8 @@ canvas{
 
 <script>
 
-const params = new URLSearchParams(window.location.search);
-const user = params.get("user");
+// ✅ التعديل هنا (مهم)
+let user = localStorage.getItem("user");
 
 if(!user || !users[user]){
     window.location.href = "login.html";
@@ -164,7 +158,7 @@ document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
 document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
 document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
 
-// تحميل الصورة المحفوظة
+// تحميل الصورة
 let savedImage = localStorage.getItem("avatar_" + user);
 if(savedImage){
     document.getElementById("avatar").src = savedImage;
@@ -180,12 +174,12 @@ function openEditor(){
     document.getElementById("modal").style.display = "flex";
 }
 
-// إغلاق النافذة
+// إغلاق
 function closeModal(){
     document.getElementById("modal").style.display = "none";
 }
 
-// رسم الصورة داخل canvas
+// Canvas
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 let img = new Image();
@@ -208,11 +202,8 @@ document.getElementById("fileInput").onchange = function(e){
 // حفظ الصورة
 function saveImage(){
     let dataURL = canvas.toDataURL("image/png");
-
     document.getElementById("avatar").src = dataURL;
-
     localStorage.setItem("avatar_" + user, dataURL);
-
     closeModal();
 }
 
@@ -223,7 +214,6 @@ document.addEventListener("click", function(e){
     let avatar = document.getElementById("avatar");
 
     if(sidebar.classList.contains("active")){
-
         if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
             sidebar.classList.remove("active");
         }
@@ -231,12 +221,15 @@ document.addEventListener("click", function(e){
 
 });
 
-// تسجيل خروج
+// ✅ تسجيل خروج (مصلح)
 function logout(){
+    localStorage.removeItem("user");
     window.location.href = "login.html";
 }
 
 </script>
+
 <script src="lang.js"></script>
+
 </body>
 </html>
