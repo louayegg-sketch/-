@@ -17,41 +17,63 @@ body{
 }
 
 .box{
-    background:#1e1e1e;
-    padding:25px;
-    border-radius:15px;
-    width:300px;
+    background:#1a1a2e;
+    padding:30px;
+    border-radius:25px;
+    width:320px;
     text-align:center;
-    box-shadow:0 0 20px rgba(0,0,0,0.5);
+    box-shadow:0 0 25px rgba(0,0,0,0.6);
 }
 
 input{
-    width:90%;
-    padding:10px;
-    margin:10px 0;
-    border:none;
-    border-radius:8px;
+    width:95%;
+    padding:12px;
+    margin:12px 0;
+    border-radius:12px;
+    border:2px solid transparent;
     outline:none;
+    transition:0.3s;
+    background:#111;
+    color:white;
 }
 
+/* تأثير عند الكتابة */
+input:focus{
+    border:2px solid #4cafef;
+    box-shadow:0 0 8px #4cafef;
+}
+
+/* زر الدخول */
 button{
     width:100%;
-    padding:10px;
+    padding:12px;
+    margin-top:10px;
     border:none;
-    border-radius:8px;
-    background:orange;
-    cursor:pointer;
+    border-radius:35%;
+    background:#2ecc71;
+    color:white;
     font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
 }
 
 button:hover{
-    background:#ffb84d;
+    background:#27ae60;
+    transform:scale(1.05);
 }
 
+/* رسالة اقتراح */
 .suggestion{
+    font-size:13px;
     color:#aaa;
-    font-size:12px;
     margin-top:-5px;
+}
+
+/* رسالة خطأ */
+.error{
+    color:red;
+    font-size:14px;
+    margin-top:10px;
 }
 </style>
 </head>
@@ -67,6 +89,8 @@ button:hover{
     <input id="password" type="password" placeholder="كلمة المرور">
 
     <button onclick="login()">دخول</button>
+
+    <div id="error" class="error"></div>
 </div>
 
 <script src="users.js"></script>
@@ -103,7 +127,7 @@ function findClosest(input){
     return {best, score};
 }
 
-// اقتراح مباشر تحت الخانة
+// اقتراح مباشر
 function checkName(){
     let input = document.getElementById("username").value;
     let res = findClosest(input);
@@ -121,6 +145,7 @@ function login(){
 
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
+    let errorBox = document.getElementById("error");
 
     if(users[username] && users[username].pass === password){
 
@@ -128,7 +153,15 @@ function login(){
         window.location.href = "home.html";
 
     } else {
-        alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة");
+
+        let res = findClosest(username);
+
+        if(res.score > 0.4){
+            errorBox.innerText = "❌ خطأ! هل تقصد: " + res.best;
+        } else {
+            errorBox.innerText = "❌ اسم المستخدم أو كلمة المرور غير صحيحة";
+        }
+
     }
 }
 
