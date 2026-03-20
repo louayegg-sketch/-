@@ -1,11 +1,5 @@
-function applyLang(lang){
+// ملف آمن - بدون أي تحويل صفحات
 
-    localStorage.setItem("lang", lang);
-
-    // تقدر تضيف ترجمة هنا لكل الصفحات
-}
-
-window.onload = function(){
-    let lang = localStorage.getItem("lang") || "ar";
-    applyLang(lang);
+function changeLang(){
+    alert("تغيير اللغة تحت الإنشاء");
 }
