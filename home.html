@@ -28,22 +28,30 @@ body{
     cursor:pointer;
 }
 
-.settings-btn{
-    font-size:22px;
-    background:none;
-    border:none;
-    color:white;
-    cursor:pointer;
+/* القائمة الأساسية */
+.sidebar{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:260px;
+    height:100%;
+    background:#222;
+    padding:20px;
+    transition:0.4s;
 }
 
-/* لوحة الإعدادات */
+.sidebar.active{
+    right:0;
+}
+
+/* قائمة الإعدادات */
 .settings-panel{
     position:fixed;
     top:0;
     right:-300px;
-    width:250px;
+    width:260px;
     height:100%;
-    background:#222;
+    background:#333;
     padding:20px;
     transition:0.4s;
 }
@@ -52,24 +60,23 @@ body{
     right:0;
 }
 
-.settings-panel button{
-    display:block;
-    width:100%;
+button{
     margin-top:10px;
     padding:10px;
     border:none;
     border-radius:8px;
-    cursor:pointer;
     background:#444;
     color:white;
+    cursor:pointer;
+    width:100%;
 }
 
-.settings-panel button:hover{
+button:hover{
     background:#666;
 }
 
-.logout-btn{
-    background:red !important;
+.logout{
+    background:red;
 }
 </style>
 </head>
@@ -78,49 +85,62 @@ body{
 
 <div class="header">
     <h3 id="welcome"></h3>
-
-    <div>
-        <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
-        <img id="avatar" class="avatar">
-    </div>
+    <img id="avatar" class="avatar" onclick="toggleMenu()">
 </div>
 
 <div style="padding:20px;">
-    <p>مرحبًا 👋</p>
+    <p>اضغط على الصورة لفتح القائمة 👆</p>
 </div>
 
-<!-- لوحة الإعدادات -->
-<div id="settingsPanel" class="settings-panel">
+<!-- القائمة الرئيسية -->
+<div class="sidebar" id="sidebar">
+    <h3>القائمة</h3>
+
+    <button onclick="openSettings()">⚙️ الإعدادات</button>
+
+    <hr>
+
+    <button onclick="logout()" class="logout">تسجيل خروج</button>
+</div>
+
+<!-- قائمة الإعدادات -->
+<div class="settings-panel" id="settingsPanel">
     <h3>الإعدادات</h3>
 
     <button onclick="changeLang()">🌐 تغيير اللغة</button>
     <button onclick="changeImage()">🖼️ تغيير الصورة</button>
-    <button class="logout-btn" onclick="logout()">🚪 تسجيل خروج</button>
+
+    <button onclick="logout()" class="logout">🚪 تسجيل خروج</button>
 </div>
 
 <script src="users.js"></script>
 
 <script>
 
-// جلب المستخدم
+// المستخدم
 let user = localStorage.getItem("user");
 
 if(!user){
     window.location.href = "login.html";
 }
 
-// عرض الاسم
+// الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-// صورة المستخدم
+// الصورة
 let img = localStorage.getItem("avatar_" + user);
 if(img){
     document.getElementById("avatar").src = img;
 }
 
-// فتح/غلق الإعدادات
-function toggleSettings(){
-    document.getElementById("settingsPanel").classList.toggle("active");
+// فتح القائمة
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+
+// فتح الإعدادات
+function openSettings(){
+    document.getElementById("settingsPanel").classList.add("active");
 }
 
 // تغيير اللغة (تجريبي)
@@ -155,6 +175,29 @@ function logout(){
     localStorage.removeItem("user");
     window.location.href = "login.html";
 }
+
+// إغلاق القوائم عند الضغط خارجها
+document.addEventListener("click", function(e){
+
+    let sidebar = document.getElementById("sidebar");
+    let settings = document.getElementById("settingsPanel");
+    let avatar = document.getElementById("avatar");
+
+    // إغلاق القائمة الرئيسية
+    if(sidebar.classList.contains("active")){
+        if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
+            sidebar.classList.remove("active");
+        }
+    }
+
+    // إغلاق الإعدادات
+    if(settings.classList.contains("active")){
+        if(!settings.contains(e.target) && !e.target.closest("button")){
+            settings.classList.remove("active");
+        }
+    }
+
+});
 
 </script>
 
