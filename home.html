@@ -28,7 +28,7 @@ body{
     cursor:pointer;
 }
 
-/* القائمة الأساسية */
+/* القائمة الرئيسية */
 .sidebar{
     position:fixed;
     top:0;
@@ -94,13 +94,17 @@ button:hover{
 
 <!-- القائمة الرئيسية -->
 <div class="sidebar" id="sidebar">
-    <h3>القائمة</h3>
+    <h3>معلومات الحساب</h3>
 
-    <button onclick="openSettings()">⚙️ الإعدادات</button>
+    <p id="userName"></p>
+    <p id="soldiers"></p>
+    <p id="money"></p>
+    <p id="military"></p>
+    <p id="team"></p>
 
     <hr>
 
-    <button onclick="logout()" class="logout">تسجيل خروج</button>
+    <button onclick="openSettings()">⚙️ الإعدادات</button>
 </div>
 
 <!-- قائمة الإعدادات -->
@@ -124,8 +128,23 @@ if(!user){
     window.location.href = "login.html";
 }
 
-// الاسم
+// بيانات المستخدم
+let data = (typeof users !== "undefined" && users[user]) ? users[user] : {
+    soldiers: 0,
+    money: 0,
+    military: "غير معروف",
+    team: "غير معروف"
+};
+
+// عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
+
+// عرض المعلومات داخل القائمة
+document.getElementById("userName").innerText = "👤 الاسم: " + user;
+document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
+document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
+document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
+document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
 
 // الصورة
 let img = localStorage.getItem("avatar_" + user);
@@ -143,7 +162,7 @@ function openSettings(){
     document.getElementById("settingsPanel").classList.add("active");
 }
 
-// تغيير اللغة (تجريبي)
+// تغيير اللغة
 function changeLang(){
     alert("تغيير اللغة تحت الإنشاء");
 }
@@ -183,14 +202,12 @@ document.addEventListener("click", function(e){
     let settings = document.getElementById("settingsPanel");
     let avatar = document.getElementById("avatar");
 
-    // إغلاق القائمة الرئيسية
     if(sidebar.classList.contains("active")){
         if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
             sidebar.classList.remove("active");
         }
     }
 
-    // إغلاق الإعدادات
     if(settings.classList.contains("active")){
         if(!settings.contains(e.target) && !e.target.closest("button")){
             settings.classList.remove("active");
