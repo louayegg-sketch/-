@@ -25,6 +25,14 @@ body{
     box-shadow:0 0 25px rgba(0,0,0,0.6);
 }
 
+/* العنوان */
+h2{
+    color:white;
+    text-shadow:0 0 10px rgba(255,255,255,0.8),
+                 0 0 20px rgba(255,255,255,0.6);
+}
+
+/* الحقول */
 input{
     width:95%;
     padding:12px;
@@ -37,7 +45,7 @@ input{
     color:white;
 }
 
-/* تأثير عند الكتابة */
+/* تأثير عند التركيز */
 input:focus{
     border:2px solid #4cafef;
     box-shadow:0 0 8px #4cafef;
@@ -62,14 +70,14 @@ button:hover{
     transform:scale(1.05);
 }
 
-/* رسالة اقتراح */
+/* الاقتراح */
 .suggestion{
     font-size:13px;
     color:#aaa;
     margin-top:-5px;
 }
 
-/* رسالة خطأ */
+/* الخطأ */
 .error{
     color:red;
     font-size:14px;
@@ -127,7 +135,7 @@ function findClosest(input){
     return {best, score};
 }
 
-// اقتراح مباشر
+// عرض الاقتراح
 function checkName(){
     let input = document.getElementById("username").value;
     let res = findClosest(input);
@@ -141,6 +149,7 @@ function checkName(){
     }
 }
 
+// تسجيل الدخول
 function login(){
 
     let username = document.getElementById("username").value;
