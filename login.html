@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Login</title>
 </head>
+
 <body style="background:#12001a;color:white;text-align:center;font-family:Arial;">
 
 <h2>تسجيل الدخول</h2>
@@ -17,12 +18,13 @@
 
 <script>
 
-function similarity(a, b){
+function similarity(a,b){
     let longer = a.length > b.length ? a : b;
     let shorter = a.length > b.length ? b : a;
+
     let matches = 0;
 
-    for(let i = 0; i < shorter.length; i++){
+    for(let i=0;i<shorter.length;i++){
         if(longer[i] === shorter[i]){
             matches++;
         }
@@ -31,17 +33,17 @@ function similarity(a, b){
     return matches / longer.length;
 }
 
-function getSimilar(input){
+function findClosest(input){
     let best = null;
     let score = 0;
 
-    Object.keys(users).forEach(name=>{
+    for(let name in users){
         let s = similarity(input, name);
         if(s > score){
             score = s;
             best = name;
         }
-    });
+    }
 
     return {best, score};
 }
@@ -58,10 +60,10 @@ function login(){
 
     } else {
 
-        let res = getSimilar(username);
+        let res = findClosest(username);
 
         if(res.score > 0.4){
-            alert("❌ الاسم غير صحيح\nهل تقصد: " + res.best);
+            alert("❌ الحساب غير صحيح\nهل تقصد: " + res.best);
         } else {
             alert("❌ الحساب غير موجود");
         }
