@@ -49,10 +49,6 @@ button {
     font-size: 16px;
 }
 
-button:active {
-    transform: scale(0.95);
-}
-
 .error {
     color: red;
     font-size: 14px;
@@ -69,50 +65,27 @@ button:active {
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
 
-    <button id="loginBtn">دخول</button>
+    <button onclick="login()">دخول</button>
 
     <div id="msg" class="error"></div>
 </div>
 
 <script>
 
+// بيانات تجريبية (غيرها لاحقًا بملف users)
 const users = [
     { username: "louaye", password: "1234" },
     { username: "player1", password: "1111" }
-    // ⬅️ أضف حسابك هنا بنفس الاسم وكلمة السر
 ];
 
 function normalize(name){
     return name.toLowerCase().replace(/\s/g, "");
 }
 
-function findClosestName(input){
-    let best = null;
-    let bestScore = -1;
+function login(){
 
-    users.forEach(u => {
-        let a = normalize(u.username);
-        let b = normalize(input);
-
-        let score = 0;
-
-        for(let i = 0; i < Math.min(a.length, b.length); i++){
-            if(a[i] === b[i]) score++;
-        }
-
-        if(score > bestScore){
-            bestScore = score;
-            best = u.username;
-        }
-    });
-
-    return best;
-}
-
-document.getElementById("loginBtn").addEventListener("click", function(){
-
-    let userInput = document.getElementById("username").value;
-    let passInput = document.getElementById("password").value;
+    let userInput = document.getElementById("username").value.trim();
+    let passInput = document.getElementById("password").value.trim();
     let msg = document.getElementById("msg");
 
     msg.innerText = "";
@@ -126,29 +99,24 @@ document.getElementById("loginBtn").addEventListener("click", function(){
 
     let foundUser = users.find(u => normalize(u.username) === cleanInput);
 
-    let suggestion = findClosestName(userInput);
-
-    // ❌ الاسم غير موجود
     if(!foundUser){
         msg.innerText =
             "❌ الاسم غير موجود\n" +
-            "جرب حذف المسافات\n" +
-            (suggestion ? `هل تقصد: ${suggestion}` : "");
+            "جرب حذف المسافات";
         return;
     }
 
-    // ❌ كلمة السر غلط
-    if(foundUser.password !== passInput){
+    if(foundUser.password.trim() !== passInput){
         msg.innerText =
             "❌ كلمة السر غير صحيحة\n" +
             "تحقق منها";
         return;
     }
 
-    // ✅ دخول ناجح
+    // نجاح
     localStorage.setItem("user", foundUser.username);
     window.location.href = "home.html";
-});
+}
 
 </script>
 
