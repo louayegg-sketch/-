@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المتجر</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#12001a;
+    color:white;
+}
+
+.header{
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+button{
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    background:#444;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#666;
+}
+
+.container{
+    padding:15px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:20px;
+}
+
+th, td{
+    border:1px solid #555;
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#222;
+}
+
+.buy-btn{
+    background:green;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h3>🛒 المتجر</h3>
+    <button onclick="goHome()">رجوع</button>
+</div>
+
+<div class="container">
+
+<!-- التجنيد -->
+<h3>👥 التجنيد</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+<tr>
+<td>1$ = جندي</td>
+<td>1$</td>
+<td><button class="buy-btn">شراء</button></td>
+</tr>
+</table>
+
+<!-- التطوير العسكري -->
+<h3>🪖 التطوير العسكري</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+<tr><td>تطويرة عسكرية +0.010</td><td>10$</td><td><button class="buy-btn">شراء</button></td></tr>
+</table>
+
+<!-- النووي -->
+<h3>☢️ النووي</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+<tr><td>طراز 5</td><td>50$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>طراز 10</td><td>100$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>طراز 20</td><td>200$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>استخراج نووي</td><td>يورانيوم + آلة استخراج</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة الاستخراج</td><td>350$</td><td><button class="buy-btn">شراء</button></td></tr>
+</table>
+
+<!-- الموارد -->
+<h3>⛏️ الموارد</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+<tr><td>5 خشب</td><td>1$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>5 حديد</td><td>2$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>5 ذهب</td><td>9$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>1 برميل نفط</td><td>3$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>1 الماس</td><td>5$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>1 يورانيوم</td><td>10$</td><td><button class="buy-btn">شراء</button></td></tr>
+</table>
+
+<!-- الآلات -->
+<h3>🏭 الآلات</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+<tr><td>آلة استخراج الخشب</td><td>20$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة استخراج الحديد</td><td>50$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة استخراج الذهب</td><td>75$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة استخراج النفط</td><td>50$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة استخراج الألماس</td><td>130$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>آلة استخراج اليورانيوم</td><td>350$</td><td><button class="buy-btn">شراء</button></td></tr>
+</table>
+
+<!-- الصواريخ -->
+<h3>🚀 الصواريخ</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+<tr><td>صاروخ طراز 5</td><td>5$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>صاروخ طراز 10</td><td>11$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>صاروخ طراز 20</td><td>22$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>صاروخ طراز 30</td><td>33$</td><td><button class="buy-btn">شراء</button></td></tr>
+</table>
+
+<!-- التطوير -->
+<h3>📈 تطوير الآلات</h3>
+<table>
+<tr><th>العنصر</th><th>السعر</th><th>شراء</th></tr>
+
+<tr><td>تطوير آلة النفط لفل 2</td><td>30$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>لفل 3</td><td>60$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>لفل 4</td><td>100$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>لفل 5</td><td>140$</td><td><button class="buy-btn">شراء</button></td></tr>
+
+<tr><td>تطوير الذهب</td><td>30$ / 50$ / 100$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الحديد</td><td>20$ / 30$ / 50$ / 60$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الألماس</td><td>50$ / 100$ / 150$ / 170$</td><td><button class="buy-btn">شراء</button></td></tr>
+<tr><td>تطوير الخشب</td><td>10$ / 40$ / 60$</td><td><button class="buy-btn">شراء</button></td></tr>
+
+<tr><td>تطوير الدولة</td><td>5$ → 10$ → 20$ → 40$ ...</td><td><button class="buy-btn">شراء</button></td></tr>
+
+</table>
+
+</div>
+
+<script>
+
+function goHome(){
+    window.location.href = "home.html";
+}
+
+</script>
+
+</body>
+</html>
