@@ -1,24 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f2027;
+    font-family: Arial;
+}
+
+.box {
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #00a844;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#msg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>تسجيل الدخول</h2>
+
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+
+    <button onclick="login()">دخول</button>
+
+    <div id="msg"></div>
+</div>
+
 <script src="pass.js"></script>
 
 <script>
-
 function normalize(text){
-    return text.trim().replace(/\s+/g, " ");
-}
-
-function findClosest(input){
-    let closest = "";
-    let min = Infinity;
-
-    for(let name in usersData){
-        let diff = Math.abs(name.length - input.length);
-        if(diff < min){
-            min = diff;
-            closest = name;
-        }
-    }
-
-    return closest;
+    return text.trim();
 }
 
 function login(){
@@ -27,48 +78,38 @@ function login(){
     let password = document.getElementById("password").value;
     let msg = document.getElementById("msg");
 
-    msg.style.color = "red";
+    msg.innerText = "";
 
-    if(username === "" || password === ""){
-        msg.innerText = "❌ الرجاء ملء جميع الحقول";
+    if(!username || !password){
+        msg.innerText = "❌ الرجاء إدخال جميع البيانات";
         return;
     }
 
-    let foundName = null;
-
-    // مقارنة بدون مشاكل مسافات
-    for(let name in usersData){
-        if(name.trim() === username){
-            foundName = name;
-            break;
-        }
-    }
-
-    if(!foundName){
-        let suggestion = findClosest(username);
-
-        msg.innerText =
-            "❌ الاسم غير موجود\n" +
-            "جرب حذف المسافات\n" +
-            "هل تقصد: " + suggestion;
-
+    if(!usersData){
+        msg.innerText = "❌ خطأ في تحميل البيانات";
         return;
     }
 
-    if(usersData[foundName] !== password){
+    if(!(username in usersData)){
+        msg.innerText = "❌ الاسم غير موجود جرب حذف المسافات";
+        return;
+    }
+
+    if(usersData[username] !== password){
         msg.innerText = "❌ كلمة السر غير صحيحة تحقق منها";
         return;
     }
 
-    // نجاح
-    msg.style.color = "green";
+    msg.style.color = "lightgreen";
     msg.innerText = "✅ تم تسجيل الدخول";
 
-    localStorage.setItem("user", foundName);
+    localStorage.setItem("user", username);
 
     setTimeout(()=>{
         window.location.href = "home.html";
     }, 1000);
 }
-
 </script>
+
+</body>
+</html>
