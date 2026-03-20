@@ -46,6 +46,7 @@ button {
 #msg {
     margin-top: 10px;
     color: red;
+    white-space: pre-line;
 }
 </style>
 </head>
@@ -65,12 +66,30 @@ button {
 
 <script>
 
-// 🔥 بياناتك هنا مباشرة (مضمونة تشتغل)
+// بياناتك
 const usersData = {
 "لؤي":"36819",
 "روسيا":"77701",
-"محمد":"93516"
+"محمد":"93516",
+"احمد":"55073",
+"عمر":"74219"
 };
+
+// إيجاد أقرب اسم
+function getClosestName(input){
+    let closest = "";
+    let minDiff = Infinity;
+
+    for(let name in usersData){
+        let diff = Math.abs(name.length - input.length);
+        if(diff < minDiff){
+            minDiff = diff;
+            closest = name;
+        }
+    }
+
+    return closest;
+}
 
 function login(){
 
@@ -85,22 +104,26 @@ function login(){
         return;
     }
 
+    // ❌ اسم غلط
     if(!(u in usersData)){
-        msg.innerText = "❌ الاسم غير موجود";
+        let suggestion = getClosestName(u);
+
+        msg.innerText =
+            "❌ الاسم غير موجود\n" +
+            "هل تقصد \"" + suggestion + "\"";
+
         return;
     }
 
+    // ❌ كلمة السر غلط
     if(usersData[u] !== p){
         msg.innerText = "❌ كلمة السر غير صحيحة";
         return;
     }
 
-    msg.style.color = "lightgreen";
-    msg.innerText = "✅ تم الدخول";
-
-    setTimeout(()=>{
-        window.location.href = "home.html";
-    }, 1000);
+    // ✅ دخول مباشر بدون رسالة
+    localStorage.setItem("user", u);
+    window.location.href = "home.html";
 }
 
 </script>
