@@ -29,24 +29,22 @@ input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: none;
     border-radius: 12px;
+    border: none;
 }
 
 button {
     width: 100%;
     padding: 12px;
-    border: none;
     border-radius: 6px;
+    border: none;
     background: #2196f3;
     color: white;
-    cursor: pointer;
 }
 
 #msg {
     margin-top: 10px;
     color: red;
-    white-space: pre-line;
 }
 </style>
 </head>
@@ -54,34 +52,32 @@ button {
 <body>
 
 <div class="box">
-    <h2>تسجيل الدخول</h2>
+<h2>تسجيل الدخول</h2>
 
-    <input id="username" placeholder="اسم المستخدم">
-    <input id="password" type="password" placeholder="كلمة السر">
+<input id="username" placeholder="اسم المستخدم">
+<input id="password" type="password" placeholder="كلمة السر">
 
-    <button onclick="login()">دخول</button>
+<button onclick="login()">دخول</button>
 
-    <div id="msg"></div>
+<div id="msg"></div>
 </div>
 
 <script>
 
 const usersData = {
-"لؤي":"36819",
 "روسيا":"77701",
-"محمد":"93516",
-"احمد":"55073",
-"عمر":"74219"
+"لؤي":"36819",
+"محمد":"93516"
 };
 
 function getClosestName(input){
     let closest = "";
-    let minDiff = Infinity;
+    let min = Infinity;
 
     for(let name in usersData){
         let diff = Math.abs(name.length - input.length);
-        if(diff < minDiff){
-            minDiff = diff;
+        if(diff < min){
+            min = diff;
             closest = name;
         }
     }
@@ -97,18 +93,13 @@ function login(){
 
     msg.innerText = "";
 
-    if(u === "" || p === ""){
+    if(!u || !p){
         msg.innerText = "❌ اكتب كل المعلومات";
         return;
     }
 
     if(!(u in usersData)){
-        let suggestion = getClosestName(u);
-
-        msg.innerText =
-            "❌ الاسم غير موجود\n" +
-            "هل تقصد \"" + suggestion + "\"";
-
+        msg.innerText = "❌ الاسم غير موجود\nهل تقصد \"" + getClosestName(u) + "\"";
         return;
     }
 
@@ -117,17 +108,8 @@ function login(){
         return;
     }
 
-    // ✅ حفظ المستخدم
     localStorage.setItem("user", u);
-
-    // ✅ رسالة جديدة
-    msg.style.color = "lightgreen";
-    msg.innerText = "سيتم نقلك لصفحة ملفك";
-
-    // ⏳ تأخير بسيط
-    setTimeout(()=>{
-        window.location.href = "home.html";
-    }, 700);
+    window.location.href = "home.html";
 }
 
 </script>
