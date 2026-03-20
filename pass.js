@@ -1,4 +1,4 @@
-window.usersData = {
+window.passData = {
 "لؤي":"36819",
 "عمر":"74219",
 "علي جواد":"61984",
