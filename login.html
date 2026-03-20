@@ -13,22 +13,14 @@ body {
     justify-content: center;
     align-items: center;
 
-    /* 🔥 خلفية متحركة */
-    background: linear-gradient(270deg, #0a192f, #12001a, #0a192f);
-    background-size: 600% 600%;
-    animation: bgMove 10s ease infinite;
+    /* 🔥 رجعنا الخلفية الأصلية */
+    background: #12001a;
 
     font-family: Arial;
 }
 
-@keyframes bgMove {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-}
-
 .box {
-    background: rgba(17, 34, 64, 0.9);
+    background: #112240;
     padding: 30px;
     border-radius: 15px;
     width: 320px;
@@ -36,13 +28,15 @@ body {
     color: white;
 }
 
-/* حقول الإدخال */
+/* الحقول */
 input {
     width: 100%;
     padding: 14px;
     margin: 10px 0;
-    border-radius: 12px;
-    border: 2px solid black; /* حواف سوداء */
+
+    border-radius: 18px; /* دائرية أكثر */
+    border: 2px solid black;
+
     outline: none;
     font-size: 14px;
 }
@@ -51,10 +45,13 @@ input {
 button {
     width: 100%;
     padding: 14px;
+
     border-radius: 0px; /* مربع */
     border: none;
+
     background: green;
     color: white;
+
     font-size: 16px;
     cursor: pointer;
 }
