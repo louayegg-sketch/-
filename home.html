@@ -16,6 +16,7 @@ body{
 .header{
     display:flex;
     justify-content:space-between;
+    align-items:center;
     padding:15px;
 }
 
@@ -23,7 +24,43 @@ body{
     width:50px;
     height:50px;
     border-radius:50%;
+    object-fit:cover;
+    background:#555;
     cursor:pointer;
+}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:260px;
+    height:100%;
+    background:#222;
+    padding:20px;
+    transition:0.4s;
+}
+
+.sidebar.active{
+    right:0;
+}
+
+button{
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#444;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#666;
+}
+
+.card{
+    text-align:center;
+    margin-top:40px;
 }
 </style>
 </head>
@@ -32,25 +69,66 @@ body{
 
 <div class="header">
     <h3 id="welcome"></h3>
-    <img id="avatar" class="avatar">
+    <img id="avatar" class="avatar" onclick="toggleMenu()">
 </div>
+
+<div class="card">
+    <p>اضغط على الصورة لفتح القائمة 👆</p>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <h3>معلومات الحساب</h3>
+
+    <p id="userName"></p>
+    <p id="soldiers"></p>
+    <p id="money"></p>
+    <p id="military"></p>
+    <p id="team"></p>
+
+    <hr>
+
+    <button onclick="openEditor()">تغيير الصورة</button>
+    <button onclick="logout()">تسجيل خروج</button>
+</div>
+
+<script src="users.js"></script>
 
 <script>
 
-// 🔥 أهم سطر (الحل)
+// ✅ جلب المستخدم من localStorage (مهم)
 let user = localStorage.getItem("user");
 
 if(!user){
     window.location.href = "login.html";
 }
 
+// بيانات المستخدم (بدون ما يطردك لو users.js فيه مشكلة)
+let data = (typeof users !== "undefined" && users[user]) ? users[user] : {
+    soldiers: 0,
+    money: 0,
+    military: "غير معروف",
+    team: "غير معروف"
+};
+
 // عرض الاسم
 document.getElementById("welcome").innerText = "مرحبا بك يا " + user;
 
-// صورة
-let img = localStorage.getItem("avatar_"+user);
-if(img){
-    document.getElementById("avatar").src = img;
+// عرض المعلومات
+document.getElementById("userName").innerText = "👤 الاسم: " + user;
+document.getElementById("soldiers").innerText = "👥 الجنود: " + data.soldiers;
+document.getElementById("money").innerText = "💰 الفلوس: " + data.money;
+document.getElementById("military").innerText = "🪖 العسكري: " + data.military;
+document.getElementById("team").innerText = "🏆 المنتخب: " + data.team;
+
+// تحميل الصورة
+let savedImage = localStorage.getItem("avatar_" + user);
+if(savedImage){
+    document.getElementById("avatar").src = savedImage;
+}
+
+// القائمة
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("active");
 }
 
 // تسجيل خروج
@@ -59,7 +137,45 @@ function logout(){
     window.location.href = "login.html";
 }
 
+// تغيير الصورة (بسيط - فتح اختيار ملف)
+function openEditor(){
+    let input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = function(e){
+        let file = e.target.files[0];
+        let reader = new FileReader();
+
+        reader.onload = function(event){
+            let img = event.target.result;
+            document.getElementById("avatar").src = img;
+            localStorage.setItem("avatar_" + user, img);
+        }
+
+        reader.readAsDataURL(file);
+    }
+
+    input.click();
+}
+
+// إغلاق القائمة عند الضغط خارجها
+document.addEventListener("click", function(e){
+
+    let sidebar = document.getElementById("sidebar");
+    let avatar = document.getElementById("avatar");
+
+    if(sidebar.classList.contains("active")){
+        if(!sidebar.contains(e.target) && !avatar.contains(e.target)){
+            sidebar.classList.remove("active");
+        }
+    }
+
+});
+
 </script>
+
+<script src="lang.js"></script>
 
 </body>
 </html>
