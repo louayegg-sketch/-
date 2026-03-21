@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body {
+  background:#12001a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+.container {
+  margin-top:80px;
+}
+
+input {
+  display:block;
+  margin:10px auto;
+  padding:10px;
+  width:220px;
+}
+
+button {
+  padding:10px 20px;
+  background:green;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+
+table {
+  margin:20px auto;
+  border-collapse:collapse;
+}
+
+td, th {
+  border:1px solid white;
+  padding:8px 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>تسجيل الدخول</h2>
+  <input type="text" id="name" placeholder="الاسم">
+  <input type="password" id="pass" placeholder="كلمة السر">
+  <button onclick="login()">دخول</button>
+
+  <div id="info"></div>
+  <div id="allUsers"></div>
+</div>
+
+<script>
+const users = {
+"لؤي":{pass:"36819",soldiers:13200,money:"9908$"},
+"عمر":{pass:"74219",soldiers:3500,money:"125$"},
+"محمد":{pass:"93516",soldiers:130,money:"185$"},
+"حمود":{pass:"58321",soldiers:270,money:"31$"},
+"بدر":{pass:"27165",soldiers:1070,money:"126$"},
+"احمد":{pass:"55073",soldiers:1740,money:"100$"},
+"حماد":{pass:"14692",soldiers:340,money:"50$"},
+"جورنمي":{pass:"82740",soldiers:480,money:"24$"},
+"قيس":{pass:"11864",soldiers:5500,money:"3700$"},
+"يونس":{pass:"66290",soldiers:10,money:"45$"},
+"ناصر":{pass:"99421",soldiers:90,money:"100$"},
+"رحيم":{pass:"31580",soldiers:5000,money:"100$"},
+"حسونياس":{pass:"47296",soldiers:860,money:"100$"},
+"ادم":{pass:"86035",soldiers:300,money:"130$"},
+"سانتش":{pass:"10293",soldiers:37700,money:"100$"},
+"نونو":{pass:"55872",soldiers:15,money:"100$"},
+"روسيا":{pass:"77701",soldiers:0,money:"0$"},
+"سكايلي الاحمر":{pass:"44109",soldiers:0,money:"0$"},
+"ريد تيب":{pass:"20984",soldiers:8000,money:"100$"},
+"ورد":{pass:"67315",soldiers:1270,money:"100$"},
+"ادم ايطاليا":{pass:"39072",soldiers:8,money:"100$"},
+"عبد الوهاب":{pass:"12856",soldiers:2020,money:"195$"},
+"عبدو":{pass:"84560",soldiers:11500,money:"100$"},
+"سلطان":{pass:"29471",soldiers:250,money:"100$"},
+"وديد":{pass:"51638",soldiers:1200,money:"385$"},
+"الوليد":{pass:"74288",soldiers:11500,money:"100$"},
+"مارتن":{pass:"60845",soldiers:800,money:"25$"},
+"نزار":{pass:"96321",soldiers:2450,money:"100$"},
+"عثمان":{pass:"13579",soldiers:320,money:"100$"},
+"لونا":{pass:"82460",soldiers:420,money:"100$"},
+"مهدي":{pass:"45712",soldiers:125,money:"100$"},
+"وائل":{pass:"69024",soldiers:57,money:"30$"},
+"تيم":{pass:"31876",soldiers:2220,money:"200$"},
+"امين":{pass:"77125",soldiers:850,money:"100$"},
+"سنوبر":{pass:"50272",soldiers:650,money:"100$"},
+"سوني":{pass:"88463",soldiers:2300,money:"100$"},
+"فلاديمير":{pass:"24680",soldiers:1700,money:"100$"},
+"برمودا":{pass:"93740",soldiers:205,money:"100$"}
+};
+
+function login(){
+  const name = document.getElementById("name").value;
+  const pass = document.getElementById("pass").value;
+
+  if(users[name] && users[name].pass === pass){
+    const u = users[name];
+
+    document.getElementById("info").innerHTML = `
+      <h3>${name}</h3>
+      <p>الفلوس: ${u.money}</p>
+      <p>الجنود: ${u.soldiers}</p>
+    `;
+
+    showAllUsers();
+  } else {
+    alert("خطأ في الاسم أو كلمة السر");
+  }
+}
+
+function showAllUsers(){
+  let html = "<h3>جميع المستخدمين</h3>";
+  html += "<table><tr><th>الاسم</th><th>الجنود</th><th>الفلوس</th></tr>";
+
+  for(let name in users){
+    html += `
+      <tr>
+        <td>${name}</td>
+        <td>${users[name].soldiers}</td>
+        <td>${users[name].money}</td>
+      </tr>
+    `;
+  }
+
+  html += "</table>";
+  document.getElementById("allUsers").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
