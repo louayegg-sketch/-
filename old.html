@@ -35,43 +35,6 @@ button {
 #info {
   margin-top:20px;
 }
-
-/* النافذة (Modal) */
-.modal {
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.8);
-}
-
-.modal-content {
-  background:#1e1e1e;
-  margin:10% auto;
-  padding:20px;
-  width:90%;
-  max-width:500px;
-  border-radius:10px;
-}
-
-.close {
-  float:right;
-  cursor:pointer;
-  font-size:20px;
-}
-
-table {
-  margin:10px auto;
-  border-collapse:collapse;
-  width:100%;
-}
-
-td, th {
-  border:1px solid white;
-  padding:8px;
-}
 </style>
 </head>
 
@@ -85,16 +48,6 @@ td, th {
   <button onclick="login()">دخول</button>
 
   <div id="info"></div>
-
-  <button onclick="openModal()" style="margin-top:20px;">عرض جميع المستخدمين</button>
-</div>
-
-<!-- النافذة -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">إغلاق</span>
-    <div id="allUsers"></div>
-  </div>
 </div>
 
 <script>
@@ -154,29 +107,6 @@ function login(){
   } else {
     alert("خطأ في الاسم أو كلمة السر");
   }
-}
-
-function openModal(){
-  let html = "<h3>جميع المستخدمين</h3>";
-  html += "<table><tr><th>الاسم</th><th>الجنود</th><th>الفلوس</th></tr>";
-
-  for(let name in users){
-    html += `
-      <tr>
-        <td>${name}</td>
-        <td>${users[name].soldiers}</td>
-        <td>${users[name].money}</td>
-      </tr>
-    `;
-  }
-
-  html += "</table>";
-  document.getElementById("allUsers").innerHTML = html;
-  document.getElementById("modal").style.display = "block";
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display = "none";
 }
 </script>
 
