@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Memes Map</title>
 
 <style>
 body {
@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-  margin-top:80px;
+  margin-top:60px;
 }
 
 input {
@@ -32,28 +32,69 @@ button {
   cursor:pointer;
 }
 
+#info {
+  margin-top:20px;
+}
+
+/* النافذة (Modal) */
+.modal {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  background:#1e1e1e;
+  margin:10% auto;
+  padding:20px;
+  width:90%;
+  max-width:500px;
+  border-radius:10px;
+}
+
+.close {
+  float:right;
+  cursor:pointer;
+  font-size:20px;
+}
+
 table {
-  margin:20px auto;
+  margin:10px auto;
   border-collapse:collapse;
+  width:100%;
 }
 
 td, th {
   border:1px solid white;
-  padding:8px 12px;
+  padding:8px;
 }
 </style>
 </head>
 
 <body>
 
+<h2>مرحبا بك في خريطة الميمز</h2>
+
 <div class="container">
-  <h2>تسجيل الدخول</h2>
   <input type="text" id="name" placeholder="الاسم">
   <input type="password" id="pass" placeholder="كلمة السر">
   <button onclick="login()">دخول</button>
 
   <div id="info"></div>
-  <div id="allUsers"></div>
+
+  <button onclick="openModal()" style="margin-top:20px;">عرض جميع المستخدمين</button>
+</div>
+
+<!-- النافذة -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">إغلاق</span>
+    <div id="allUsers"></div>
+  </div>
 </div>
 
 <script>
@@ -106,18 +147,16 @@ function login(){
     const u = users[name];
 
     document.getElementById("info").innerHTML = `
-      <h3>${name}</h3>
+      <h3>مرحبا ${name}</h3>
       <p>الفلوس: ${u.money}</p>
       <p>الجنود: ${u.soldiers}</p>
     `;
-
-    showAllUsers();
   } else {
     alert("خطأ في الاسم أو كلمة السر");
   }
 }
 
-function showAllUsers(){
+function openModal(){
   let html = "<h3>جميع المستخدمين</h3>";
   html += "<table><tr><th>الاسم</th><th>الجنود</th><th>الفلوس</th></tr>";
 
@@ -133,6 +172,11 @@ function showAllUsers(){
 
   html += "</table>";
   document.getElementById("allUsers").innerHTML = html;
+  document.getElementById("modal").style.display = "block";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
 }
 </script>
 
