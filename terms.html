@@ -2,173 +2,108 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رفع الرسم 🎨</title>
+<title>الشروط والأحكام</title>
 
 <style>
 body{
-    margin:0;
-    background:#020617;
-    font-family:Arial;
-    color:white;
-    text-align:center;
-    padding:20px;
+  background:#111;
+  color:white;
+  font-family:Arial;
+  text-align:center;
 }
 
-h1{
-    margin-top:20px;
+.condition{
+  margin:15px;
+  padding:10px;
+  border:1px solid #444;
+  border-radius:10px;
 }
 
-input, button{
-    margin-top:15px;
-    padding:15px;
-    border-radius:15px;
-    border:none;
-    font-size:16px;
+button{
+  padding:8px 15px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-input{
-    width:80%;
+.accept{
+  background:#00aa00;
+  color:white;
 }
 
-.upload{
-    background:#22c55e;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.card{
-    background:#0f172a;
-    margin:15px auto;
-    padding:15px;
-    border-radius:15px;
-    width:90%;
-}
-
-img{
-    width:100%;
-    border-radius:10px;
-    margin-top:10px;
-}
-
-.actions{
-    margin-top:10px;
-    display:flex;
-    justify-content:center;
-    gap:10px;
-}
-
-.like{
-    background:#22c55e;
-    color:white;
-    cursor:pointer;
-}
-
-.dislike{
-    background:#ef4444;
-    color:white;
-    cursor:pointer;
+#submitBtn{
+  background:gray;
+  color:white;
+  margin-top:30px;
+  padding:12px 25px;
+  font-size:18px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎨 ارفع رسمتك</h1>
+<h2>الشروط و الأحكام</h2>
 
-<input type="text" id="name" placeholder="اسمك">
+<div class="condition">
+الرسم يكون فقط بالكونتري بول او كونتري هيومن و عادي تسوي رسمة عن اصدقائك
 <br>
-<input type="file" id="image" accept="image/*">
+<button class="accept" onclick="accept(this)">قبول الشروط</button>
+</div>
+
+<div class="condition">
+عدم سرقة الرسمة
 <br>
+<button class="accept" onclick="accept(this)">قبول الشروط</button>
+</div>
 
-<button class="upload" onclick="uploadDrawing()">إرسال الرسم</button>
+<div class="condition">
+عدم نسخ فكرة احد (يمكنك رؤية الرسمات الاخرى)
+<br>
+<button class="accept" onclick="accept(this)">قبول الشروط</button>
+</div>
 
-<h2>📌 الرسمات</h2>
-<div id="gallery"></div>
+<div class="condition">
+عدم الاستياء اذا خسرت او لم يعجبك التقييم
+<br>
+<button class="accept" onclick="accept(this)">قبول الشروط</button>
+</div>
+
+<div class="condition">
+يرجى ارسال الرسمات في الموقع فقط
+<br>
+<button class="accept" onclick="accept(this)">قبول الشروط</button>
+</div>
+
+<div class="condition">
+عدم مخالفة الشروط و الاحكام
+<br>
+<button class="accept" onclick="accept(this)">قبول الشروط</button>
+</div>
+
+<button id="submitBtn" disabled onclick="goToUpload()">المشاركة</button>
 
 <script>
-function uploadDrawing(){
-    let name = document.getElementById("name").value;
-    let file = document.getElementById("image").files[0];
+let acceptedCount = 0;
+const total = 6;
 
-    if(!name || !file){
-        alert("اكتب اسمك واختر صورة 😼");
-        return;
-    }
+function accept(btn){
+  if(!btn.classList.contains("done")){
+    btn.classList.add("done");
+    btn.style.background = "blue";
+    btn.innerText = "تم القبول ✓";
+    acceptedCount++;
+  }
 
-    let reader = new FileReader();
-
-    reader.onload = function(e){
-        let imgURL = e.target.result;
-
-        let card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-            <h3>${name}</h3>
-            <img src="${imgURL}">
-
-            <div class="actions">
-                <button class="like" onclick="react(this, 'like')">👍 0</button>
-                <button class="dislike" onclick="react(this, 'dislike')">👎 0</button>
-            </div>
-        `;
-
-        document.getElementById("gallery").appendChild(card);
-    }
-
-    reader.readAsDataURL(file);
+  if(acceptedCount === total){
+    document.getElementById("submitBtn").disabled = false;
+    document.getElementById("submitBtn").style.background = "blue";
+  }
 }
 
-function react(btn, type){
-    let parent = btn.parentElement;
-
-    let likeBtn = parent.children[0];
-    let dislikeBtn = parent.children[1];
-
-    let likeCount = parseInt(likeBtn.getAttribute("data-count") || 0);
-    let dislikeCount = parseInt(dislikeBtn.getAttribute("data-count") || 0);
-
-    // إذا ضغط لايك
-    if(type === "like"){
-        if(btn.classList.contains("active")){
-            // يشيل اللايك
-            likeCount--;
-            btn.classList.remove("active");
-        } else {
-            // إذا كان ديسلايك شغال نشيله
-            if(dislikeBtn.classList.contains("active")){
-                dislikeCount--;
-                dislikeBtn.classList.remove("active");
-            }
-
-            likeCount++;
-            btn.classList.add("active");
-        }
-    }
-
-    // إذا ضغط ديسلايك
-    if(type === "dislike"){
-        if(btn.classList.contains("active")){
-            dislikeCount--;
-            btn.classList.remove("active");
-        } else {
-            if(likeBtn.classList.contains("active")){
-                likeCount--;
-                likeBtn.classList.remove("active");
-            }
-
-            dislikeCount++;
-            btn.classList.add("active");
-        }
-    }
-
-    likeBtn.setAttribute("data-count", likeCount);
-    dislikeBtn.setAttribute("data-count", dislikeCount);
-
-    likeBtn.innerText = "👍 " + likeCount;
-    dislikeBtn.innerText = "👎 " + dislikeCount;
+function goToUpload(){
+  window.location.href = "rsm.html";
 }
 </script>
 
