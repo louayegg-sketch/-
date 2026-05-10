@@ -2,6 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mos</title>
 
 <style>
@@ -13,28 +14,31 @@ body{
   height:100vh;
   margin:0;
   font-family:Arial;
+  text-align:center;
 }
 
 .main-btn{
   background:white;
   color:black;
-  font-size:28px;
-  padding:25px 60px;
+  font-size:20px;
+  padding:20px 40px;
   border:none;
-  border-radius:60px;
+  border-radius:50px;
   cursor:pointer;
+  width:80%;
+  max-width:300px;
   transition:0.3s;
 }
 
-.main-btn:hover{
-  transform:scale(1.05);
+.main-btn:active{
+  transform:scale(0.97);
 }
 </style>
 </head>
 
 <body>
 
-<a href="terms.html">
+<a href="terms.html" style="width:100%; display:flex; justify-content:center;">
 <button class="main-btn">قراءة الشروط و الأحكام</button>
 </a>
 
