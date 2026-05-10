@@ -29,6 +29,7 @@ input, button{
 
 input{
     width:80%;
+    outline:none; /* مهم عشان ما يصير فيه مشاكل تركيز */
 }
 
 .upload{
@@ -51,6 +52,29 @@ img{
     border-radius:10px;
     margin-top:10px;
 }
+
+.actions{
+    margin-top:10px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+.like{
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+}
+
+.dislike{
+    background:#ef4444;
+    color:white;
+    cursor:pointer;
+}
+
+input:focus{
+    border:2px solid #3b82f6;
+}
 </style>
 </head>
 
@@ -58,8 +82,10 @@ img{
 
 <h1>🎨 ارفع رسمتك</h1>
 
-<input type="text" id="name" placeholder="اسمك">
+<!-- إصلاح مهم: تأكد input صحيح 100% -->
+<input type="text" id="name" placeholder="اكتب اسمك هنا">
 <br>
+
 <input type="file" id="image" accept="image/*">
 <br>
 
@@ -70,11 +96,19 @@ img{
 
 <script>
 function uploadDrawing(){
-    let name = document.getElementById("name").value;
-    let file = document.getElementById("image").files[0];
+    let nameInput = document.getElementById("name");
+    let fileInput = document.getElementById("image");
 
-    if(!name || !file){
-        alert("اكتب اسمك واختر صورة 😼");
+    let name = nameInput.value.trim();
+    let file = fileInput.files[0];
+
+    if(!name){
+        alert("اكتب اسمك 😼");
+        return;
+    }
+
+    if(!file){
+        alert("اختر صورة 😼");
         return;
     }
 
@@ -89,20 +123,65 @@ function uploadDrawing(){
         card.innerHTML = `
             <h3>${name}</h3>
             <img src="${imgURL}">
-            <button onclick="like(this)" data-count="0">👍 إعجاب (0)</button>
+
+            <div class="actions">
+                <button class="like" onclick="react(this, 'like')" data-count="0">👍 0</button>
+                <button class="dislike" onclick="react(this, 'dislike')" data-count="0">👎 0</button>
+            </div>
         `;
 
         document.getElementById("gallery").appendChild(card);
+
+        // تنظيف الحقول بعد الإرسال
+        nameInput.value = "";
+        fileInput.value = "";
     }
 
     reader.readAsDataURL(file);
 }
 
-function like(btn){
-    let count = btn.getAttribute("data-count");
-    count++;
-    btn.setAttribute("data-count", count);
-    btn.innerText = "👍 إعجاب (" + count + ")";
+function react(btn, type){
+    let parent = btn.parentElement;
+
+    let likeBtn = parent.children[0];
+    let dislikeBtn = parent.children[1];
+
+    let likeCount = parseInt(likeBtn.getAttribute("data-count"));
+    let dislikeCount = parseInt(dislikeBtn.getAttribute("data-count"));
+
+    if(type === "like"){
+        if(btn.classList.contains("active")){
+            likeCount--;
+            btn.classList.remove("active");
+        } else {
+            if(dislikeBtn.classList.contains("active")){
+                dislikeCount--;
+                dislikeBtn.classList.remove("active");
+            }
+            likeCount++;
+            btn.classList.add("active");
+        }
+    }
+
+    if(type === "dislike"){
+        if(btn.classList.contains("active")){
+            dislikeCount--;
+            btn.classList.remove("active");
+        } else {
+            if(likeBtn.classList.contains("active")){
+                likeCount--;
+                likeBtn.classList.remove("active");
+            }
+            dislikeCount++;
+            btn.classList.add("active");
+        }
+    }
+
+    likeBtn.setAttribute("data-count", likeCount);
+    dislikeBtn.setAttribute("data-count", dislikeCount);
+
+    likeBtn.innerText = "👍 " + likeCount;
+    dislikeBtn.innerText = "👎 " + dislikeCount;
 }
 </script>
 
