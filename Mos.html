@@ -2,36 +2,40 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>الصفحة الرئيسية</title>
+<title>Mos</title>
+
 <style>
 body{
-  background:#111;
-  color:white;
-  text-align:center;
+  background:#020a2a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
   font-family:Arial;
-  margin-top:100px;
 }
-button{
-  padding:12px 25px;
-  background:#00aa00;
-  color:white;
+
+.main-btn{
+  background:white;
+  color:black;
+  font-size:28px;
+  padding:25px 60px;
   border:none;
-  border-radius:10px;
-  font-size:18px;
+  border-radius:60px;
   cursor:pointer;
+  transition:0.3s;
 }
-button:hover{
-  opacity:0.8;
+
+.main-btn:hover{
+  transform:scale(1.05);
 }
 </style>
 </head>
 
 <body>
 
-<h1>مرحبا بك 👋</h1>
-
 <a href="terms.html">
-  <button>قراءة الشروط و الأحكام</button>
+<button class="main-btn">قراءة الشروط و الأحكام</button>
 </a>
 
 </body>
