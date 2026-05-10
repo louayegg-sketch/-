@@ -2,72 +2,37 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مسابقة الرسم</title>
-
+<title>الصفحة الرئيسية</title>
 <style>
 body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:#020617;
-    font-family:Arial;
-    gap:20px;
+  background:#111;
+  color:white;
+  text-align:center;
+  font-family:Arial;
+  margin-top:100px;
 }
-
-input{
-    padding:15px;
-    width:70%;
-    border:none;
-    border-radius:15px;
-    font-size:16px;
-    text-align:center;
-    outline:none;
+button{
+  padding:12px 25px;
+  background:#00aa00;
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+  cursor:pointer;
 }
-
-a button{
-    background:white;
-    color:#020617;
-    padding:25px 60px;
-    font-size:22px;
-    border:none;
-    border-radius:60px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:0.3s;
-}
-
-a button:hover{
-    transform:scale(1.05);
+button:hover{
+  opacity:0.8;
 }
 </style>
 </head>
 
 <body>
 
-<input type="text" id="name" placeholder="اكتب اسمك قبل الدخول 😼">
+<h1>مرحبا بك 👋</h1>
 
-<button onclick="goTerms()">قراءة الشروط و الأحكام</button>
-
-<script>
-function goTerms(){
-    let name = document.getElementById("name").value.trim();
-
-    if(name === ""){
-        alert("اكتب اسمك أول 😼");
-        return;
-    }
-
-    // نحفظ الاسم عشان نستخدمه في الصفحات الثانية
-    localStorage.setItem("playerName", name);
-
-    // نروح للشروط
-    window.location.href = "terms.html";
-}
-</script>
+<a href="terms.html">
+  <button>قراءة الشروط و الأحكام</button>
+</a>
 
 </body>
 </html>
