@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشروط والأحكام</title>
+
+<style>
+body{
+    margin:0;
+    background:#020617;
+    color:white;
+    font-family:Arial;
+    padding:25px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.rule{
+    background:#0f172a;
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 15px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.accept{
+    background:#22c55e;
+    color:white;
+}
+
+.accepted{
+    background:#16a34a;
+    color:white;
+    cursor:default;
+}
+
+#joinBtn{
+    display:block;
+    margin:30px auto 10px;
+    padding:20px 50px;
+    font-size:20px;
+    border:none;
+    border-radius:50px;
+    background:gray;
+    color:white;
+    cursor:not-allowed;
+}
+
+#joinBtn.active{
+    background:#3b82f6;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📜 الشروط والأحكام</h1>
+
+<div class="rule">
+<span>الرسم يكون فقط بالكونتري بول أو كونتري هيومن و عادي تسوي رسمة عن أصدقائك</span>
+<button class="accept" onclick="acceptRule(this)">قبول</button>
+</div>
+
+<div class="rule">
+<span>عدم سرقة الرسمة</span>
+<button class="accept" onclick="acceptRule(this)">قبول</button>
+</div>
+
+<div class="rule">
+<span>عدم نسخ فكرة أحد (يمكنك رؤية الرسمات الأخرى)</span>
+<button class="accept" onclick="acceptRule(this)">قبول</button>
+</div>
+
+<div class="rule">
+<span>عدم الاستياء إذا خسرت أو لم يعجبك التقييم</span>
+<button class="accept" onclick="acceptRule(this)">قبول</button>
+</div>
+
+<div class="rule">
+<span>يرجى إرسال الرسمات في الموقع فقط</span>
+<button class="accept" onclick="acceptRule(this)">قبول</button>
+</div>
+
+<div class="rule">
+<span>عدم مخالفة الشروط والأحكام</span>
+<button class="accept" onclick="acceptRule(this)">قبول</button>
+</div>
+
+<button id="joinBtn" onclick="goToJoin()">قبول الشروط أولاً</button>
+
+<script>
+let accepted = 0;
+let total = 6;
+
+function acceptRule(btn){
+    if(btn.classList.contains("accepted")) return;
+
+    btn.classList.add("accepted");
+    btn.innerText = "تم القبول ✔";
+    btn.disabled = true;
+
+    accepted++;
+
+    if(accepted === total){
+        let joinBtn = document.getElementById("joinBtn");
+        joinBtn.classList.add("active");
+        joinBtn.innerText = "المشاركة في المسابقة 🎨";
+        joinBtn.disabled = false;
+    }
+}
+
+function goToJoin(){
+    if(accepted === total){
+        window.location.href = "Mos.html";
+    }
+}
+</script>
+
+</body>
+</html>
