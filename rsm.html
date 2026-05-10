@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رفع الرسم 🎨</title>
+
+<style>
+body{
+    margin:0;
+    background:#020617;
+    font-family:Arial;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+h1{
+    margin-top:20px;
+}
+
+input, button{
+    margin-top:15px;
+    padding:15px;
+    border-radius:15px;
+    border:none;
+    font-size:16px;
+}
+
+input{
+    width:80%;
+}
+
+.upload{
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.card{
+    background:#0f172a;
+    margin:15px auto;
+    padding:15px;
+    border-radius:15px;
+    width:90%;
+}
+
+img{
+    width:100%;
+    border-radius:10px;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎨 ارفع رسمتك</h1>
+
+<input type="text" id="name" placeholder="اسمك">
+<br>
+<input type="file" id="image" accept="image/*">
+<br>
+
+<button class="upload" onclick="uploadDrawing()">إرسال الرسم</button>
+
+<h2>📌 الرسمات</h2>
+<div id="gallery"></div>
+
+<script>
+function uploadDrawing(){
+    let name = document.getElementById("name").value;
+    let file = document.getElementById("image").files[0];
+
+    if(!name || !file){
+        alert("اكتب اسمك واختر صورة 😼");
+        return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = function(e){
+        let imgURL = e.target.result;
+
+        let card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+            <h3>${name}</h3>
+            <img src="${imgURL}">
+            <button onclick="like(this)" data-count="0">👍 إعجاب (0)</button>
+        `;
+
+        document.getElementById("gallery").appendChild(card);
+    }
+
+    reader.readAsDataURL(file);
+}
+
+function like(btn){
+    let count = btn.getAttribute("data-count");
+    count++;
+    btn.setAttribute("data-count", count);
+    btn.innerText = "👍 إعجاب (" + count + ")";
+}
+</script>
+
+</body>
+</html>
