@@ -10,10 +10,22 @@ body{
     margin:0;
     height:100vh;
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
     background:#020617;
     font-family:Arial;
+    gap:20px;
+}
+
+input{
+    padding:15px;
+    width:70%;
+    border:none;
+    border-radius:15px;
+    font-size:16px;
+    text-align:center;
+    outline:none;
 }
 
 a button{
@@ -36,9 +48,26 @@ a button:hover{
 
 <body>
 
-<a href="terms.html">
-    <button>قراءة الشروط و الأحكام</button>
-</a>
+<input type="text" id="name" placeholder="اكتب اسمك قبل الدخول 😼">
+
+<button onclick="goTerms()">قراءة الشروط و الأحكام</button>
+
+<script>
+function goTerms(){
+    let name = document.getElementById("name").value.trim();
+
+    if(name === ""){
+        alert("اكتب اسمك أول 😼");
+        return;
+    }
+
+    // نحفظ الاسم عشان نستخدمه في الصفحات الثانية
+    localStorage.setItem("playerName", name);
+
+    // نروح للشروط
+    window.location.href = "terms.html";
+}
+</script>
 
 </body>
 </html>
