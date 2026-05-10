@@ -15,11 +15,18 @@ body{
   padding:20px;
 }
 
-input, button{
-  margin:10px;
+/* 🔥 إصلاح مهم جداً للكتابة */
+input{
+  width:80%;
   padding:12px;
+  margin:10px 0;
   border:none;
   border-radius:15px;
+  font-size:16px;
+  outline:none;
+  position:relative;
+  z-index:10;
+  pointer-events:auto;
 }
 
 .upload{
@@ -27,6 +34,9 @@ input, button{
   color:white;
   cursor:pointer;
   font-weight:bold;
+  padding:12px 20px;
+  border:none;
+  border-radius:15px;
 }
 
 .card{
@@ -41,6 +51,7 @@ img{
   width:100%;
   border-radius:15px;
 }
+
 </style>
 </head>
 
@@ -48,7 +59,7 @@ img{
 
 <h2>🎨 ارفع رسمتك</h2>
 
-<input type="text" id="name" placeholder="اسمك">
+<input type="text" id="name" placeholder="اكتب اسمك">
 <br>
 <input type="file" id="file">
 <br>
@@ -60,17 +71,21 @@ img{
 
 <script>
 
-// 👇 حط بياناتك هنا
 const cloudName = "dpfp1atqv";
 const uploadPreset = "drawing_upload";
 
 function upload(){
 
+  let name = document.getElementById("name").value.trim();
   let file = document.getElementById("file").files[0];
-  let name = document.getElementById("name").value;
 
-  if(!file || !name){
-    alert("اكتب اسمك واختر صورة 😼");
+  if(name === ""){
+    alert("اكتب اسمك 😼");
+    return;
+  }
+
+  if(!file){
+    alert("اختر صورة 😼");
     return;
   }
 
@@ -96,12 +111,24 @@ function upload(){
     div.innerHTML = `
       <h3>${name}</h3>
       <img src="${data.secure_url}">
+      <button onclick="like(this)">👍 0</button>
+      <button onclick="dislike(this)">👎 0</button>
     `;
 
     document.getElementById("gallery").appendChild(div);
 
   });
 
+}
+
+function like(btn){
+  let n = btn.innerText.match(/\d+/)[0];
+  btn.innerText = "👍 " + (parseInt(n)+1);
+}
+
+function dislike(btn){
+  let n = btn.innerText.match(/\d+/)[0];
+  btn.innerText = "👎 " + (parseInt(n)+1);
 }
 
 </script>
