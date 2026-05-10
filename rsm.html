@@ -7,182 +7,103 @@
 
 <style>
 body{
-    margin:0;
-    background:#020617;
-    font-family:Arial;
-    color:white;
-    text-align:center;
-    padding:20px;
-}
-
-h1{
-    margin-top:20px;
+  margin:0;
+  background:#020a2a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
 }
 
 input, button{
-    margin-top:15px;
-    padding:15px;
-    border-radius:15px;
-    border:none;
-    font-size:16px;
-}
-
-input{
-    width:80%;
-    outline:none; /* مهم عشان ما يصير فيه مشاكل تركيز */
+  margin:10px;
+  padding:12px;
+  border:none;
+  border-radius:15px;
 }
 
 .upload{
-    background:#22c55e;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
+  background:#00cc66;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
 }
 
 .card{
-    background:#0f172a;
-    margin:15px auto;
-    padding:15px;
-    border-radius:15px;
-    width:90%;
+  background:#06124d;
+  margin:15px auto;
+  padding:15px;
+  border-radius:20px;
+  width:90%;
 }
 
 img{
-    width:100%;
-    border-radius:10px;
-    margin-top:10px;
-}
-
-.actions{
-    margin-top:10px;
-    display:flex;
-    justify-content:center;
-    gap:10px;
-}
-
-.like{
-    background:#22c55e;
-    color:white;
-    cursor:pointer;
-}
-
-.dislike{
-    background:#ef4444;
-    color:white;
-    cursor:pointer;
-}
-
-input:focus{
-    border:2px solid #3b82f6;
+  width:100%;
+  border-radius:15px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎨 ارفع رسمتك</h1>
+<h2>🎨 ارفع رسمتك</h2>
 
-<!-- إصلاح مهم: تأكد input صحيح 100% -->
-<input type="text" id="name" placeholder="اكتب اسمك هنا">
+<input type="text" id="name" placeholder="اسمك">
+<br>
+<input type="file" id="file">
 <br>
 
-<input type="file" id="image" accept="image/*">
-<br>
-
-<button class="upload" onclick="uploadDrawing()">إرسال الرسم</button>
+<button class="upload" onclick="upload()">رفع</button>
 
 <h2>📌 الرسمات</h2>
 <div id="gallery"></div>
 
 <script>
-function uploadDrawing(){
-    let nameInput = document.getElementById("name");
-    let fileInput = document.getElementById("image");
 
-    let name = nameInput.value.trim();
-    let file = fileInput.files[0];
+// 👇 حط بياناتك هنا
+const cloudName = "dpfp1atqv";
+const uploadPreset = "drawing_upload";
 
-    if(!name){
-        alert("اكتب اسمك 😼");
-        return;
+function upload(){
+
+  let file = document.getElementById("file").files[0];
+  let name = document.getElementById("name").value;
+
+  if(!file || !name){
+    alert("اكتب اسمك واختر صورة 😼");
+    return;
+  }
+
+  let formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+
+  fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+    method:"POST",
+    body:formData
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if(data.error){
+      alert("خطأ: " + data.error.message);
+      return;
     }
 
-    if(!file){
-        alert("اختر صورة 😼");
-        return;
-    }
+    let div = document.createElement("div");
+    div.className = "card";
 
-    let reader = new FileReader();
+    div.innerHTML = `
+      <h3>${name}</h3>
+      <img src="${data.secure_url}">
+    `;
 
-    reader.onload = function(e){
-        let imgURL = e.target.result;
+    document.getElementById("gallery").appendChild(div);
 
-        let card = document.createElement("div");
-        card.className = "card";
+  });
 
-        card.innerHTML = `
-            <h3>${name}</h3>
-            <img src="${imgURL}">
-
-            <div class="actions">
-                <button class="like" onclick="react(this, 'like')" data-count="0">👍 0</button>
-                <button class="dislike" onclick="react(this, 'dislike')" data-count="0">👎 0</button>
-            </div>
-        `;
-
-        document.getElementById("gallery").appendChild(card);
-
-        // تنظيف الحقول بعد الإرسال
-        nameInput.value = "";
-        fileInput.value = "";
-    }
-
-    reader.readAsDataURL(file);
 }
 
-function react(btn, type){
-    let parent = btn.parentElement;
-
-    let likeBtn = parent.children[0];
-    let dislikeBtn = parent.children[1];
-
-    let likeCount = parseInt(likeBtn.getAttribute("data-count"));
-    let dislikeCount = parseInt(dislikeBtn.getAttribute("data-count"));
-
-    if(type === "like"){
-        if(btn.classList.contains("active")){
-            likeCount--;
-            btn.classList.remove("active");
-        } else {
-            if(dislikeBtn.classList.contains("active")){
-                dislikeCount--;
-                dislikeBtn.classList.remove("active");
-            }
-            likeCount++;
-            btn.classList.add("active");
-        }
-    }
-
-    if(type === "dislike"){
-        if(btn.classList.contains("active")){
-            dislikeCount--;
-            btn.classList.remove("active");
-        } else {
-            if(likeBtn.classList.contains("active")){
-                likeCount--;
-                likeBtn.classList.remove("active");
-            }
-            dislikeCount++;
-            btn.classList.add("active");
-        }
-    }
-
-    likeBtn.setAttribute("data-count", likeCount);
-    dislikeBtn.setAttribute("data-count", dislikeCount);
-
-    likeBtn.innerText = "👍 " + likeCount;
-    dislikeBtn.innerText = "👎 " + dislikeCount;
-}
 </script>
 
 </body>
