@@ -2,42 +2,55 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>الشروط والأحكام</title>
+<title>الشروط</title>
 
 <style>
 body{
-  background:#111;
+  background:#020a2a;
   color:white;
   font-family:Arial;
   text-align:center;
+  padding:40px;
 }
 
 .condition{
-  margin:15px;
-  padding:10px;
-  border:1px solid #444;
-  border-radius:10px;
+  margin:20px auto;
+  padding:20px;
+  width:80%;
+  background:#06124d;
+  border-radius:25px;
 }
 
-button{
-  padding:8px 15px;
+.accept-btn{
   margin-top:10px;
+  padding:8px 15px;
+  background:gray;
+  color:white;
   border:none;
   border-radius:8px;
   cursor:pointer;
+  transition:0.5s;
 }
 
-.accept{
-  background:#00aa00;
-  color:white;
+.accepted{
+  background:linear-gradient(to right,#00ff88,#00aa44);
 }
 
 #submitBtn{
+  margin-top:40px;
+  padding:20px 60px;
+  font-size:22px;
+  border:none;
+  border-radius:60px;
   background:gray;
   color:white;
-  margin-top:30px;
-  padding:12px 25px;
-  font-size:18px;
+  cursor:not-allowed;
+  transition:0.4s;
+}
+
+#submitBtn.active{
+  background:#007bff;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -49,60 +62,59 @@ button{
 <div class="condition">
 الرسم يكون فقط بالكونتري بول او كونتري هيومن و عادي تسوي رسمة عن اصدقائك
 <br>
-<button class="accept" onclick="accept(this)">قبول الشروط</button>
+<button class="accept-btn" onclick="accept(this)">موافقة</button>
 </div>
 
 <div class="condition">
 عدم سرقة الرسمة
 <br>
-<button class="accept" onclick="accept(this)">قبول الشروط</button>
+<button class="accept-btn" onclick="accept(this)">موافقة</button>
 </div>
 
 <div class="condition">
 عدم نسخ فكرة احد (يمكنك رؤية الرسمات الاخرى)
 <br>
-<button class="accept" onclick="accept(this)">قبول الشروط</button>
+<button class="accept-btn" onclick="accept(this)">موافقة</button>
 </div>
 
 <div class="condition">
 عدم الاستياء اذا خسرت او لم يعجبك التقييم
 <br>
-<button class="accept" onclick="accept(this)">قبول الشروط</button>
+<button class="accept-btn" onclick="accept(this)">موافقة</button>
 </div>
 
 <div class="condition">
 يرجى ارسال الرسمات في الموقع فقط
 <br>
-<button class="accept" onclick="accept(this)">قبول الشروط</button>
+<button class="accept-btn" onclick="accept(this)">موافقة</button>
 </div>
 
 <div class="condition">
 عدم مخالفة الشروط و الاحكام
 <br>
-<button class="accept" onclick="accept(this)">قبول الشروط</button>
+<button class="accept-btn" onclick="accept(this)">موافقة</button>
 </div>
 
-<button id="submitBtn" disabled onclick="goToUpload()">المشاركة</button>
+<button id="submitBtn" disabled onclick="go()">المشاركة</button>
 
 <script>
-let acceptedCount = 0;
-const total = 6;
+let total = 6;
+let count = 0;
 
 function accept(btn){
-  if(!btn.classList.contains("done")){
-    btn.classList.add("done");
-    btn.style.background = "blue";
-    btn.innerText = "تم القبول ✓";
-    acceptedCount++;
+  if(!btn.classList.contains("accepted")){
+    btn.classList.add("accepted");
+    count++;
   }
 
-  if(acceptedCount === total){
-    document.getElementById("submitBtn").disabled = false;
-    document.getElementById("submitBtn").style.background = "blue";
+  if(count === total){
+    let submit = document.getElementById("submitBtn");
+    submit.disabled = false;
+    submit.classList.add("active");
   }
 }
 
-function goToUpload(){
+function go(){
   window.location.href = "rsm.html";
 }
 </script>
